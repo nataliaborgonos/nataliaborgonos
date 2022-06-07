@@ -9,6 +9,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -18,11 +20,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import dominio.ListaVideos;
+import dominio.Usuario;
 import tds.video.VideoWeb;
 
-public class App extends JFrame {
+//controlador
+public class App extends JFrame implements PropertyChangeListener{
 	private JPanel contentPane;
 	private static VideoWeb videoWeb;
+	private ListaVideos topTen = new ListaVideos("Top Ten");
+	Usuario usuarioActual;
 
 	public App() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,5 +133,10 @@ public class App extends JFrame {
 				}
 			}
 		});
+	}
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+		
 	}
 }
