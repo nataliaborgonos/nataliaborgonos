@@ -23,7 +23,10 @@ import javax.swing.border.EmptyBorder;
 import dominio.ListaVideos;
 import dominio.Usuario;
 import gui.VentanaLoginRegistro;
+import gui.VentanaMisListas;
+import gui.VentanaNuevaLista;
 import gui.VentanaPrincipal;
+import gui.VentanaRecientes;
 import tds.video.VideoWeb;
 
 //controlador
@@ -40,8 +43,11 @@ public class App extends JFrame{
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						VentanaLoginRegistro ventana = new VentanaLoginRegistro(videoWeb);
+						//VentanaLoginRegistro ventana = new VentanaLoginRegistro(videoWeb);
 						//VentanaPrincipal ventana = new VentanaPrincipal(videoWeb);
+						//VentanaNuevaLista ventana = new VentanaNuevaLista(videoWeb);
+						//VentanaMisListas ventana = new VentanaMisListas(videoWeb);
+						VentanaRecientes ventana = new VentanaRecientes(videoWeb);
 						ventana.mostrarVentana();
 					} catch (Exception e) {
 						e.printStackTrace();
