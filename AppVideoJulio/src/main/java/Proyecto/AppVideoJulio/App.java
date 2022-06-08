@@ -22,16 +22,31 @@ import javax.swing.border.EmptyBorder;
 
 import dominio.ListaVideos;
 import dominio.Usuario;
+import gui.VentanaLoginRegistro;
 import tds.video.VideoWeb;
 
 //controlador
-public class App extends JFrame implements PropertyChangeListener{
+public class App extends JFrame{
 	private JPanel contentPane;
 	private static VideoWeb videoWeb;
 	private ListaVideos topTen = new ListaVideos("Top Ten");
 	Usuario usuarioActual;
 
 	public App() {
+		VideoWeb videoWeb = new VideoWeb();
+	}
+		public static void main(String[] args) {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						VentanaLoginRegistro ventana = new VentanaLoginRegistro(videoWeb);
+						ventana.mostrarVentana();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+		});
+		/*
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 760, 650);
 
@@ -138,5 +153,6 @@ public class App extends JFrame implements PropertyChangeListener{
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
 		
-	}
+	}*/
+}
 }
