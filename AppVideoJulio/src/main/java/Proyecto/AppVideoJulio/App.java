@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import dominio.ListaVideos;
 import dominio.Usuario;
 import gui.VentanaLoginRegistro;
+import gui.VentanaPrincipal;
 import tds.video.VideoWeb;
 
 //controlador
@@ -40,6 +41,7 @@ public class App extends JFrame{
 				public void run() {
 					try {
 						VentanaLoginRegistro ventana = new VentanaLoginRegistro(videoWeb);
+						//VentanaPrincipal ventana = new VentanaPrincipal(videoWeb);
 						ventana.mostrarVentana();
 					} catch (Exception e) {
 						e.printStackTrace();

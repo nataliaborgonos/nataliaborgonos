@@ -254,6 +254,20 @@ public class VentanaRegistro {
 	btnRegistro.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		 //to do	
+			String auxNombre = textNombre.getText().trim();
+			String auxApellidos = textApellidos.getText().trim();
+			String auxEmail = textEmail.getText().trim();
+			String auxLogin = textUsuario.getText().trim();
+			String auxPassword = textPassword.getText().trim();
+			Date fechaNacim = dateChooser.getDate();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			
+			if (checkErrores() == true) {
+				String auxfechaNacim = sdf.format(fechaNacim);
+				ocultarErrores();
+			}
+			
+			
 		}
 	});
 	
@@ -348,6 +362,11 @@ public void ocultarErrores() {
 	lblErrorpassword.setVisible(false);
 	lblErrorusuario.setVisible(false);
 	lblErrorLasContraseas.setVisible(false);
+	
+}
+
+public void mostrarVentana() {
+	frame.setVisible(true);
 	
 }
 
