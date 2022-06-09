@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -12,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import com.toedter.calendar.JDateChooser;
+
+import controlador.Controlador;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -35,7 +39,8 @@ public class VentanaRegistro {
 	private JLabel lblRepitePassword;
 	private JLabel lblErrorLasContraseas;
 	private JDateChooser dateChooser;
-
+	private Controlador controlador=new Controlador();
+	
 	public VentanaRegistro(JFrame frameanterior) {
 	frame = new JFrame();
 	frame.setBounds(100, 100, 800, 300);
@@ -252,8 +257,7 @@ public class VentanaRegistro {
 	
 	JButton btnRegistro = new JButton("Registrarse");
 	btnRegistro.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		 //to do	
+		public void actionPerformed(ActionEvent e) {	
 			String auxNombre = textNombre.getText().trim();
 			String auxApellidos = textApellidos.getText().trim();
 			String auxEmail = textEmail.getText().trim();
@@ -265,6 +269,12 @@ public class VentanaRegistro {
 			if (checkErrores() == true) {
 				String auxfechaNacim = sdf.format(fechaNacim);
 				ocultarErrores();
+				if(controlador.registrarUsuario(auxNombre, auxApellidos, auxEmail, fechaNacim, auxLogin, auxPassword)) {
+					JOptionPane.showMessageDialog(frame, "Usuario dado de alta correctamente");
+					frame.dispose();
+					} else {
+					JOptionPane.showMessageDialog(frame, "Ya existe un usuario con ese login");
+					}
 			}
 			
 			

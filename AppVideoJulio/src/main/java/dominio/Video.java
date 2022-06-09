@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Video {
-	
+	private int idBD;
 	private String url;
 	private String titulo;
 	private int numReproducciones;
@@ -13,6 +13,7 @@ public class Video {
 	
 	
 	public Video(String url, String titulo) {
+		this.idBD=0;
 		this.url = url;
 		this.titulo = titulo;
 		this.numReproducciones = 0;

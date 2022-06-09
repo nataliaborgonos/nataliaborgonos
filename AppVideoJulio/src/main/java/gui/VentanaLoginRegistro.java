@@ -10,6 +10,7 @@ import javax.swing.JPasswordField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+import controlador.Controlador;
 import tds.video.VideoWeb;
 
 import java.awt.Color;
@@ -27,6 +28,7 @@ public class VentanaLoginRegistro {
 	private JTextField textUsuario;
 	private JPasswordField textPassword;
 	private VideoWeb videoWeb;
+	private Controlador controlador=new Controlador();
 	
 	public VentanaLoginRegistro(VideoWeb videoweb) {
 		this.videoWeb = videoweb;
@@ -52,7 +54,7 @@ public class VentanaLoginRegistro {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				
 			}
 		});
 
@@ -148,9 +150,17 @@ public class VentanaLoginRegistro {
 		JPanel panel2 = new JPanel();
 		frame.getContentPane().add(panel2, BorderLayout.SOUTH);
 		JButton btnEntrar = new JButton("Entrar");
-		btnLogin.addActionListener(new ActionListener() {
+		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				String auxLogin = textUsuario.getText().trim();
+				System.out.println(auxLogin);
+				String auxPassword = String.valueOf(textPassword.getPassword());
+				if(controlador.login(auxLogin, auxPassword)) {
+					VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(videoWeb);
+					frame.dispose();
+				} else {
+					JOptionPane.showMessageDialog(frame, "Login Incorrecto");
+				}
 			}
 		});
 

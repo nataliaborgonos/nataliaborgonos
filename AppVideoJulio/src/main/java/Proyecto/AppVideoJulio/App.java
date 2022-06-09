@@ -43,11 +43,11 @@ public class App extends JFrame{
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						//VentanaLoginRegistro ventana = new VentanaLoginRegistro(videoWeb);
+						VentanaLoginRegistro ventana = new VentanaLoginRegistro(videoWeb);
 						//VentanaPrincipal ventana = new VentanaPrincipal(videoWeb);
 						//VentanaNuevaLista ventana = new VentanaNuevaLista(videoWeb);
 						//VentanaMisListas ventana = new VentanaMisListas(videoWeb);
-						VentanaRecientes ventana = new VentanaRecientes(videoWeb);
+						//VentanaRecientes ventana = new VentanaRecientes(videoWeb);
 						ventana.mostrarVentana();
 					} catch (Exception e) {
 						e.printStackTrace();
