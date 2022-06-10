@@ -6,6 +6,7 @@ import java.util.Map;
 public class RepositorioUsuarios {
 		
 		private Map<String, Usuario> usuarios=new HashMap<String,Usuario>();
+		private static RepositorioUsuarios unicaInstancia = new RepositorioUsuarios();
 		
 		public void addUsuario(Usuario usu) {
 			usuarios.put(usu.getNombre(), usu);
@@ -17,10 +18,12 @@ public class RepositorioUsuarios {
 		
 		public Usuario findUsuario(String login) {
 		
+			System.out.println("llego");
 			if (usuarios.containsKey(login)) {
 				Usuario u =usuarios.get(login);
 				return u;
 			}
+			
 			return null;
 		}
 		
@@ -28,6 +31,9 @@ public class RepositorioUsuarios {
 			return usuarios.get(login);
 		}
 		
+		public static RepositorioUsuarios getUnicaInstancia() {
+			return unicaInstancia;
+		}
 		
 		
 	}

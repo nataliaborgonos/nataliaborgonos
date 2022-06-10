@@ -19,6 +19,12 @@ public class Video {
 		this.numReproducciones = 0;
 		this.listaEtiquetas = new ArrayList<Etiqueta>();
 	}
+	
+	public int getIdBD() {
+		return idBD;
+	}
+	
+	
 
 	public int getNumReproducciones() {
 		return numReproducciones;

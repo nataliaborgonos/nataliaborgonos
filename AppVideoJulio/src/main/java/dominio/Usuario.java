@@ -34,12 +34,45 @@ public class Usuario {
 	public String getNombre() {
 		return nombre;
 	}
+	
+	public String getApellidos() {
+		return apellidos;
+	}
+	
+	public String getLogin() {
+		return login;
+	}
+	
+	public boolean isPremium() {
+		return esPremium;
+	}
+
+	public String getFechaNac() {
+		String fechaNacim=fechaNac.toString();
+		return fechaNacim;
+	}
+	public void setIdBD(int idBD) {
+		this.idBD = idBD;
+	}
 
 	public String getEmail() {
 		return email;
 	}
 	public List<ListaVideos> getListaVideos() {
 		return listaVideos;
+	}
+	
+	public int getIdBD() {
+		return idBD;
+	}
+	
+	public List<Video> getRecientes(){
+		return recientes;
+	}
+	
+
+	public void setRecientes(List<Video> recientes) {
+		this.recientes = recientes;
 	}
 	
 	public String getPassword() {
