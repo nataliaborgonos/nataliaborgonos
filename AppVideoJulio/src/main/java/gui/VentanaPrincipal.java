@@ -15,11 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import controlador.Controlador;
 import tds.video.VideoWeb;
 
 public class VentanaPrincipal {
 	private JFrame frame;
 	private VideoWeb videoWeb;
+	private Controlador controlador=new Controlador();
 	
 	public VentanaPrincipal(VideoWeb videoweb) {
 		this.videoWeb = videoweb;
@@ -117,7 +119,7 @@ public class VentanaPrincipal {
 		//poner lo de hola...usuario
 		
 
-				JLabel lblUser = new JLabel("Hola Usuario");
+				JLabel lblUser = new JLabel("Hola ");
 				lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
 				lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 				panel1.add(lblUser);

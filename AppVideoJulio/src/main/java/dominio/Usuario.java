@@ -10,6 +10,7 @@ public class Usuario {
 	private String apellidos;
 	private String email;
 	private Date fechaNac;
+	private String fecNa;
 	private String login;
 	private String password;
 	private boolean esPremium;
@@ -31,6 +32,20 @@ public class Usuario {
 		this.filtros = new LinkedList<Filtro>();
 	}
 
+
+	public Usuario(String nombre, String apellidos, String email, String fechaNac, String login, String password) {
+		this.nombre = nombre;
+		this.apellidos=apellidos;
+		this.email=email;
+		this.fecNa=fechaNac;
+		this.login=login;
+		this.password=password;
+		this.listaVideos = new LinkedList<ListaVideos>();
+		this.recientes = new LinkedList<Video>();
+		this.esPremium = false;
+		this.idBD=0;
+		this.filtros = new LinkedList<Filtro>();
+	}
 	public String getNombre() {
 		return nombre;
 	}

@@ -27,14 +27,21 @@ public class Controlador {
 		
 	}
 	
+	public String getUsuarioActual() {
+		return usuarioActual.getLogin();
+	}
+	
 	public boolean registrarUsuario(String nombre, String apellidos, String email, Date fechaNacim, String login, String password) {
 		//Usuario usuario = new Usuario(nombre,apellidos,email,fechaNacim,login, password);
+		
 		if (repoUsuarios.findUsuario(login) != null) {
 			//Si el usuario con el login ya esta registrado, no hace nada
 			return false;
 		} else {
 		Usuario usuario = new Usuario(nombre,apellidos,email,fechaNacim,login, password);
+		
 		adaptadorUsuario.registrarUsuario(usuario);
+		
 		repoUsuarios.addUsuario(usuario);
 		return true;
 		}
@@ -42,13 +49,12 @@ public class Controlador {
 	
 		public boolean login(String login, String password) {
 			Usuario usu = repoUsuarios.getUsuario(login);
+			System.out.println("usuario: "+usu);
 			if (usu == null) {
-				System.out.println("No existe el usuario");
 				return false;
 			} else {
 				if (usu.getPassword().equals(password)) {
 					usuarioActual = usu;
-					
 					return true;
 				} else {
 					return false;

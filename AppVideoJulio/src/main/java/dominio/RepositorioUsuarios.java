@@ -9,7 +9,8 @@ public class RepositorioUsuarios {
 		private static RepositorioUsuarios unicaInstancia = new RepositorioUsuarios();
 		
 		public void addUsuario(Usuario usu) {
-			usuarios.put(usu.getNombre(), usu);
+			System.out.println("me llega el usuario:"+usu.getLogin());
+			usuarios.put(usu.getLogin(), usu);
 		}
 		
 		public void removeUsuario(Usuario usu) {
@@ -28,6 +29,7 @@ public class RepositorioUsuarios {
 		}
 		
 		public Usuario getUsuario(String login) {
+			System.out.println("login: "+login);
 			return usuarios.get(login);
 		}
 		
