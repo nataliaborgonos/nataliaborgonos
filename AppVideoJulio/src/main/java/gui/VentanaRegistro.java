@@ -39,9 +39,10 @@ public class VentanaRegistro {
 	private JLabel lblRepitePassword;
 	private JLabel lblErrorLasContraseas;
 	private JDateChooser dateChooser;
-	private Controlador controlador=new Controlador();
+	private Controlador controlador;
 	
 	public VentanaRegistro(JFrame frameanterior) {
+	controlador = Controlador.getUnicaInstancia();
 	frame = new JFrame();
 	frame.setBounds(100, 100, 800, 300);
 	frame.setVisible(true);
@@ -107,7 +108,7 @@ public class VentanaRegistro {
 	JButton btnPremium = new JButton("Premium");
 	btnPremium.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			//to do
+			JOptionPane.showMessageDialog(frame, "Ingresa en tu cuenta para hacerte premium");
 		}
 	});
 	

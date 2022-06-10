@@ -1,7 +1,5 @@
 package controlador;
 
-import java.util.Date;
-
 import dominio.*;
 import persistencia.*;
 
@@ -52,7 +50,6 @@ public class Controlador {
 			} else {
 				if (usu.getPassword().equals(password)) {
 					usuarioActual = usu;
-					System.out.println("Usuario actual : " + usuarioActual.getLogin());
 					return true;
 				} else {
 					return false;

@@ -49,6 +49,7 @@ public class VentanaPrincipal {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//to do
+				new VentanaLoginRegistro(videoWeb);
 			}
 		});
 

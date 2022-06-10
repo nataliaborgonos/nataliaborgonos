@@ -28,7 +28,7 @@ public class VentanaLoginRegistro {
 	private JTextField textUsuario;
 	private JPasswordField textPassword;
 	private VideoWeb videoWeb;
-	private Controlador controlador=new Controlador();
+	private Controlador controlador;
 	
 	public VentanaLoginRegistro(VideoWeb videoweb) {
 		this.videoWeb = videoweb;
@@ -94,7 +94,7 @@ public class VentanaLoginRegistro {
 		JButton btnPremium = new JButton("Premium");
 		btnPremium.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//to do
+				JOptionPane.showMessageDialog(frame, "Ingresa en tu cuenta para hacerte premium");
 			}
 		});
 	
