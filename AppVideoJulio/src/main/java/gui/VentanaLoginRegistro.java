@@ -32,6 +32,7 @@ public class VentanaLoginRegistro {
 	
 	public VentanaLoginRegistro(VideoWeb videoweb) {
 		this.videoWeb = videoweb;
+		controlador = Controlador.getUnicaInstancia();
 		initialize();
 		frame.setVisible(true);
 	}

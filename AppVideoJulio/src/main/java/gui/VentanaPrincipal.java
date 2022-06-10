@@ -21,9 +21,10 @@ import tds.video.VideoWeb;
 public class VentanaPrincipal {
 	private JFrame frame;
 	private VideoWeb videoWeb;
-	private Controlador controlador=new Controlador();
+	private Controlador controlador;
 	
 	public VentanaPrincipal(VideoWeb videoweb) {
+		controlador = Controlador.getUnicaInstancia();
 		this.videoWeb = videoweb;
 		initialize();
 		frame.setVisible(true);
@@ -119,7 +120,7 @@ public class VentanaPrincipal {
 		//poner lo de hola...usuario
 		
 
-				JLabel lblUser = new JLabel("Hola ");
+				JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getLogin());
 				lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
 				lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 				panel1.add(lblUser);

@@ -9,8 +9,7 @@ public class Usuario {
 	private String nombre;
 	private String apellidos;
 	private String email;
-	private Date fechaNac;
-	private String fecNa;
+	private String fechaNacim;
 	private String login;
 	private String password;
 	private boolean esPremium;
@@ -18,26 +17,11 @@ public class Usuario {
 	private List<Filtro> filtros;
 	private List<Video> recientes; //ordenada
 
-	public Usuario(String nombre, String apellidos, String email, Date fechaNac, String login, String password) {
-		this.nombre = nombre;
-		this.apellidos=apellidos;
-		this.email=email;
-		this.fechaNac=fechaNac;
-		this.login=login;
-		this.password=password;
-		this.listaVideos = new LinkedList<ListaVideos>();
-		this.recientes = new LinkedList<Video>();
-		this.esPremium = false;
-		this.idBD=0;
-		this.filtros = new LinkedList<Filtro>();
-	}
-
-
 	public Usuario(String nombre, String apellidos, String email, String fechaNac, String login, String password) {
 		this.nombre = nombre;
 		this.apellidos=apellidos;
 		this.email=email;
-		this.fecNa=fechaNac;
+		this.fechaNacim=fechaNac;
 		this.login=login;
 		this.password=password;
 		this.listaVideos = new LinkedList<ListaVideos>();
@@ -46,6 +30,7 @@ public class Usuario {
 		this.idBD=0;
 		this.filtros = new LinkedList<Filtro>();
 	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -63,7 +48,6 @@ public class Usuario {
 	}
 
 	public String getFechaNac() {
-		String fechaNacim=fechaNac.toString();
 		return fechaNacim;
 	}
 	public void setIdBD(int idBD) {

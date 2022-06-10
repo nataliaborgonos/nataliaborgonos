@@ -72,12 +72,13 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 	@Override
 	public void borrarUsuario(Usuario usuario) {
 		// TODO Auto-generated method stub
-		
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getIdBD());
+		servPersistencia.borrarEntidad(eUsuario);
 	}
 	@Override
 	public void modificarUsuario(Usuario usuario) {
 		// TODO Auto-generated method stub
-		
+	
 	}
 	@Override
 	public Usuario recuperarUsuario(int codigo) {

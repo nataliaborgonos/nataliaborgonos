@@ -269,7 +269,7 @@ public class VentanaRegistro {
 			if (checkErrores() == true) {
 				String auxfechaNacim = sdf.format(fechaNacim);
 				ocultarErrores();
-				if(controlador.registrarUsuario(auxNombre, auxApellidos, auxEmail, fechaNacim, auxLogin, auxPassword)) {
+				if(controlador.registrarUsuario(auxNombre, auxApellidos, auxEmail, auxfechaNacim, auxLogin, auxPassword)) {
 					JOptionPane.showMessageDialog(frame, "Usuario dado de alta correctamente");
 					frame.dispose();
 					} else {
