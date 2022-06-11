@@ -48,7 +48,6 @@ public class VentanaPrincipal {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
 				new VentanaLoginRegistro(videoWeb);
 			}
 		});
@@ -118,18 +117,16 @@ public class VentanaPrincipal {
 		
 		JPanel panel1 = new JPanel();
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
-		//poner lo de hola...usuario
-		
-
-				JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getLogin());
-				lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
-				lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-				panel1.add(lblUser);
+		JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getNombre());
+		lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		panel1.add(lblUser);
 		
 		JButton btnExplorar= new JButton("Explorar");
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				new VentanaExplorar(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -143,7 +140,8 @@ public class VentanaPrincipal {
 		JButton btnMisListas= new JButton("Mis Listas");
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				new VentanaMisListas(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -157,7 +155,8 @@ public class VentanaPrincipal {
 		JButton btnRecientes= new JButton("Recientes");
 		btnRecientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				new VentanaRecientes(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -172,7 +171,8 @@ public class VentanaPrincipal {
 		JButton btnNuevaLista= new JButton("Nueva Lista");
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				new VentanaNuevaLista(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -183,7 +183,7 @@ public class VentanaPrincipal {
 		gbc_btnNuevaLista.gridy = 6;
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
-		
+		/*
 		   JTextField textFieldBuscar = new JTextField();
 	        GridBagConstraints gbc_textFieldBuscar = new GridBagConstraints();
 	        gbc_textFieldBuscar.gridwidth = 6;
@@ -194,6 +194,7 @@ public class VentanaPrincipal {
 	        panel1.add(textFieldBuscar, gbc_textFieldBuscar);
 	        textFieldBuscar.setColumns(10);
 			
+	        
 			JButton btnBuscar= new JButton("Buscar");
 			btnBuscar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -222,7 +223,7 @@ public class VentanaPrincipal {
 			gbc_btnBuscarNuevo.gridy = 6;
 			panel1.add(btnBuscarNuevo,gbc_btnBuscarNuevo);
 			
-			//faltan las etiquetas
+			//faltan las etiquetas*/
 	}
 	        
 	public void mostrarVentana() {

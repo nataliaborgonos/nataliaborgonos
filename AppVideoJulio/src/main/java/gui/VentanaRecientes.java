@@ -17,14 +17,17 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import controlador.Controlador;
 import tds.video.VideoWeb;
 
 public class VentanaRecientes {
 
 	private JFrame frame;
 	private VideoWeb videoWeb;
+	private Controlador controlador;
 	
 	public VentanaRecientes(VideoWeb videoweb) {
+		controlador=Controlador.getUnicaInstancia();
 		this.videoWeb = videoweb;
 		initialize();
 		frame.setVisible(true);
@@ -49,6 +52,7 @@ public class VentanaRecientes {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//to do
+				new VentanaLoginRegistro(videoWeb);
 			}
 		});
 
@@ -117,10 +121,7 @@ public class VentanaRecientes {
 		
 		JPanel panel1 = new JPanel();
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
-		//poner lo de hola...usuario
-		
-
-				JLabel lblUser = new JLabel("Hola Usuario");
+				JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getNombre());
 				lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
 				lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 				panel1.add(lblUser);
@@ -129,6 +130,7 @@ public class VentanaRecientes {
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//to do
+				new VentanaExplorar(videoWeb);
 			}
 		});
 
@@ -143,6 +145,8 @@ public class VentanaRecientes {
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//to do
+				new VentanaMisListas(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -156,7 +160,8 @@ public class VentanaRecientes {
 		JButton btnRecientes= new JButton("Recientes");
 		btnRecientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				new VentanaMisListas(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -171,7 +176,8 @@ public class VentanaRecientes {
 		JButton btnNuevaLista= new JButton("Nueva Lista");
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				new VentanaNuevaLista(videoWeb);
+				frame.dispose();
 			}
 		});
 

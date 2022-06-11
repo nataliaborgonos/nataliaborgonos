@@ -15,13 +15,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import controlador.Controlador;
 import tds.video.VideoWeb;
 
 public class VentanaNuevaLista {
 	private JFrame frame;
 	private VideoWeb videoWeb;
+	private Controlador controlador;	
 	
 	public VentanaNuevaLista(VideoWeb videoweb) {
+		controlador=Controlador.getUnicaInstancia();
 		this.videoWeb = videoweb;
 		initialize();
 		frame.setVisible(true);
@@ -45,7 +48,7 @@ public class VentanaNuevaLista {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				new VentanaLoginRegistro(videoWeb);
 			}
 		});
 
@@ -117,7 +120,7 @@ public class VentanaNuevaLista {
 		//poner lo de hola...usuario
 		
 
-				JLabel lblUser = new JLabel("Hola Usuario");
+				JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getNombre());
 				lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
 				lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 				panel1.add(lblUser);
@@ -126,6 +129,8 @@ public class VentanaNuevaLista {
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//to do
+				new VentanaExplorar(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -139,7 +144,8 @@ public class VentanaNuevaLista {
 		JButton btnMisListas= new JButton("Mis Listas");
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				new VentanaMisListas(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -154,6 +160,8 @@ public class VentanaNuevaLista {
 		btnRecientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//to do
+				new VentanaRecientes(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -169,6 +177,8 @@ public class VentanaNuevaLista {
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//to do
+				new VentanaNuevaLista(videoWeb);
+				frame.dispose();
 			}
 		});
 

@@ -38,6 +38,7 @@ public class VentanaRegistro {
 	private JLabel lblErrorusuario;
 	private JLabel lblRepitePassword;
 	private JLabel lblErrorLasContraseas;
+	private JLabel lblErrorMail;
 	private JDateChooser dateChooser;
 	private Controlador controlador;
 	
@@ -147,7 +148,7 @@ public class VentanaRegistro {
 	panel_1.add(textNombre, gbc_textField_6_1);
 	textNombre.setColumns(10);
 	
-	lblErrorusuario = new JLabel("Error: Introduce tu usuario");
+	lblErrorusuario = new JLabel("Error: Introduce tu nombre de usuario");
 	lblErrorusuario.setForeground(Color.RED);
 	GridBagConstraints gbc_lblErrorusuario = new GridBagConstraints();
 	gbc_lblErrorusuario.insets = new Insets(0, 0, 5, 5);
@@ -231,13 +232,21 @@ public class VentanaRegistro {
 	panel_1.add(textUsuario, gbc_textField_4);
 	textUsuario.setColumns(10);
 	
-	lblErrorNombre = new JLabel("Error: Rellena la casilla nombre.");
+	lblErrorNombre = new JLabel("Error: Introduce tu nombre y apellido.");
 	lblErrorNombre.setForeground(Color.RED);
 	GridBagConstraints gbc_lblError = new GridBagConstraints();
 	gbc_lblError.insets = new Insets(0, 0, 5, 5);
 	gbc_lblError.gridx = 3;
 	gbc_lblError.gridy = 3;
 	panel_1.add(lblErrorNombre, gbc_lblError);
+	
+	lblErrorMail = new JLabel("Error: Introduce tu email.");
+	lblErrorMail.setForeground(Color.RED);
+	GridBagConstraints gbc_lblErrorM = new GridBagConstraints();
+	gbc_lblErrorM.insets = new Insets(0, 0, 5, 5);
+	gbc_lblErrorM.gridx = 3;
+	gbc_lblErrorM.gridy = 3;
+	panel_1.add(lblErrorMail, gbc_lblErrorM);
 	
 	JLabel lblPassword = new JLabel("Password:");
 	GridBagConstraints gbc_lblPassword = new GridBagConstraints();
@@ -336,6 +345,13 @@ public boolean checkErrores() {
 		lblErrorNombre.setVisible(false);
 	}
 	
+	if(textApellidos.getText().trim().isEmpty()) {
+		lblErrorNombre.setVisible(true); 
+		ok = false;
+	} else {
+		lblErrorNombre.setVisible(false);
+	}
+	
 	if (dateChooser.getDate() == null) {
 		lblErrorfechanacim.setVisible(true);
 		ok = false;
@@ -364,6 +380,12 @@ public boolean checkErrores() {
 		lblErrorLasContraseas.setVisible(false);
 	}
 	
+	if(textEmail.getText().trim().isEmpty()) {
+		lblErrorMail.setVisible(true);
+		ok=false;
+	}else {
+		lblErrorMail.setVisible(false);
+	}
 	return ok;
 }
 
@@ -373,7 +395,7 @@ public void ocultarErrores() {
 	lblErrorpassword.setVisible(false);
 	lblErrorusuario.setVisible(false);
 	lblErrorLasContraseas.setVisible(false);
-	
+	lblErrorMail.setVisible(false);
 }
 
 public void mostrarVentana() {

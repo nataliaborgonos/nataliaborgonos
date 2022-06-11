@@ -9,33 +9,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controlador.Controlador;
 import tds.video.VideoWeb;
 
-public class VentanaMisListas {
+public class VentanaExplorar {
 	private JFrame frame;
 	private VideoWeb videoWeb;
 	private Controlador controlador;
 	
-	public VentanaMisListas(VideoWeb videoweb) {
+	public VentanaExplorar(VideoWeb videoweb) {
 		controlador = Controlador.getUnicaInstancia();
 		this.videoWeb = videoweb;
 		initialize();
 		frame.setVisible(true);
 	}
-	
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 900, 500);
+		frame.setBounds(100, 100, 900, 325);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -51,6 +47,7 @@ public class VentanaMisListas {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//to do
 				new VentanaLoginRegistro(videoWeb);
 			}
 		});
@@ -120,17 +117,15 @@ public class VentanaMisListas {
 		
 		JPanel panel1 = new JPanel();
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
-
-				JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getLogin());
-				lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
-				lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-				panel1.add(lblUser);
+		JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getLogin());
+		lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		panel1.add(lblUser);
 		
 		JButton btnExplorar= new JButton("Explorar");
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new VentanaExplorar(videoWeb);
-				frame.dispose();
+				//to do
 			}
 		});
 
@@ -144,7 +139,8 @@ public class VentanaMisListas {
 		JButton btnMisListas= new JButton("Mis Listas");
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				new VentanaMisListas(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -158,6 +154,7 @@ public class VentanaMisListas {
 		JButton btnRecientes= new JButton("Recientes");
 		btnRecientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//to do
 				new VentanaRecientes(videoWeb);
 				frame.dispose();
 			}
@@ -174,6 +171,7 @@ public class VentanaMisListas {
 		JButton btnNuevaLista= new JButton("Nueva Lista");
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//to do
 				new VentanaNuevaLista(videoWeb);
 				frame.dispose();
 			}
@@ -225,46 +223,6 @@ public class VentanaMisListas {
 			gbc_btnBuscarNuevo.gridy = 6;
 			panel1.add(btnBuscarNuevo,gbc_btnBuscarNuevo);
 			
-			JPanel panel2 = new JPanel();
-			frame.getContentPane().add(panel2, BorderLayout.EAST);
-			
-			JLabel lblLista = new JLabel("Selecciona la lista:");
-			lblLista.setHorizontalAlignment(SwingConstants.TRAILING);
-			lblLista.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-			panel2.add(lblLista);
-			
-			   String[] optionsToChoose = {"Apple", "Orange", "Banana", "Pineapple", "None of the listed"};
-
-		        JComboBox<String> jComboBox = new JComboBox<>(optionsToChoose);
-		        jComboBox.setBounds(80, 50, 140, 20);
-		        panel2.add(jComboBox);
-			 //JTextArea textArea = new JTextArea(20, 20);  
-		       // JScrollPane scrollableTextArea = new JScrollPane(textArea);  
-		        //scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
-		        //scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
-		  
-		  //      frame.getContentPane().add(scrollableTextArea); 
-		        
-		    //    panel2.add(scrollableTextArea);
-			
-	
-			JButton btnCancelar= new JButton("Cancelar");
-			btnCancelar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					//to do
-				}
-			});
-			
-			GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
-			gbc_btnCancelar.anchor = GridBagConstraints.WEST;
-			gbc_btnCancelar.insets = new Insets(0, 0, 0, 5);
-			gbc_btnCancelar.gridx = 3;
-			gbc_btnCancelar.gridy = 6;
-			panel2.add(btnCancelar,gbc_btnCancelar);
-	}
-	        
-	public void mostrarVentana() {
-		frame.setVisible(true);
-		
+			//faltan las etiquetas
 	}
 }
