@@ -32,5 +32,7 @@
 	<classpathentry kind="lib" path="lib/javax.persistence-api-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/ServidorPersistenciaH2.jar"/>
 	<classpathentry kind="lib" path="C:/TDS/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/TDS/Luz.jar"/>
+	<classpathentry kind="lib" path="C:/TDS/CargadorVideos.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
