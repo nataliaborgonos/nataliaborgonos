@@ -24,7 +24,21 @@ public class Video {
 		return idBD;
 	}
 	
+	public void setIdBD(int idBD) {
+		this.idBD=idBD;
+	}
 	
+	public String getTitulo() {
+		return titulo;
+	}
+	
+	public void setListaEtiquetas(List<Etiqueta> listaEtiquetas) {
+		this.listaEtiquetas = listaEtiquetas;
+	}
+	
+	public void setNumReproducciones(int numReproducciones) {
+		this.numReproducciones=numReproducciones;
+	}
 
 	public int getNumReproducciones() {
 		return numReproducciones;
@@ -32,6 +46,15 @@ public class Video {
 	public List<Etiqueta> getEtiquetas(){
 		return listaEtiquetas;
 	}
+	
+	public String getEtiquetasString() {
+		String etiquetas = "";
+		for (Etiqueta etiq : listaEtiquetas) {
+			etiquetas+= etiq.getNombreEtiq() + " ";
+		}
+		return etiquetas.trim();
+	}
+	
 	public String getUrl() {
 		return url;
 	}
