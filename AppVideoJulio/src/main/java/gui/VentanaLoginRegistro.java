@@ -157,7 +157,7 @@ public class VentanaLoginRegistro {
 				System.out.println(auxLogin);
 				String auxPassword = String.valueOf(textPassword.getPassword());
 				if(controlador.login(auxLogin, auxPassword)) {
-					VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(videoWeb);
+					VentanaRecientes ventanaRecientes = new VentanaRecientes(videoWeb);
 					frame.dispose();
 				} else {
 					JOptionPane.showMessageDialog(frame, "Login Incorrecto");

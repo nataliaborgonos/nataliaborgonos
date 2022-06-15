@@ -22,5 +22,10 @@ public class FiltroMisListas extends Filtro{
 		}
 		return listaFiltrada;
 	}
+	@Override
+	public String getNombreFiltro() {
+		// TODO Auto-generated method stub
+		return nombreFiltro;
+	}
 	
 }

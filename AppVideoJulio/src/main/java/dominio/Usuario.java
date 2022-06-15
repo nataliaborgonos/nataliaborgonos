@@ -16,6 +16,8 @@ public class Usuario {
 	private List<ListaVideos> listaVideos;
 	private List<Filtro> filtros;
 	private List<Video> recientes; //ordenada
+	private Filtro filtroPremium;
+	
 
 	public Usuario(String nombre, String apellidos, String email, String fechaNac, String login, String password) {
 		this.nombre = nombre;
@@ -29,6 +31,7 @@ public class Usuario {
 		this.esPremium = false;
 		this.idBD=0;
 		this.filtros = new LinkedList<Filtro>();
+		this.filtroPremium = new NoFiltro();
 	}
 
 	public String getNombre() {
@@ -61,6 +64,9 @@ public class Usuario {
 		return listaVideos;
 	}
 	
+	public void setListaVideos(List<ListaVideos> listaVideos) {
+		this.listaVideos=listaVideos;
+	}
 	public int getIdBD() {
 		return idBD;
 	}
@@ -69,12 +75,23 @@ public class Usuario {
 		return recientes;
 	}
 	
+	public void setPremium(boolean premium) {
+		this.esPremium = premium;
+	}
 
+	
 	public void setRecientes(List<Video> recientes) {
 		this.recientes = recientes;
 	}
 	
 	public String getPassword() {
 		return password;
+	}
+	public Filtro getFiltroPremium() {
+		return filtroPremium;
+	}
+
+	public void setFiltroPremium(Filtro filtroPremium) {
+		this.filtroPremium = filtroPremium;
 	}
 }

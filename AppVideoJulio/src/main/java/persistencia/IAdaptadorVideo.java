@@ -10,5 +10,4 @@ public interface IAdaptadorVideo {
 	public void modificarVideo(Video video);
 	public Video recuperarVideo(int codigo);
 	public List<Video> recuperarTodosVideos();
-	public List<Etiqueta> getEtiquetasLista(String etiquetas);
 }

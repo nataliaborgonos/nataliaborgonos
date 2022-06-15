@@ -3,13 +3,16 @@ package controlador;
 import dominio.*;
 import persistencia.*;
 
-public class Controlador {
+import pulsador.Luz;
+import umu.tds.componente.*;
 
+public class Controlador {
 	private static Controlador unicaInstancia;
 	public Usuario usuarioActual;
 	private RepositorioUsuarios repoUsuarios;
 	private RepositorioVideos repoVideos;
 	private IAdaptadorUsuario adaptadorUsuario;
+	private IAdaptadorVideo adaptadorVideo;
 	
 	public Controlador() {
 		repoVideos = RepositorioVideos.getUnicaInstancia();
@@ -22,7 +25,7 @@ public class Controlador {
 		}
 		
 		adaptadorUsuario = factoria.getUsuarioDAO();
-		
+		adaptadorVideo = factoria.getVideoDAO();
 	}
 	
 	public static Controlador getUnicaInstancia() {
@@ -60,4 +63,5 @@ public class Controlador {
 		public Usuario getUsuarioActual() {
 			return usuarioActual;
 		}
+	
 }

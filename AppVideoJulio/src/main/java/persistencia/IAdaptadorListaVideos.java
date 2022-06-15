@@ -11,7 +11,5 @@ public interface IAdaptadorListaVideos {
 	public void modificarListaVideos(ListaVideos lista);
 	public ListaVideos recuperarListaVideos(int codigo);
 	public List<ListaVideos> recuperarTodasListas();
-	public String getVideosString(List<Video> listaVideos);
-	public List<Video> getListaVideosLista(String videos);
 
 }

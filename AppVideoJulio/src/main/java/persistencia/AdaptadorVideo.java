@@ -122,10 +122,15 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 		return videos;
 	}
 
-	@Override
 	public List<Etiqueta> getEtiquetasLista(String etiquetas) {
 		// TODO Auto-generated method stub
-		return null;
+		List<Etiqueta> listaetiq = new ArrayList<Etiqueta>();
+		StringTokenizer strTok = new StringTokenizer(etiquetas, " ");
+		while (strTok.hasMoreTokens()) {
+			Etiqueta e = new Etiqueta((String)strTok.nextElement());
+			listaetiq.add(e);
+		}
+		return listaetiq;
 	}
 	
 	

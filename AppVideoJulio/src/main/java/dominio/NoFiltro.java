@@ -9,6 +9,10 @@ public class NoFiltro extends Filtro{
 	public NoFiltro() {
 		this.nombreFiltro = "NoFiltro";
 	}
+
+	public String getNombreFiltro() {
+		return nombreFiltro;
+	}
 	@Override
 	public List<Video> esVideoOk(List<Video> listaVideos, Usuario usuario) {
 		return listaVideos;

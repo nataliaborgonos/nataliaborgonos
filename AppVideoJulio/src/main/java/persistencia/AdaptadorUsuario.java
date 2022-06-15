@@ -78,18 +78,100 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 	@Override
 	public void modificarUsuario(Usuario usuario) {
 		// TODO Auto-generated method stub
-	
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getIdBD());
+
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "nombre");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "nombre", usuario.getNombre());
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "apellidos");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "apellidos", usuario.getApellidos());
+		
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "email");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "email", usuario.getEmail());
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "login");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "login", usuario.getLogin());
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "password");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "password", usuario.getPassword());
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "fechanacim");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "fechanacim", usuario.getFechaNac());
+		String listas = this.getListaVideosString(usuario.getListaVideos());
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "listalistavideos");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "listalistavideos", listas);
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "recientes");
+		//servPersistencia.anadirPropiedadEntidad(eUsuario, "recientes", usuario.getRecientes());
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "premium");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "premium", String.valueOf(usuario.isPremium()));
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "filtro");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "filtro", usuario.getFiltroPremium().getNombreFiltro());
 	}
 	@Override
 	public Usuario recuperarUsuario(int codigo) {
 		// TODO Auto-generated method stub
-		return null;
+		Entidad eUsuario;
+		String nombre;
+		String apellidos;
+		String email;
+		String login;
+		String password;
+		String fechaNacim;
+		boolean premium;
+		String nombreFiltro;
+
+		// recuperar entidad
+		eUsuario = servPersistencia.recuperarEntidad(codigo);
+
+		// recuperar propiedades que no son objetos
+		nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
+		apellidos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "apellidos");
+		email = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
+		login = servPersistencia.recuperarPropiedadEntidad(eUsuario, "login");
+		password = servPersistencia.recuperarPropiedadEntidad(eUsuario, "password");
+		fechaNacim = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechanacim");
+		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium"));
+		nombreFiltro = servPersistencia.recuperarPropiedadEntidad(eUsuario, "filtro");
+		
+		Usuario usuario = new Usuario(nombre, apellidos, email, login, password, fechaNacim);
+		usuario.setIdBD(codigo);
+		usuario.setListaVideos(this.getListasVideosFormatoLista(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listalistavideos")));
+		AdaptadorListaVideos adaptadorListas = AdaptadorListaVideos.getUnicaInstancia();
+		List<Video> recientes = (List<Video>) adaptadorListas.recuperarListaVideos(Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eUsuario, "recientes")));
+		usuario.setRecientes(recientes);
+		usuario.setPremium(premium);
+		if (nombreFiltro.equals("NoFiltro")) {
+			usuario.setFiltroPremium(new NoFiltro());
+		} else if (nombreFiltro.equals("Mis Listas")) {
+			usuario.setFiltroPremium(new FiltroMisListas());
+		} else if (nombreFiltro.equals("Adultos")) {
+			usuario.setFiltroPremium(new FiltroAdultos());
+		}
+		return usuario;
 	}
 	@Override
 	public List<Usuario> recuperarTodosUsuarios() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Entidad> eUsuarios = servPersistencia.recuperarEntidades("usuario");
+		List<Usuario> usuarios = new LinkedList<Usuario>();
+
+		for (Entidad eUsuario : eUsuarios) {
+			usuarios.add(recuperarUsuario(eUsuario.getId()));
+		}
+		return usuarios;
+	}
+	public String getListaVideosString(List<ListaVideos> listaListasVideos) {
+		String listas = "";
+		for (ListaVideos lista : listaListasVideos) {
+			listas+= lista.getIdBD() + " ";
+		}
+		return listas.trim(); 
 	}
 	
-				
+	public List<ListaVideos> getListasVideosFormatoLista(String listas) {
+		List<ListaVideos> listaListaVideos = new ArrayList<ListaVideos>();
+		StringTokenizer strTok = new StringTokenizer(listas, " ");
+		AdaptadorListaVideos adaptadorListas = AdaptadorListaVideos.getUnicaInstancia();
+		while (strTok.hasMoreTokens()) {
+			ListaVideos l = adaptadorListas.recuperarListaVideos(Integer.valueOf((String) strTok.nextElement()));
+			listaListaVideos.add(l);
+		}
+		return listaListaVideos;
+	}
+
 }

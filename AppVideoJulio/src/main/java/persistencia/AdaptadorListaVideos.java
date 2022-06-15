@@ -32,7 +32,37 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 	@Override
 	public void registrarListaVideos(ListaVideos lista) {
 		// TODO Auto-generated method stub
+		Entidad eLista;
+		boolean existe = true;
 		
+		// Si la entidad está registrada no la registra de nuevo
+				try {
+					eLista = servPersistencia.recuperarEntidad(lista.getIdBD());
+				} catch (NullPointerException e) {
+					existe = false;
+				}
+				if (existe) return;
+				
+				
+				//Registramos primero los objetos
+				AdaptadorVideo adaptadorVideo = AdaptadorVideo.getUnicaInstancia();
+				for (Video video : lista.getLista())
+					adaptadorVideo.registrarVideo(video);
+				
+				
+				eLista = new Entidad();
+				eLista.setNombre("lista");
+				ArrayList<Propiedad> propiedades=new ArrayList<Propiedad>();
+				Propiedad p1= new Propiedad("nombre",lista.getNombreLista());
+				Propiedad p2= new Propiedad("listavideos", getVideosString(lista.getLista()));
+				eLista.setPropiedades(propiedades);
+				
+				
+				// registrar entidad usuario
+				eLista = servPersistencia.registrarEntidad(eLista);
+				// asignar identificador unico
+				// Se aprovecha el que genera el servicio de persistencia
+				lista.setIdBD(eLista.getId());	
 	}
 
 	@Override
@@ -44,37 +74,73 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 	@Override
 	public void borrarListaVideos(ListaVideos lista) {
 		// TODO Auto-generated method stub
+		Entidad eLista = servPersistencia.recuperarEntidad(lista.getIdBD());
 		
+		servPersistencia.borrarEntidad(eLista);
 	}
 
 	@Override
 	public void modificarListaVideos(ListaVideos lista) {
 		// TODO Auto-generated method stub
+		Entidad eLista = servPersistencia.recuperarEntidad(lista.getIdBD());
+
+		servPersistencia.eliminarPropiedadEntidad(eLista, "nombre");
+		servPersistencia.anadirPropiedadEntidad(eLista, "nombre", lista.getNombreLista());
+		
+		String videos = getVideosString(lista.getLista());
+		servPersistencia.eliminarPropiedadEntidad(eLista, "listavideos");
+		servPersistencia.anadirPropiedadEntidad(eLista, "listavideos", videos);
 		
 	}
 
 	@Override
 	public ListaVideos recuperarListaVideos(int codigo) {
 		// TODO Auto-generated method stub
-		return null;
+		// si no, lo recupera de la base de datos
+					Entidad eLista;
+					String nombre;
+					
+					// recuperar entidad
+					eLista = servPersistencia.recuperarEntidad(codigo);
+
+					// recuperar propiedades que no son objetos
+					nombre = servPersistencia.recuperarPropiedadEntidad(eLista, "nombre");
+
+					ListaVideos lista = new ListaVideos(nombre);
+					lista.setIdBD(codigo);
+					
+					lista.setLista(this.getListaVideosLista(servPersistencia.recuperarPropiedadEntidad(eLista, "listavideos")));
+					return lista; 
 	}
 
 	@Override
 	public List<ListaVideos> recuperarTodasListas() {
 		// TODO Auto-generated method stub
-		return null;
+		List<Entidad> eListas = servPersistencia.recuperarEntidades("lista");
+		List<ListaVideos> lista = new LinkedList<ListaVideos>();
+
+		for (Entidad eLista : eListas) {
+			lista.add(recuperarListaVideos(eLista.getId()));
+		}
+		return lista;
 	}
 
-	@Override
 	public String getVideosString(List<Video> listaVideos) {
-		// TODO Auto-generated method stub
-		return null;
+		String videos = "";
+		for (Video video : listaVideos) {
+			videos+= video.getIdBD() + " ";
+		}
+		return videos.trim(); 
 	}
 
-	@Override
 	public List<Video> getListaVideosLista(String videos) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Video> listavideos = new ArrayList<Video>();
+		StringTokenizer strTok = new StringTokenizer(videos, " ");
+		while (strTok.hasMoreTokens()) {
+			Video v = repoVideos.getVideo(Integer.valueOf((String) strTok.nextElement()));
+			listavideos.add(v);
+		}
+		return listavideos;
 	}
 	
 
