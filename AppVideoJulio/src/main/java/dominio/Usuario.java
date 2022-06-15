@@ -75,6 +75,17 @@ public class Usuario {
 		return recientes;
 	}
 	
+	/*
+	public List<Video> getRecientesString(){
+		String r = "";
+		for (Video v : recientes) {
+			recientes+= v.getNombreEtiq() + " ";
+		}
+		return etiquetas.trim();
+		return recientes;
+	}*/
+	
+	
 	public void setPremium(boolean premium) {
 		this.esPremium = premium;
 	}

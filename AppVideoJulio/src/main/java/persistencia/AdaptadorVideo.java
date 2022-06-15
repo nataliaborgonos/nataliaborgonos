@@ -58,8 +58,7 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 				
 				// registrar entidad usuario
 				eVideo = servPersistencia.registrarEntidad(eVideo);
-				// asignar identificador unico
-				// Se aprovecha el que genera el servicio de persistencia
+				// asignar identificador unico, el que genera el servicio de persistencia
 				video.setIdBD(eVideo.getId()); 
 	}
 
@@ -123,7 +122,6 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 	}
 
 	public List<Etiqueta> getEtiquetasLista(String etiquetas) {
-		// TODO Auto-generated method stub
 		List<Etiqueta> listaetiq = new ArrayList<Etiqueta>();
 		StringTokenizer strTok = new StringTokenizer(etiquetas, " ");
 		while (strTok.hasMoreTokens()) {

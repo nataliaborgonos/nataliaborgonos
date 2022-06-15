@@ -47,6 +47,14 @@ public class Video {
 		return listaEtiquetas;
 	}
 	
+	public void addEtiqueta(Etiqueta etiq) {
+		this.listaEtiquetas.add(etiq);
+	}
+
+	public void removeEtiqueta(Etiqueta etiq) {
+		this.listaEtiquetas.remove(etiq);
+	}
+	
 	public String getEtiquetasString() {
 		String etiquetas = "";
 		for (Etiqueta etiq : listaEtiquetas) {

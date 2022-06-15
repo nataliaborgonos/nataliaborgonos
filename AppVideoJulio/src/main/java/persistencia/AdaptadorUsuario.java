@@ -42,6 +42,12 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 				}
 				if (existe) return;
 				
+				//listas videos
+				AdaptadorListaVideos adaptadorlistas = AdaptadorListaVideos.getUnicaInstancia();
+				for (ListaVideos lista : usuario.getListaVideos()) {
+					adaptadorlistas.registrarListaVideos(lista);
+				}
+				
 				eUsuario = new Entidad();
 				eUsuario.setNombre("usuario");
 				
@@ -58,15 +64,15 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 			    propiedades.add(p5);
 			    Propiedad p6= new Propiedad("fechanacim", usuario.getFechaNac());
 			    propiedades.add(p6);
-				Propiedad p9= new Propiedad("premium", String.valueOf(usuario.isPremium()));
-				propiedades.add(p9);
+				Propiedad p7= new Propiedad("premium", String.valueOf(usuario.isPremium()));
+				propiedades.add(p7);
+				Propiedad p8 = new Propiedad("recientes", usuario.getRecientes().toString());
+				propiedades.add(p8);
 				eUsuario.setPropiedades(propiedades);
-				
 				
 				// registrar entidad usuario
 				eUsuario = servPersistencia.registrarEntidad(eUsuario);
-				// asignar identificador unico
-				// Se aprovecha el que genera el servicio de persistencia
+				// asignar identificador unico, aprovecha el que genera el servicio de persistencia
 				usuario.setIdBD(eUsuario.getId()); 
 		}
 	@Override
@@ -79,12 +85,10 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 	public void modificarUsuario(Usuario usuario) {
 		// TODO Auto-generated method stub
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getIdBD());
-
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "nombre");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "nombre", usuario.getNombre());
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "apellidos");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "apellidos", usuario.getApellidos());
-		
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "email");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "email", usuario.getEmail());
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "login");
@@ -97,7 +101,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "listalistavideos");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "listalistavideos", listas);
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "recientes");
-		//servPersistencia.anadirPropiedadEntidad(eUsuario, "recientes", usuario.getRecientes());
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "recientes", usuario.getRecientes().toString());
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "premium");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "premium", String.valueOf(usuario.isPremium()));
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "filtro");
@@ -115,7 +119,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		String fechaNacim;
 		boolean premium;
 		String nombreFiltro;
-
+		String recientes;
 		// recuperar entidad
 		eUsuario = servPersistencia.recuperarEntidad(codigo);
 
@@ -128,13 +132,11 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		fechaNacim = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechanacim");
 		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium"));
 		nombreFiltro = servPersistencia.recuperarPropiedadEntidad(eUsuario, "filtro");
-		
+		recientes = servPersistencia.recuperarPropiedadEntidad(eUsuario, "recientes");
 		Usuario usuario = new Usuario(nombre, apellidos, email, login, password, fechaNacim);
 		usuario.setIdBD(codigo);
 		usuario.setListaVideos(this.getListasVideosFormatoLista(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listalistavideos")));
-		AdaptadorListaVideos adaptadorListas = AdaptadorListaVideos.getUnicaInstancia();
-		List<Video> recientes = (List<Video>) adaptadorListas.recuperarListaVideos(Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eUsuario, "recientes")));
-		usuario.setRecientes(recientes);
+		//AdaptadorListaVideos adaptadorListas = AdaptadorListaVideos.getUnicaInstancia();
 		usuario.setPremium(premium);
 		if (nombreFiltro.equals("NoFiltro")) {
 			usuario.setFiltroPremium(new NoFiltro());
@@ -145,6 +147,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		}
 		return usuario;
 	}
+	
 	@Override
 	public List<Usuario> recuperarTodosUsuarios() {
 		List<Entidad> eUsuarios = servPersistencia.recuperarEntidades("usuario");
@@ -155,6 +158,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		}
 		return usuarios;
 	}
+	
 	public String getListaVideosString(List<ListaVideos> listaListasVideos) {
 		String listas = "";
 		for (ListaVideos lista : listaListasVideos) {

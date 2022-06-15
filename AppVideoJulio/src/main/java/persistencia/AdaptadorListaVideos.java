@@ -54,7 +54,9 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 				eLista.setNombre("lista");
 				ArrayList<Propiedad> propiedades=new ArrayList<Propiedad>();
 				Propiedad p1= new Propiedad("nombre",lista.getNombreLista());
+				propiedades.add(p1);
 				Propiedad p2= new Propiedad("listavideos", getVideosString(lista.getLista()));
+				propiedades.add(p2);
 				eLista.setPropiedades(propiedades);
 				
 				
@@ -63,12 +65,6 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 				// asignar identificador unico
 				// Se aprovecha el que genera el servicio de persistencia
 				lista.setIdBD(eLista.getId());	
-	}
-
-	@Override
-	public void registrarListaRecientes(List<Video> lista) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

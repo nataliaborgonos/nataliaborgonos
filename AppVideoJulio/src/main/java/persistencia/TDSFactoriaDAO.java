@@ -21,8 +21,7 @@ public class TDSFactoriaDAO extends FactoriaDAO {
 
 			@Override
 			public IAdaptadorEtiqueta getEtiquetaDAO() {
-				// TODO Auto-generated method stub
-				return null;
+				return AdaptadorEtiqueta.getUnicaInstancia();
 			}
 		
 		
