@@ -33,4 +33,12 @@ public class ListaVideos {
 	public int getIdBD() {
 		return IdBD;
 	}
+	public void addVideo(Video video) {
+		this.videos.add(video);
+	}
+	
+	public void removeVideo(Video video) {
+		this.videos.remove(video);
+	}
+	
 }

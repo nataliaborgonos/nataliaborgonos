@@ -1,10 +1,18 @@
 package controlador;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import dominio.*;
 import dominio.Video;
 import persistencia.*;
 
 import pulsador.Luz;
+
 import umu.tds.componente.*;
 
 public class Controlador {
@@ -16,6 +24,7 @@ public class Controlador {
 	private IAdaptadorVideo adaptadorVideo;
 	private IAdaptadorListaVideos adaptadorListaVideos;
 	private IAdaptadorEtiqueta adaptadorEtiqueta;
+	private ListaVideos top_ten;
 	
 	public Controlador() {
 		repoVideos = RepositorioVideos.getUnicaInstancia();
@@ -136,6 +145,174 @@ public class Controlador {
 				adaptadorUsuario.modificarUsuario(usuarioActual);
 			}
 			
+		}
+
+		
+		//Función para la búsqueda de videos en la pestaña explorar.
+		//Tendrá en cuenta el filtro activo, el titulo a buscar y las etiquetas.
+		public List<Video> buscarVideo(List<Video> original, List<String> etiquetas, String titulo) {
+			List<Video> listaResultado = new ArrayList<Video>();
+			if (etiquetas.size() > 0) {
+				for (String e : etiquetas) {
+					for (Video v : original) {
+						for (Etiqueta etiq : v.getEtiquetas()) {
+							if (e.equals(etiq.getNombreEtiq()) && v.getTitulo().toLowerCase().contains(titulo.toLowerCase()) && listaResultado.contains(v) == false) {
+								listaResultado.add(v);
+							}
+						}
+					}
+				
+				}
+			} else {
+				for (Video v : original) {
+					if (v.getTitulo().toLowerCase().contains(titulo.toLowerCase())) {
+						listaResultado.add(v);
+					}
+				}
+			}
+			
+			List<Video> conFiltro = usuarioActual.getFiltroPremium().esVideoOk(listaResultado, usuarioActual);
+			
+			for (Video v : listaResultado) {
+				System.out.println("Resultado Búsqueda : " + v.getTitulo());
+			}
+			
+			
+			return conFiltro;
+		}
+		
+		public ListaVideos buscarListas(String titulo){
+			
+			for(ListaVideos l : usuarioActual.getListaVideos()){
+				
+				if(l.getNombreLista().equals(titulo)){
+					
+					return l;
+				}
+			}
+			
+			return null;
+		}
+		
+		//Crea una lista de video
+		public boolean crearLista(String titulo){
+			
+			ListaVideos l1 = new ListaVideos(titulo);
+			if(usuarioActual.addListaVideos(l1)){
+				adaptadorListaVideos.registrarListaVideos(l1);
+				adaptadorUsuario.modificarUsuario(usuarioActual);
+				return true;
+			}
+			return false;
+		}
+		
+		//Elimina una lista de video
+			public boolean eliminarLista(String titulo){
+				
+				ListaVideos lista = buscarListas(titulo);
+				if (lista != null) {
+				usuarioActual.removeListaVideos(lista);
+				adaptadorListaVideos.borrarListaVideos(lista);
+				adaptadorUsuario.modificarUsuario(usuarioActual);
+				return true;
+				}
+				return false;
+				
+			}
+		
+		//Método para añadir un video a una lista de videos
+		public void addVideoLista(ListaVideos lista, Video v) {
+			if (lista.getLista().contains(v) == false) {
+			lista.addVideo(v);
+			adaptadorListaVideos.modificarListaVideos(lista);
+			adaptadorUsuario.modificarUsuario(usuarioActual);
+			}
+		}
+		
+		//Método para eliminar un video a una lista de videos
+			public void removeVideoLista(ListaVideos lista, Video v) {
+				lista.removeVideo(v);
+				adaptadorListaVideos.modificarListaVideos(lista);
+				adaptadorUsuario.modificarUsuario(usuarioActual);
+			}
+		
+		
+		
+		//Actualización de variables cuando reproducimos un video.
+		public void reproducirVideo(Video video, boolean esReciente) {
+			int old = video.getNumReproducciones();
+			video.setNumReproducciones(old+1);
+			if (esReciente) {
+			actualizarRecientes(video);
+			}
+			actualizarTopTen();
+			AdaptadorUsuario.getUnicaInstancia().modificarUsuario(usuarioActual);
+			AdaptadorVideo.getUnicaInstancia().modificarVideo(video);
+		}
+		
+		public void reproducirVideoTopTen(Video video, boolean esReciente) {
+			int old = video.getNumReproducciones();
+			video.setNumReproducciones(old+1);
+			if (esReciente) {
+			actualizarRecientes(video);
+			}
+			AdaptadorUsuario.getUnicaInstancia().modificarUsuario(usuarioActual);
+			AdaptadorVideo.getUnicaInstancia().modificarVideo(video);
+		}
+		
+
+		
+		public void setFiltro(Filtro filtroPremium) {
+			usuarioActual.setFiltroPremium(filtroPremium);
+			AdaptadorUsuario.getUnicaInstancia().modificarUsuario(usuarioActual);
+		}
+		
+		
+		//Actualiza el top ten con los videos más reproducidos.
+		public void actualizarTopTen() {
+			List<Video> listaEntera = new ArrayList<Video>(repoVideos.getUnicaInstancia().getVideos());
+			Collections.sort(listaEntera, new Comparator<Video>() {
+				@Override
+				public int compare (Video v1,Video v2) {
+					return new Integer(v2.getNumReproducciones()).compareTo(v1.getNumReproducciones());
+				}
+				
+				});
+			
+			if (listaEntera.size() > 10) {
+				if (top_ten.getLista().size() == 0) {
+					for (int i = 0; i < 10 ; i++) {
+							
+						top_ten.addVideo(listaEntera.get(i));
+					
+					}
+				} else {
+					top_ten.getLista().removeAll(top_ten.getLista());
+					for (int i = 0; i < 10 ; i++) {
+						top_ten.addVideo(listaEntera.get(i));
+					}
+				}
+			} else {
+				if (top_ten.getLista().size() == 0) {
+					for (int i = 0; i < listaEntera.size() ; i++) {
+						top_ten.addVideo(listaEntera.get(i));
+					
+					}
+				} else {
+					top_ten.getLista().removeAll(top_ten.getLista());
+					for (int i = 0; i < listaEntera.size() ; i++) {
+						top_ten.addVideo(listaEntera.get(i));
+					}
+					
+				}
+				
+			}
+		}
+		
+		
+		//Devuelve la lista Top Ten.
+		public ListaVideos getTopTen() {
+			return top_ten;
 		}
 		
 }

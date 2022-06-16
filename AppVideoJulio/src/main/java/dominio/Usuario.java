@@ -1,5 +1,6 @@
 package dominio;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +18,6 @@ public class Usuario {
 	private List<Filtro> filtros;
 	private List<Video> recientes; //ordenada
 	private Filtro filtroPremium;
-	
 
 	public Usuario(String nombre, String apellidos, String email, String fechaNac, String login, String password) {
 		this.nombre = nombre;
@@ -90,6 +90,14 @@ public class Usuario {
 		this.esPremium = premium;
 	}
 
+	public boolean addListaVideos(ListaVideos lista) {
+		if(this.listaVideos.add(lista)) return true;
+		return false;
+	}
+	
+	public void removeListaVideos(ListaVideos lista) {
+		this.getListaVideos().remove(lista);
+	}
 	
 	public void setRecientes(List<Video> recientes) {
 		this.recientes = recientes;
