@@ -2,26 +2,38 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
+import dominio.RepositorioVideos;
 import tds.video.VideoWeb;
+
 
 public class VentanaExplorar {
 	private JFrame frame;
 	private VideoWeb videoWeb;
 	private Controlador controlador;
+	private DefaultTableModel modelo;
+	private JTable tabla;
+	private int filaSeleccionada;
 	
 	public VentanaExplorar(VideoWeb videoweb) {
 		controlador = Controlador.getUnicaInstancia();
@@ -29,6 +41,7 @@ public class VentanaExplorar {
 		initialize();
 		frame.setVisible(true);
 	}
+	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 325);
@@ -185,7 +198,7 @@ public class VentanaExplorar {
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
 		
-		   JTextField textFieldBuscar = new JTextField();
+		   final JTextField textFieldBuscar = new JTextField();
 	        GridBagConstraints gbc_textFieldBuscar = new GridBagConstraints();
 	        gbc_textFieldBuscar.gridwidth = 6;
 	        gbc_textFieldBuscar.insets = new Insets(0, 0, 0, 5);
@@ -195,10 +208,21 @@ public class VentanaExplorar {
 	        panel1.add(textFieldBuscar, gbc_textFieldBuscar);
 	        textFieldBuscar.setColumns(10);
 			
-			JButton btnBuscar= new JButton("Buscar");
+			JButton btnBuscar= new JButton("Buscar titulo");
 			btnBuscar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					//to do
+					String auxTitulo=textFieldBuscar.getText().trim();
+					Set<String> videos = RepositorioVideos.getUnicaInstancia().getTitulos();
+					for(String i : videos) {
+						System.out.println("video en bbd: "+i);
+					}
+					System.out.println("titulo buscado: "+auxTitulo);
+					if(videos.contains(auxTitulo)) {
+							modelo = (DefaultTableModel) tabla.getModel();
+							modelo.insertRow(0, new Object[]{auxTitulo});
+					}else {
+						System.out.println("no");
+					}
 				}
 			});
 
@@ -224,5 +248,35 @@ public class VentanaExplorar {
 			panel1.add(btnBuscarNuevo,gbc_btnBuscarNuevo);
 			
 			//faltan las etiquetas
+			
+			JPanel panel2=new JPanel();
+			frame.getContentPane().add(panel2, BorderLayout.EAST);
+			tabla = new JTable(new DefaultTableModel(null, new Object[]{"Titulo"})) {
+				// De esta forma no se pueden editar las celdas de la tabla
+				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
+		            return false;
+		        }
+			};
+			tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+			tabla.setFont(new Font("Arial", Font.PLAIN, 14));
+			tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
+			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
+			tabla.setRowHeight(20);
+			panel2.add(tabla);
+			JScrollPane scrollPane = new JScrollPane(tabla);
+			panel2.add(scrollPane);
+			scrollPane.setPreferredSize(new Dimension(350, 200));
+			panel2.setPreferredSize(new Dimension(375, 175));
+			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
+			tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+				public void valueChanged(ListSelectionEvent event) {
+		            setFilaSeleccionada(tabla.getSelectedRow());
+		        }
+			});
+			panel2.setVisible(true);
+	
+	}
+	public void setFilaSeleccionada(int filaSeleccionada) {
+		this.filaSeleccionada = filaSeleccionada;
 	}
 }

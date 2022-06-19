@@ -44,7 +44,7 @@ public class RepositorioVideos {
 			
 		}
 	public void addVideo(Video video) {
-		videos.put(video.getUrl(), video);
+		videos.put(video.getTitulo(), video);
 	}
 	
 	public void removeVideo(Video video) {
