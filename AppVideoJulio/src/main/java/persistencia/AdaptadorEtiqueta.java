@@ -22,31 +22,26 @@ public class AdaptadorEtiqueta implements IAdaptadorEtiqueta {
 	private AdaptadorEtiqueta() { 
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia(); 
 	}
-	@Override
 	public void registrarEtiqueta(Etiqueta etiq) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void borrarEtiqueta(Etiqueta etiq) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void modificarEtiqueta(Etiqueta etiq) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public Etiqueta recuperarEtiqueta(int codigo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public List<Etiqueta> recuperarTodasEtiquetas() {
 		// TODO Auto-generated method stub
 		return null;

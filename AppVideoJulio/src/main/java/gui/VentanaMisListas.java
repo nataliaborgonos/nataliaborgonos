@@ -235,7 +235,7 @@ public class VentanaMisListas {
 			
 			   String[] optionsToChoose = {"Apple", "Orange", "Banana", "Pineapple", "None of the listed"};
 
-		        JComboBox<String> jComboBox = new JComboBox<>(optionsToChoose);
+		        JComboBox<String> jComboBox = new JComboBox<String>(optionsToChoose);
 		        jComboBox.setBounds(80, 50, 140, 20);
 		        panel2.add(jComboBox);
 			 //JTextArea textArea = new JTextArea(20, 20);  

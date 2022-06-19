@@ -25,6 +25,7 @@ public class VentanaRecientes {
 	private JFrame frame;
 	private VideoWeb videoWeb;
 	private Controlador controlador;
+	private boolean isReciente; //sirve para saber si se tiene o no que actualizar la lista de recientes
 	
 	public VentanaRecientes(VideoWeb videoweb) {
 		controlador=Controlador.getUnicaInstancia();

@@ -13,7 +13,6 @@ import persistencia.*;
 
 import pulsador.Luz;
 
-import umu.tds.componente.*;
 
 public class Controlador {
 	private static Controlador unicaInstancia;
@@ -272,7 +271,6 @@ public class Controlador {
 		public void actualizarTopTen() {
 			List<Video> listaEntera = new ArrayList<Video>(repoVideos.getUnicaInstancia().getVideos());
 			Collections.sort(listaEntera, new Comparator<Video>() {
-				@Override
 				public int compare (Video v1,Video v2) {
 					return new Integer(v2.getNumReproducciones()).compareTo(v1.getNumReproducciones());
 				}

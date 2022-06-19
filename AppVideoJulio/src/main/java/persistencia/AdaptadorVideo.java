@@ -28,7 +28,6 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia(); 
 	}
 
-	@Override
 	public void registrarVideo(Video video) {
 		// TODO Auto-generated method stub
 		Entidad eVideo;
@@ -62,14 +61,12 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 				video.setIdBD(eVideo.getId()); 
 	}
 
-	@Override
 	public void borrarVideo(Video video) {
 		// TODO Auto-generated method stub
 		Entidad eVideo = servPersistencia.recuperarEntidad(video.getIdBD());
 		servPersistencia.borrarEntidad(eVideo);	
 	}
 
-	@Override
 	public void modificarVideo(Video video) {
 		// TODO Auto-generated method stub
 		Entidad eVideo = servPersistencia.recuperarEntidad(video.getIdBD());
@@ -85,7 +82,6 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 
 	}
 
-	@Override
 	public Video recuperarVideo(int codigo) {
 		// TODO Auto-generated method stub
 		Entidad eVideo;
@@ -110,7 +106,6 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 		return video;
 	}
 
-	@Override
 	public List<Video> recuperarTodosVideos() {
 		// TODO Auto-generated method stub
 		List<Entidad> eVideos = servPersistencia.recuperarEntidades("video");

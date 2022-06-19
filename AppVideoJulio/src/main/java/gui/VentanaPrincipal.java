@@ -7,8 +7,13 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.EventObject;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,12 +21,17 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controlador.Controlador;
+import pulsador.IEncendidoListener;
+import pulsador.Luz;
 import tds.video.VideoWeb;
+import umu.tds.componente.CargadorVideos;
 
 public class VentanaPrincipal {
 	private JFrame frame;
 	private VideoWeb videoWeb;
 	private Controlador controlador;
+	private CargadorVideos cv = new CargadorVideos();
+	private List<String> etiquetasActuales;
 	
 	public VentanaPrincipal(VideoWeb videoweb) {
 		controlador = Controlador.getUnicaInstancia();
@@ -117,6 +127,24 @@ public class VentanaPrincipal {
 		
 		JPanel panel1 = new JPanel();
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
+		
+		Luz luz_1 = new Luz();
+		panel1.add(luz_1);
+		luz_1.addEncendidoListener(new IEncendidoListener() {
+			public void enteradoCambioEncendido(EventObject arg0) {
+				JFileChooser fc = new JFileChooser();
+				int seleccion = fc.showOpenDialog(frame);
+				if (seleccion == JFileChooser.APPROVE_OPTION) {
+					File fichero = fc.getSelectedFile();
+					String seleccionado = fichero.getAbsolutePath();
+					//Llamar a la funcion que asigna el fichero al componente.
+					System.out.println("Seleccionado fichero : " + seleccionado);
+					cv.setArchivosVideos(seleccionado);
+					etiquetasActuales = new ArrayList<String>();
+				}
+			}
+		});
+		
 		JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getNombre());
 		lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
@@ -182,6 +210,8 @@ public class VentanaPrincipal {
 		gbc_btnNuevaLista.gridx = 3;
 		gbc_btnNuevaLista.gridy = 6;
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
+		
+
 		
 		/*
 		   JTextField textFieldBuscar = new JTextField();

@@ -29,7 +29,6 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia(); 
 	}
 
-	@Override
 	public void registrarListaVideos(ListaVideos lista) {
 		// TODO Auto-generated method stub
 		Entidad eLista;
@@ -67,7 +66,6 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 				lista.setIdBD(eLista.getId());	
 	}
 
-	@Override
 	public void borrarListaVideos(ListaVideos lista) {
 		// TODO Auto-generated method stub
 		Entidad eLista = servPersistencia.recuperarEntidad(lista.getIdBD());
@@ -75,7 +73,6 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 		servPersistencia.borrarEntidad(eLista);
 	}
 
-	@Override
 	public void modificarListaVideos(ListaVideos lista) {
 		// TODO Auto-generated method stub
 		Entidad eLista = servPersistencia.recuperarEntidad(lista.getIdBD());
@@ -89,7 +86,6 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 		
 	}
 
-	@Override
 	public ListaVideos recuperarListaVideos(int codigo) {
 		// TODO Auto-generated method stub
 		// si no, lo recupera de la base de datos
@@ -109,7 +105,6 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 					return lista; 
 	}
 
-	@Override
 	public List<ListaVideos> recuperarTodasListas() {
 		// TODO Auto-generated method stub
 		List<Entidad> eListas = servPersistencia.recuperarEntidades("lista");

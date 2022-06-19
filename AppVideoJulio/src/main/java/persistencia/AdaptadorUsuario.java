@@ -75,13 +75,11 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 				// asignar identificador unico, aprovecha el que genera el servicio de persistencia
 				usuario.setIdBD(eUsuario.getId()); 
 		}
-	@Override
 	public void borrarUsuario(Usuario usuario) {
 		// TODO Auto-generated method stub
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getIdBD());
 		servPersistencia.borrarEntidad(eUsuario);
 	}
-	@Override
 	public void modificarUsuario(Usuario usuario) {
 		// TODO Auto-generated method stub
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getIdBD());
@@ -107,7 +105,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "filtro");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "filtro", usuario.getFiltroPremium().getNombreFiltro());
 	}
-	@Override
 	public Usuario recuperarUsuario(int codigo) {
 		// TODO Auto-generated method stub
 		Entidad eUsuario;
@@ -148,7 +145,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		return usuario;
 	}
 	
-	@Override
 	public List<Usuario> recuperarTodosUsuarios() {
 		List<Entidad> eUsuarios = servPersistencia.recuperarEntidades("usuario");
 		List<Usuario> usuarios = new LinkedList<Usuario>();
