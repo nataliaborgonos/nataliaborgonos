@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EventObject;
 import java.util.List;
 
 import dominio.*;
@@ -12,9 +13,12 @@ import dominio.Video;
 import persistencia.*;
 
 import pulsador.Luz;
+import umu.tds.componente.CargadorVideos;
+import umu.tds.componente.VideoListener;
+import umu.tds.componente.Videos;
 
 
-public class Controlador {
+public class Controlador implements VideoListener{
 	private static Controlador unicaInstancia;
 	public Usuario usuarioActual;
 	private RepositorioUsuarios repoUsuarios;
@@ -78,8 +82,27 @@ public class Controlador {
 		}
 		public void registrarVideo(String url, String titulo) {
 			Video video = new Video(url,titulo);
+			System.out.println("registrando: "+video.getTitulo());
 			adaptadorVideo.registrarVideo(video);
 			repoVideos.addVideo(video);
+		}
+		
+		public void enteradoCambioVideos(EventObject arg0) {
+			// TODO Auto-generated method stub
+			System.out.println("entro");
+			CargadorVideos cv=(CargadorVideos) arg0.getSource();
+			Videos videos=cv.getArchivoVideos();
+			for(umu.tds.componente.Video video : videos.getVideo()) {
+				Video nuevo=new Video(video.getURL(), video.getTitulo());
+				for (String etiqueta : video.getEtiqueta()) {
+					Etiqueta etiq = new Etiqueta(etiqueta);
+					nuevo.addEtiqueta(etiq);
+				}
+				this.registrarVideo(video.getURL(),video.getTitulo());
+			}
+			for(String v : repoVideos.getTitulos()) {
+				System.out.println("Video en el repo: " + v);
+			}
 		}
 		
 		public boolean registrarVideo(Video video) {
@@ -312,5 +335,6 @@ public class Controlador {
 		public ListaVideos getTopTen() {
 			return top_ten;
 		}
-		
+
+	
 }

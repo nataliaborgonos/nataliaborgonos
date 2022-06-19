@@ -25,6 +25,9 @@ import pulsador.IEncendidoListener;
 import pulsador.Luz;
 import tds.video.VideoWeb;
 import umu.tds.componente.CargadorVideos;
+import umu.tds.componente.Video;
+import umu.tds.componente.VideoEvent;
+import umu.tds.componente.Videos;
 
 public class VentanaPrincipal {
 	private JFrame frame;
@@ -32,6 +35,7 @@ public class VentanaPrincipal {
 	private Controlador controlador;
 	private CargadorVideos cv = new CargadorVideos();
 	private List<String> etiquetasActuales;
+	public Videos videosCargados;
 	
 	public VentanaPrincipal(VideoWeb videoweb) {
 		controlador = Controlador.getUnicaInstancia();
@@ -127,8 +131,8 @@ public class VentanaPrincipal {
 		
 		JPanel panel1 = new JPanel();
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
-		
-		Luz luz_1 = new Luz();
+		cv.addVideoListener(controlador);
+		final Luz luz_1 = new Luz();
 		panel1.add(luz_1);
 		luz_1.addEncendidoListener(new IEncendidoListener() {
 			public void enteradoCambioEncendido(EventObject arg0) {
@@ -141,6 +145,9 @@ public class VentanaPrincipal {
 					System.out.println("Seleccionado fichero : " + seleccionado);
 					cv.setArchivosVideos(seleccionado);
 					etiquetasActuales = new ArrayList<String>();
+					//VideoEvent ve=new VideoEvent(luz_1, videosCargados);
+					//cv.notificarCambio(ve);
+					System.out.println("he notificado el cambio");
 				}
 			}
 		});

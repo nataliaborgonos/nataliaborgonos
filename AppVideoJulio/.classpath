@@ -33,7 +33,7 @@
 	<classpathentry kind="lib" path="lib/ServidorPersistenciaH2.jar"/>
 	<classpathentry kind="lib" path="C:/TDS/jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="C:/TDS/Luz.jar"/>
-	<classpathentry kind="lib" path="C:/TDS/original-CargadorVideos-0.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="C:/TDS/jaxb-api-2.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/TDS/CargadorVideos-0.0.1-SNAPSHOT-shaded.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
