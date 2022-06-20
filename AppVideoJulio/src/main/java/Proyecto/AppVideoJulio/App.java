@@ -37,9 +37,10 @@ public class App extends JFrame{
 	Usuario usuarioActual;
 
 	public App() {
-		VideoWeb videoWeb = new VideoWeb();
+		
 	}
 		public static void main(String[] args) {
+			final VideoWeb videoWeb = new VideoWeb();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {

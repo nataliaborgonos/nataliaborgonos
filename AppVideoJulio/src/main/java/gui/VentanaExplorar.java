@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
 import dominio.RepositorioVideos;
+import dominio.Video;
 import tds.video.VideoWeb;
 
 
@@ -34,6 +36,7 @@ public class VentanaExplorar {
 	private DefaultTableModel modelo;
 	private JTable tabla;
 	private int filaSeleccionada;
+	private Video videoSeleccionado;
 	
 	public VentanaExplorar(VideoWeb videoweb) {
 		controlador = Controlador.getUnicaInstancia();
@@ -220,9 +223,9 @@ public class VentanaExplorar {
 					if(videos.contains(auxTitulo)) {
 							modelo = (DefaultTableModel) tabla.getModel();
 							modelo.insertRow(0, new Object[]{auxTitulo});
-					}else {
-						System.out.println("no");
+							videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
 					}
+					//añadir boton reproducir y hacer q se reproduzca la fila seleccionada
 				}
 			});
 
@@ -251,6 +254,24 @@ public class VentanaExplorar {
 			
 			JPanel panel2=new JPanel();
 			frame.getContentPane().add(panel2, BorderLayout.EAST);
+			
+			JButton btnReproducir= new JButton("Reproducir video");
+			btnReproducir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if (tabla.getSelectedRow()==-1) {
+						JOptionPane.showMessageDialog(frame, "Escoge un video que reproducir");
+					}else {
+						new VentanaReproductor(videoWeb, videoSeleccionado);
+					}
+				}
+			});
+
+			GridBagConstraints gbc_btnReproducir = new GridBagConstraints();
+			gbc_btnReproducir.anchor = GridBagConstraints.WEST;
+			gbc_btnReproducir.insets = new Insets(0, 0, 0, 5);
+			gbc_btnReproducir.gridx = 3;
+			gbc_btnReproducir.gridy = 6;
+			panel2.add(btnReproducir,gbc_btnReproducir);
 			tabla = new JTable(new DefaultTableModel(null, new Object[]{"Titulo"})) {
 				// De esta forma no se pueden editar las celdas de la tabla
 				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {

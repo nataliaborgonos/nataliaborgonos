@@ -95,10 +95,11 @@ public class Controlador implements VideoListener{
 			for(umu.tds.componente.Video video : videos.getVideo()) {
 				Video nuevo=new Video(video.getURL(), video.getTitulo());
 				for (String etiqueta : video.getEtiqueta()) {
+					System.out.println("añado etiquetas");
 					Etiqueta etiq = new Etiqueta(etiqueta);
 					nuevo.addEtiqueta(etiq);
 				}
-				this.registrarVideo(video.getURL(),video.getTitulo());
+				this.registrarVideo(nuevo);
 			}
 			for(String v : repoVideos.getTitulos()) {
 				System.out.println("Video en el repo: " + v);
