@@ -2,26 +2,39 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
+import dominio.ListaVideos;
+import dominio.RepositorioVideos;
+import dominio.Video;
 import tds.video.VideoWeb;
 
 public class VentanaNuevaLista {
 	private JFrame frame;
 	private VideoWeb videoWeb;
 	private Controlador controlador;	
+	private DefaultTableModel modelo;
+	private JTable tabla;
+	private Video videoSeleccionado;
+	private ListaVideos actual;
 	
 	public VentanaNuevaLista(VideoWeb videoweb) {
 		controlador=Controlador.getUnicaInstancia();
@@ -117,9 +130,6 @@ public class VentanaNuevaLista {
 		
 		JPanel panel1 = new JPanel();
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
-		//poner lo de hola...usuario
-		
-
 				JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getNombre());
 				lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
 				lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
@@ -176,9 +186,7 @@ public class VentanaNuevaLista {
 		JButton btnNuevaLista= new JButton("Nueva Lista");
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
-				new VentanaNuevaLista(videoWeb);
-				frame.dispose();
+
 			}
 		});
 
@@ -190,7 +198,7 @@ public class VentanaNuevaLista {
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
 		
-		   JTextField textFieldBuscar = new JTextField();
+		   final JTextField textFieldBuscar = new JTextField();
 	        GridBagConstraints gbc_textFieldBuscar = new GridBagConstraints();
 	        gbc_textFieldBuscar.gridwidth = 6;
 	        gbc_textFieldBuscar.insets = new Insets(0, 0, 0, 5);
@@ -199,11 +207,20 @@ public class VentanaNuevaLista {
 	        gbc_textFieldBuscar.gridy = 0;
 	        panel1.add(textFieldBuscar, gbc_textFieldBuscar);
 	        textFieldBuscar.setColumns(10);
-			
-			JButton btnBuscar= new JButton("Buscar");
+	        
+			JButton btnBuscar= new JButton("Buscar titulo");
 			btnBuscar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					//to do
+					String auxTitulo=textFieldBuscar.getText().trim();
+					//	Set<String> videos = RepositorioVideos.getUnicaInstancia().getTitulos();
+						List<Video> videos = RepositorioVideos.getUnicaInstancia().getVideos();
+						for(Video v : videos) {
+							if(v.getTitulo().equals(auxTitulo)) {
+								modelo = (DefaultTableModel) tabla.getModel();
+								modelo.insertRow(0, new Object[]{auxTitulo});
+								videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
+							}
+				}
 				}
 			});
 
@@ -217,7 +234,9 @@ public class VentanaNuevaLista {
 			JButton btnBuscarNuevo= new JButton("Nueva Busqueda");
 			btnBuscarNuevo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					//to do
+					if (modelo != null) {
+						modelo.setRowCount(0);
+					}
 				}
 			});
 
@@ -228,6 +247,26 @@ public class VentanaNuevaLista {
 			gbc_btnBuscarNuevo.gridy = 6;
 			panel1.add(btnBuscarNuevo,gbc_btnBuscarNuevo);
 			
+
+			tabla = new JTable(new DefaultTableModel(null, new Object[]{"Titulo"})) {
+				// De esta forma no se pueden editar las celdas de la tabla
+				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
+		            return false;
+		        }
+			};
+			tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+			tabla.setFont(new Font("Arial", Font.PLAIN, 14));
+			tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
+			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
+			tabla.setRowHeight(20);
+			panel1.add(tabla);
+			JScrollPane scrollPane1 = new JScrollPane(tabla);
+			panel1.add(scrollPane1);
+			scrollPane1.setPreferredSize(new Dimension(350, 200));
+			panel1.setPreferredSize(new Dimension(375, 175));
+			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
+			
+			
 			JPanel panel2 = new JPanel();
 			frame.getContentPane().add(panel2, BorderLayout.SOUTH);
 			
@@ -236,7 +275,7 @@ public class VentanaNuevaLista {
 			lblLista.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			panel2.add(lblLista);
 			
-			  JTextField textFieldNombre = new JTextField();
+			  final JTextField textFieldNombre = new JTextField();
 		        GridBagConstraints gbc_textFieldNombre = new GridBagConstraints();
 		        gbc_textFieldNombre.gridwidth = 6;
 		        gbc_textFieldNombre.insets = new Insets(0, 0, 0, 5);
@@ -249,7 +288,13 @@ public class VentanaNuevaLista {
 			JButton btnBuscaLista= new JButton("Buscar");
 			btnBuscaLista.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					//to do
+					List<ListaVideos> lv= controlador.getUsuarioActual().getListaVideos();
+					for(ListaVideos l : lv) {
+						if(l.getNombreLista().equals(textFieldNombre.getText().trim())) {
+							actual=l;
+							JOptionPane.showMessageDialog(frame, "Has elegido la lista "+l.getNombreLista());
+						}
+					}
 				}
 			});
 			
@@ -277,7 +322,18 @@ public class VentanaNuevaLista {
 			JButton btnAnadir= new JButton("Añadir");
 			btnAnadir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					//to do
+					List<ListaVideos> lv= controlador.getUsuarioActual().getListaVideos();
+					if(!lv.isEmpty()) {
+					for(ListaVideos l : lv) {
+						if(l.getNombreLista().equals(textFieldNombre.getText().trim())) {
+							JOptionPane.showMessageDialog(frame, "Esa lista ya existe");
+						}
+					}
+					}else {
+						ListaVideos nueva=new ListaVideos(textFieldNombre.getText().trim());
+						controlador.getUsuarioActual().addListaVideos(nueva);
+						JOptionPane.showMessageDialog(frame, "Has añadido la lista: "+ textFieldNombre.getText().trim());
+					}
 				}
 			});
 			
