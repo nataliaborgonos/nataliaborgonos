@@ -2,22 +2,29 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
+import dominio.Video;
 import tds.video.VideoWeb;
 
 public class VentanaRecientes {
@@ -26,6 +33,9 @@ public class VentanaRecientes {
 	private VideoWeb videoWeb;
 	private Controlador controlador;
 	private boolean isReciente; //sirve para saber si se tiene o no que actualizar la lista de recientes
+	private DefaultTableModel modelo;
+	private JTable tabla;
+	private int filaSeleccionada;
 	
 	public VentanaRecientes(VideoWeb videoweb) {
 		controlador=Controlador.getUnicaInstancia();
@@ -189,53 +199,49 @@ public class VentanaRecientes {
 		gbc_btnNuevaLista.gridy = 6;
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
-		
-		   JTextField textFieldBuscar = new JTextField();
-	        GridBagConstraints gbc_textFieldBuscar = new GridBagConstraints();
-	        gbc_textFieldBuscar.gridwidth = 6;
-	        gbc_textFieldBuscar.insets = new Insets(0, 0, 0, 5);
-	        gbc_textFieldBuscar.fill = GridBagConstraints.HORIZONTAL;
-	        gbc_textFieldBuscar.gridx = 1;
-	        gbc_textFieldBuscar.gridy = 0;
-	        panel1.add(textFieldBuscar, gbc_textFieldBuscar);
-	        textFieldBuscar.setColumns(10);
-			
-			JButton btnBuscar= new JButton("Buscar");
-			btnBuscar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					//to do
-				}
-			});
-
-			GridBagConstraints gbc_btnBuscar = new GridBagConstraints();
-			gbc_btnBuscar.anchor = GridBagConstraints.WEST;
-			gbc_btnBuscar.insets = new Insets(0, 0, 0, 5);
-			gbc_btnBuscar.gridx = 3;
-			gbc_btnBuscar.gridy = 6;
-			panel1.add(btnBuscar,gbc_btnBuscar);
-			
-			JButton btnBuscarNuevo= new JButton("Nueva Busqueda");
-			btnBuscarNuevo.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					//to do
-				}
-			});
-
-			GridBagConstraints gbc_btnBuscarNuevo = new GridBagConstraints();
-			gbc_btnBuscarNuevo.anchor = GridBagConstraints.WEST;
-			gbc_btnBuscarNuevo.insets = new Insets(0, 0, 0, 5);
-			gbc_btnBuscarNuevo.gridx = 3;
-			gbc_btnBuscarNuevo.gridy = 6;
-			panel1.add(btnBuscarNuevo,gbc_btnBuscarNuevo);
-			
-			
+			JPanel panelRec=new JPanel();
+			frame.getContentPane().add(panelRec,BorderLayout.EAST);
 			JLabel lblLista = new JLabel("Lista de videos recientes:");
 			lblLista.setHorizontalAlignment(SwingConstants.TRAILING);
 			lblLista.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-			panel1.add(lblLista);
+			panelRec.add(lblLista);
+			tabla = new JTable(new DefaultTableModel(null, new Object[]{"Video"})) {
+				// De esta forma no se pueden editar las celdas de la tabla
+				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
+		            return false;
+		        }
+			};
+			tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+			tabla.setFont(new Font("Arial", Font.PLAIN, 14));
+			tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
+			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
+			tabla.setRowHeight(20);
+			panelRec.add(tabla);
+			JScrollPane scrollPane = new JScrollPane(tabla);
+			panelRec.add(scrollPane);
+			scrollPane.setPreferredSize(new Dimension(350, 200));
+			panelRec.setPreferredSize(new Dimension(375, 175));
+			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
+			tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+				public void valueChanged(ListSelectionEvent event) {
+		            setFilaSeleccionada(tabla.getSelectedRow());
+		        }
+			});
+			panelRec.setVisible(true);
 			
+			List<Video> listaRec = controlador.usuarioActual.getRecientes();
+			if(!listaRec.isEmpty()) {
+				for(Video v : listaRec) {
+					//JLabel label = new JLabel(v.getTitulo());
+					modelo = (DefaultTableModel) tabla.getModel();
+					modelo.insertRow(0, new Object[]{v.getTitulo()});
+			}
+	}
 	}
 	        
+	public void setFilaSeleccionada(int filaSeleccionada) {
+		this.filaSeleccionada = filaSeleccionada;
+	}
 	public void mostrarVentana() {
 		frame.setVisible(true);
 		
