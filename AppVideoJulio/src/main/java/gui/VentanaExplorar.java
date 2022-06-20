@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JButton;
@@ -24,6 +26,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
+import dominio.Etiqueta;
 import dominio.RepositorioVideos;
 import dominio.Video;
 import tds.video.VideoWeb;
@@ -34,9 +37,13 @@ public class VentanaExplorar {
 	private VideoWeb videoWeb;
 	private Controlador controlador;
 	private DefaultTableModel modelo;
+	private DefaultTableModel modeloE;
 	private JTable tabla;
+	private JTable tablaEtiquetas;
 	private int filaSeleccionada;
 	private Video videoSeleccionado;
+	private LinkedList<Video> videosFiltrados;
+	private LinkedList<Etiqueta> etiquetasActuales=new LinkedList<Etiqueta>();
 	
 	public VentanaExplorar(VideoWeb videoweb) {
 		controlador = Controlador.getUnicaInstancia();
@@ -63,7 +70,6 @@ public class VentanaExplorar {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
 				new VentanaLoginRegistro(videoWeb);
 			}
 		});
@@ -215,16 +221,34 @@ public class VentanaExplorar {
 			btnBuscar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					String auxTitulo=textFieldBuscar.getText().trim();
-					Set<String> videos = RepositorioVideos.getUnicaInstancia().getTitulos();
-					for(String i : videos) {
-						System.out.println("video en bbd: "+i);
+				//	Set<String> videos = RepositorioVideos.getUnicaInstancia().getTitulos();
+					List<Video> videosE = RepositorioVideos.getUnicaInstancia().getVideos();
+					if(etiquetasActuales.isEmpty()) {
+					for(Video v : videosE) {
+						if(v.getTitulo().equals(auxTitulo)) {
+							modelo = (DefaultTableModel) tabla.getModel();
+							modelo.insertRow(0, new Object[]{auxTitulo});
+							videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
+						}
 					}
+					}else{
+						//for(Etiqueta e : etiquetasActuales) {
+						for(Video v : videosE) {
+							//for(Etiqueta e : etiquetasActuales) {
+									if(contieneEtiquetas(v) && v.getTitulo().equals(auxTitulo)) {
+										modelo = (DefaultTableModel) tabla.getModel();
+										modelo.insertRow(0, new Object[]{auxTitulo});
+										videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
+									}
+								}
+						//	}
+					}/*
 					System.out.println("titulo buscado: "+auxTitulo);
 					if(videos.contains(auxTitulo)) {
 							modelo = (DefaultTableModel) tabla.getModel();
 							modelo.insertRow(0, new Object[]{auxTitulo});
 							videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
-					}
+					}*/
 					//añadir boton reproducir y hacer q se reproduzca la fila seleccionada
 				}
 			});
@@ -239,7 +263,9 @@ public class VentanaExplorar {
 			JButton btnBuscarNuevo= new JButton("Nueva Busqueda");
 			btnBuscarNuevo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					//to do
+					if (modelo != null) {
+						modelo.setRowCount(0);
+					}
 				}
 			});
 
@@ -250,7 +276,110 @@ public class VentanaExplorar {
 			gbc_btnBuscarNuevo.gridy = 6;
 			panel1.add(btnBuscarNuevo,gbc_btnBuscarNuevo);
 			
-			//faltan las etiquetas
+			JPanel panelEtiquetas=new JPanel();
+			frame.getContentPane().add(panelEtiquetas, BorderLayout.SOUTH);
+			JLabel lblBuscarEtiqueta = new JLabel("Filtra el video por etiquetas (Terror, Intriga...) :");
+			panelEtiquetas.add(lblBuscarEtiqueta);
+			final JTextField textFieldBuscarEtiq = new JTextField();
+	        GridBagConstraints gbc_textFieldBuscarEtiq = new GridBagConstraints();
+	        gbc_textFieldBuscarEtiq.gridwidth = 6;
+	        gbc_textFieldBuscarEtiq.insets = new Insets(0, 0, 0, 5);
+	        gbc_textFieldBuscarEtiq.fill = GridBagConstraints.HORIZONTAL;
+	        gbc_textFieldBuscarEtiq.gridx = 1;
+	        gbc_textFieldBuscarEtiq.gridy = 0;
+	        panelEtiquetas.add(textFieldBuscarEtiq, gbc_textFieldBuscarEtiq);
+	        textFieldBuscarEtiq.setColumns(10);
+			
+			JButton btnBuscarEtiq= new JButton("Buscar etiqueta");
+			btnBuscarEtiq.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					String auxEtiq=textFieldBuscarEtiq.getText().trim();
+					//List<Video> videos = RepositorioVideos.getUnicaInstancia().getVideos();
+					//for(Video i : videos) {
+						//if(i.getEtiquetas().contains(auxEtiq)) {
+							modeloE = (DefaultTableModel) tablaEtiquetas.getModel();
+							modeloE.insertRow(0, new Object[]{auxEtiq});
+							Etiqueta et=new Etiqueta(auxEtiq);
+							if(etiquetasActuales.contains(et)) {
+								JOptionPane.showMessageDialog(frame, "Ya has añadido esa etiqueta");
+							}else {
+								//if (tabla.getSelectedRow()==-1) {
+									//JOptionPane.showMessageDialog(frame, "Escoge una etiqueta");
+								//}else {
+									etiquetasActuales.add(et);
+								}
+					//		}
+						//}
+					//}
+				}
+			});
+
+			GridBagConstraints gbc_btnBuscarEtiq = new GridBagConstraints();
+			gbc_btnBuscarEtiq.anchor = GridBagConstraints.WEST;
+			gbc_btnBuscarEtiq.insets = new Insets(0, 0, 0, 5);
+			gbc_btnBuscarEtiq.gridx = 3;
+			gbc_btnBuscarEtiq.gridy = 6;
+			panelEtiquetas.add(btnBuscarEtiq,gbc_btnBuscarEtiq);
+			
+			JButton btnBuscarNuevaEtiqueta= new JButton("Nueva Etiqueta");
+			btnBuscarNuevaEtiqueta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if (modeloE != null) {
+						modeloE.setRowCount(0);
+					}
+				}
+			});
+
+			GridBagConstraints gbc_btnBuscarNuevaEtiq = new GridBagConstraints();
+			gbc_btnBuscarNuevaEtiq.anchor = GridBagConstraints.WEST;
+			gbc_btnBuscarNuevaEtiq.insets = new Insets(0, 0, 0, 5);
+			gbc_btnBuscarNuevaEtiq.gridx = 3;
+			gbc_btnBuscarNuevaEtiq.gridy = 6;
+			panelEtiquetas.add(btnBuscarNuevaEtiqueta,gbc_btnBuscarNuevaEtiq);
+			
+			JButton btnBuscarLimpiaEtiqueta= new JButton("Limpiar etiquetas");
+			btnBuscarLimpiaEtiqueta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					etiquetasActuales.clear();
+					if (modeloE != null) {
+						modeloE.setRowCount(0);
+					}
+				}
+			});
+
+			GridBagConstraints gbc_btnBuscarLimpiaEtiq = new GridBagConstraints();
+			gbc_btnBuscarLimpiaEtiq.anchor = GridBagConstraints.WEST;
+			gbc_btnBuscarLimpiaEtiq.insets = new Insets(0, 0, 0, 5);
+			gbc_btnBuscarLimpiaEtiq.gridx = 3;
+			gbc_btnBuscarLimpiaEtiq.gridy = 6;
+			panelEtiquetas.add(btnBuscarLimpiaEtiqueta,gbc_btnBuscarLimpiaEtiq);
+			
+		
+			tablaEtiquetas = new JTable(new DefaultTableModel(null, new Object[]{"Etiqueta"})) {
+				// De esta forma no se pueden editar las celdas de la tabla
+				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
+		            return false;
+		        }
+			};
+			tablaEtiquetas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+			tablaEtiquetas.setFont(new Font("Arial", Font.PLAIN, 14));
+			tablaEtiquetas.getColumnModel().getColumn(0).setPreferredWidth(20);
+			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
+			tablaEtiquetas.setRowHeight(20);
+			panelEtiquetas.add(tablaEtiquetas);
+			JScrollPane scrollPane1 = new JScrollPane(tablaEtiquetas);
+			panelEtiquetas.add(scrollPane1);
+			scrollPane1.setPreferredSize(new Dimension(350, 200));
+			panelEtiquetas.setPreferredSize(new Dimension(375, 175));
+			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
+			tablaEtiquetas.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+				public void valueChanged(ListSelectionEvent event) {
+		            setFilaSeleccionada(tablaEtiquetas.getSelectedRow());
+		        }
+			});
+			panelEtiquetas.setVisible(true);
+			
+			
 			
 			JPanel panel2=new JPanel();
 			frame.getContentPane().add(panel2, BorderLayout.EAST);
@@ -299,5 +428,17 @@ public class VentanaExplorar {
 	}
 	public void setFilaSeleccionada(int filaSeleccionada) {
 		this.filaSeleccionada = filaSeleccionada;
+	}
+	public boolean contieneEtiquetas(Video v) {
+		System.out.println("entro a la funcion");
+		for(Etiqueta e : etiquetasActuales) {
+			System.out.println("etiqueta actual evaluada "+ e.getNombreEtiq());
+			for(Etiqueta et : v.getEtiquetas()) {
+				if(et.getNombreEtiq().equals(e.getNombreEtiq())) {
+					System.out.println("contiene esa etiqueta");
+					return true;}
+			}
+		}
+		return false;
 	}
 }

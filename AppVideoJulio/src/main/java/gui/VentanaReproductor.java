@@ -28,8 +28,10 @@ public class VentanaReproductor {
 	private VideoWeb videoWeb;
 	private Video video;
 	private JTextField textField;
+	private Controlador controlador;
 	
 	public VentanaReproductor(VideoWeb unicaInstancia, Video video) {
+		this.controlador=Controlador.getUnicaInstancia();
 		this.videoWeb = unicaInstancia;
 		this.video = video;
 		initialize();
@@ -144,6 +146,7 @@ public class VentanaReproductor {
 				// TODO Auto-generated method stub
 				videoWeb.playVideo(video.getUrl());
 				video.setNumReproducciones(video.getNumReproducciones()+1);
+			//	controlador.actualizarRecientes(video);
 			}
 		});
 		
