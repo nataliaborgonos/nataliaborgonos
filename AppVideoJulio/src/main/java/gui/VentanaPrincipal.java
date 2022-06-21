@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controlador.Controlador;
 import pulsador.IEncendidoListener;
@@ -137,6 +138,8 @@ public class VentanaPrincipal {
 		luz_1.addEncendidoListener(new IEncendidoListener() {
 			public void enteradoCambioEncendido(EventObject arg0) {
 				JFileChooser fc = new JFileChooser();
+			      FileNameExtensionFilter filtroXML = new FileNameExtensionFilter("XML Files", "xml"); 
+		            fc.setFileFilter(filtroXML);
 				int seleccion = fc.showOpenDialog(frame);
 				if (seleccion == JFileChooser.APPROVE_OPTION) {
 					File fichero = fc.getSelectedFile();

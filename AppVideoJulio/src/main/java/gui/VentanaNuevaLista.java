@@ -33,6 +33,7 @@ public class VentanaNuevaLista {
 	private Controlador controlador;	
 	private DefaultTableModel modelo;
 	private JTable tabla;
+	private JTable tablaContenido;
 	private Video videoSeleccionado;
 	private ListaVideos actual;
 	
@@ -248,7 +249,7 @@ public class VentanaNuevaLista {
 			panel1.add(btnBuscarNuevo,gbc_btnBuscarNuevo);
 			
 
-			tabla = new JTable(new DefaultTableModel(null, new Object[]{"Titulo"})) {
+			tabla = new JTable(new DefaultTableModel(null, new Object[]{"Titulo buscado"})) {
 				// De esta forma no se pueden editar las celdas de la tabla
 				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
 		            return false;
@@ -264,8 +265,25 @@ public class VentanaNuevaLista {
 			panel1.add(scrollPane1);
 			scrollPane1.setPreferredSize(new Dimension(350, 200));
 			panel1.setPreferredSize(new Dimension(375, 175));
-			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
+			// Añadimos el listener para que se marque el video seleccionado de la tabla
 			
+			tablaContenido = new JTable(new DefaultTableModel(null, new Object[]{"Contenido de la lista actual"})) {
+				// De esta forma no se pueden editar las celdas de la tabla
+				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
+		            return false;
+		        }
+			};
+			tablaContenido.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+			tablaContenido.setFont(new Font("Arial", Font.PLAIN, 14));
+			tablaContenido.getColumnModel().getColumn(0).setPreferredWidth(20);
+			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
+			tablaContenido.setRowHeight(20);
+			panel1.add(tablaContenido);
+			JScrollPane scrollPane2 = new JScrollPane(tablaContenido);
+			panel1.add(scrollPane2);
+			scrollPane2.setPreferredSize(new Dimension(350, 200));
+			panel1.setPreferredSize(new Dimension(375, 175));
+			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
 			
 			JPanel panel2 = new JPanel();
 			frame.getContentPane().add(panel2, BorderLayout.SOUTH);
@@ -295,6 +313,10 @@ public class VentanaNuevaLista {
 							JOptionPane.showMessageDialog(frame, "Has elegido la lista "+l.getNombreLista());
 						}
 					}
+					for(Video v : actual.getLista()) {
+						modelo = (DefaultTableModel) tablaContenido.getModel();
+						modelo.insertRow(0, new Object[]{v.getTitulo()});	
+					}
 				}
 			});
 			
@@ -308,7 +330,16 @@ public class VentanaNuevaLista {
 			JButton btnEliminar= new JButton("Eliminar");
 			btnEliminar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					//to do
+					List<ListaVideos> lv= controlador.getUsuarioActual().getListaVideos();
+					if(!lv.isEmpty()) {
+					for(ListaVideos l : lv) {
+						if(l.getNombreLista().equals(textFieldNombre.getText().trim())) {
+							actual=l;
+							JOptionPane.showMessageDialog(frame, "Has eliminado la lista "+l.getNombreLista());
+							lv.remove(l);
+						}
+					}
+				}
 				}
 			});
 			
@@ -319,7 +350,7 @@ public class VentanaNuevaLista {
 			gbc_btnEliminar.gridy = 6;
 			panel2.add(btnEliminar,gbc_btnEliminar);
 			
-			JButton btnAnadir= new JButton("Añadir");
+			JButton btnAnadir= new JButton("Añadir lista");
 			btnAnadir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					List<ListaVideos> lv= controlador.getUsuarioActual().getListaVideos();
@@ -333,6 +364,7 @@ public class VentanaNuevaLista {
 						ListaVideos nueva=new ListaVideos(textFieldNombre.getText().trim());
 						controlador.getUsuarioActual().addListaVideos(nueva);
 						JOptionPane.showMessageDialog(frame, "Has añadido la lista: "+ textFieldNombre.getText().trim());
+						actual=nueva;
 					}
 				}
 			});
@@ -344,10 +376,13 @@ public class VentanaNuevaLista {
 			gbc_btnAnadir.gridy = 6;
 			panel2.add(btnAnadir,gbc_btnAnadir);
 		
-			JButton btnQuitar= new JButton("Quitar");
+			JButton btnQuitar= new JButton("Quitar video");
 			btnQuitar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					//to do
+					if(actual.getLista().contains(videoSeleccionado)) {
+						actual.removeVideo(videoSeleccionado);
+						JOptionPane.showMessageDialog(frame, "Has eliminado el video: "+ videoSeleccionado.getTitulo()+ " de la lista: "+actual.getNombreLista());
+					}
 				}
 			});
 			
@@ -358,19 +393,20 @@ public class VentanaNuevaLista {
 			gbc_btnQuitar.gridy = 6;
 			panel2.add(btnQuitar,gbc_btnQuitar);
 	
-			JButton btnAceptar= new JButton("Aceptar");
-			btnAceptar.addActionListener(new ActionListener() {
+			JButton btnAddVideo= new JButton("Añadir video");
+			btnAddVideo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					//to do
+					actual.addVideo(videoSeleccionado);
+					JOptionPane.showMessageDialog(frame, "Has añadido el video: "+ videoSeleccionado.getTitulo()+ " a la lista: "+actual.getNombreLista());
 				}
 			});
 			
-			GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
-			gbc_btnAceptar.anchor = GridBagConstraints.WEST;
-			gbc_btnAceptar.insets = new Insets(0, 0, 0, 5);
-			gbc_btnAceptar.gridx = 3;
-			gbc_btnAceptar.gridy = 6;
-			panel2.add(btnAceptar,gbc_btnAceptar);
+			GridBagConstraints gbc_btnAddVideo = new GridBagConstraints();
+			gbc_btnAddVideo.anchor = GridBagConstraints.WEST;
+			gbc_btnAddVideo.insets = new Insets(0, 0, 0, 5);
+			gbc_btnAddVideo.gridx = 3;
+			gbc_btnAddVideo.gridy = 6;
+			panel2.add(btnAddVideo,gbc_btnAddVideo);
 	}
 	        
 	public void mostrarVentana() {

@@ -2,11 +2,15 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,17 +18,28 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
+import dominio.ListaVideos;
+import dominio.Video;
 import tds.video.VideoWeb;
 
 public class VentanaMisListas {
 	private JFrame frame;
 	private VideoWeb videoWeb;
 	private Controlador controlador;
+	private DefaultTableModel modelo;
+	private JTable tabla;
+	private Video videoSeleccionado;
+	private int filaSeleccionada;
+	private ListaVideos listaActual;
 	
 	public VentanaMisListas(VideoWeb videoweb) {
 		controlador = Controlador.getUnicaInstancia();
@@ -186,44 +201,6 @@ public class VentanaMisListas {
 		gbc_btnNuevaLista.gridy = 6;
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
-		
-		   JTextField textFieldBuscar = new JTextField();
-	        GridBagConstraints gbc_textFieldBuscar = new GridBagConstraints();
-	        gbc_textFieldBuscar.gridwidth = 6;
-	        gbc_textFieldBuscar.insets = new Insets(0, 0, 0, 5);
-	        gbc_textFieldBuscar.fill = GridBagConstraints.HORIZONTAL;
-	        gbc_textFieldBuscar.gridx = 1;
-	        gbc_textFieldBuscar.gridy = 0;
-	        panel1.add(textFieldBuscar, gbc_textFieldBuscar);
-	        textFieldBuscar.setColumns(10);
-			
-			JButton btnBuscar= new JButton("Buscar");
-			btnBuscar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					//to do
-				}
-			});
-
-			GridBagConstraints gbc_btnBuscar = new GridBagConstraints();
-			gbc_btnBuscar.anchor = GridBagConstraints.WEST;
-			gbc_btnBuscar.insets = new Insets(0, 0, 0, 5);
-			gbc_btnBuscar.gridx = 3;
-			gbc_btnBuscar.gridy = 6;
-			panel1.add(btnBuscar,gbc_btnBuscar);
-			
-			JButton btnBuscarNuevo= new JButton("Nueva Busqueda");
-			btnBuscarNuevo.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					//to do
-				}
-			});
-
-			GridBagConstraints gbc_btnBuscarNuevo = new GridBagConstraints();
-			gbc_btnBuscarNuevo.anchor = GridBagConstraints.WEST;
-			gbc_btnBuscarNuevo.insets = new Insets(0, 0, 0, 5);
-			gbc_btnBuscarNuevo.gridx = 3;
-			gbc_btnBuscarNuevo.gridy = 6;
-			panel1.add(btnBuscarNuevo,gbc_btnBuscarNuevo);
 			
 			JPanel panel2 = new JPanel();
 			frame.getContentPane().add(panel2, BorderLayout.EAST);
@@ -233,11 +210,46 @@ public class VentanaMisListas {
 			lblLista.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			panel2.add(lblLista);
 			
-			   String[] optionsToChoose = {"Apple", "Orange", "Banana", "Pineapple", "None of the listed"};
+			 //  String[] optionsToChoose = {"Apple", "Orange", "Banana", "Pineapple", "None of the listed"};
+			   
+			   Vector<String> optionsToChoose = new Vector<String>();
+			  for(ListaVideos lv : controlador.getUsuarioActual().getListaVideos()) {
+				  optionsToChoose.add(lv.getNombreLista());
+			  }
 
 		        JComboBox<String> jComboBox = new JComboBox<String>(optionsToChoose);
 		        jComboBox.setBounds(80, 50, 140, 20);
 		        panel2.add(jComboBox);
+		       
+
+				tabla = new JTable(new DefaultTableModel(null, new Object[]{"Contenido de la lista seleccionada"})) {
+					// De esta forma no se pueden editar las celdas de la tabla
+					public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
+			            return false;
+			        }
+				};
+				tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+				tabla.setFont(new Font("Arial", Font.PLAIN, 14));
+				tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
+				//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
+				tabla.setRowHeight(20);
+				panel1.add(tabla);
+				JScrollPane scrollPane2 = new JScrollPane(tabla);
+				panel1.add(scrollPane2);
+				scrollPane2.setPreferredSize(new Dimension(350, 200));
+				panel1.setPreferredSize(new Dimension(375, 175));
+		        
+		        String itemSeleccionado = (String)jComboBox.getSelectedItem();
+		        List<ListaVideos> lv = controlador.getUsuarioActual().getListaVideos();
+		        for(ListaVideos l : lv) {
+		        	if(itemSeleccionado.equals(l.getNombreLista())) {
+		        		listaActual=l;
+		        		for(Video v : l.getLista()) {
+		        			modelo = (DefaultTableModel) tabla.getModel();
+							modelo.insertRow(0, new Object[]{v.getTitulo()});
+		        		}
+		        	}
+		        }
 			 //JTextArea textArea = new JTextArea(20, 20);  
 		       // JScrollPane scrollableTextArea = new JScrollPane(textArea);  
 		        //scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
@@ -246,8 +258,27 @@ public class VentanaMisListas {
 		  //      frame.getContentPane().add(scrollableTextArea); 
 		        
 		    //    panel2.add(scrollableTextArea);
-			
+		        tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+					public void valueChanged(ListSelectionEvent event) {
+			            filaSeleccionada= tabla.getSelectedRow();
+			            videoSeleccionado = listaActual.getLista().get(filaSeleccionada);
+			        }
+				});
 	
+		    	JButton btnReproducir= new JButton("Reproducir");
+				btnReproducir.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						 new VentanaReproductor(videoWeb, videoSeleccionado);	
+					}
+				});
+				
+				GridBagConstraints gbc_btnReproducir = new GridBagConstraints();
+				gbc_btnReproducir.anchor = GridBagConstraints.WEST;
+				gbc_btnReproducir.insets = new Insets(0, 0, 0, 5);
+				gbc_btnReproducir.gridx = 3;
+				gbc_btnReproducir.gridy = 6;
+				panel2.add(btnReproducir,gbc_btnReproducir);
+				
 			JButton btnCancelar= new JButton("Cancelar");
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {

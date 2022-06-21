@@ -42,7 +42,7 @@ public class VentanaExplorar {
 	private JTable tablaEtiquetas;
 	private int filaSeleccionada;
 	private Video videoSeleccionado;
-	private LinkedList<Video> videosFiltrados;
+	private LinkedList<Video> videosFiltrados=new LinkedList<Video>();
 	private LinkedList<Etiqueta> etiquetasActuales=new LinkedList<Etiqueta>();
 	
 	public VentanaExplorar(VideoWeb videoweb) {
@@ -226,9 +226,9 @@ public class VentanaExplorar {
 					if(etiquetasActuales.isEmpty()) {
 					for(Video v : videosE) {
 						if(v.getTitulo().equals(auxTitulo)) {
+							videosFiltrados.add(v);
 							modelo = (DefaultTableModel) tabla.getModel();
-							modelo.insertRow(0, new Object[]{auxTitulo});
-							videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
+							modelo.insertRow(0, new Object[]{v.getTitulo()});
 						}
 					}
 					}else{
@@ -236,9 +236,10 @@ public class VentanaExplorar {
 						for(Video v : videosE) {
 							//for(Etiqueta e : etiquetasActuales) {
 									if(contieneEtiquetas(v) && v.getTitulo().equals(auxTitulo)) {
+										videosFiltrados.add(v);
 										modelo = (DefaultTableModel) tabla.getModel();
 										modelo.insertRow(0, new Object[]{auxTitulo});
-										videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
+									//	videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
 									}
 								}
 						//	}
@@ -250,8 +251,12 @@ public class VentanaExplorar {
 							videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
 					}*/
 					//añadir boton reproducir y hacer q se reproduzca la fila seleccionada
+					
 				}
+				
 			});
+			
+			
 
 			GridBagConstraints gbc_btnBuscar = new GridBagConstraints();
 			gbc_btnBuscar.anchor = GridBagConstraints.WEST;
@@ -417,10 +422,12 @@ public class VentanaExplorar {
 			panel2.add(scrollPane);
 			scrollPane.setPreferredSize(new Dimension(350, 200));
 			panel2.setPreferredSize(new Dimension(375, 175));
-			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
+			// Añadimos el listener para que se marque la etiqueta seleccionada de la tabla
 			tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 				public void valueChanged(ListSelectionEvent event) {
-		            setFilaSeleccionada(tabla.getSelectedRow());
+					filaSeleccionada=tabla.getSelectedRow();
+					Video v = videosFiltrados.get(filaSeleccionada);
+					videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(v.getTitulo());
 		        }
 			});
 			panel2.setVisible(true);
