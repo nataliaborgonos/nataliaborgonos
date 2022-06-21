@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,7 +34,7 @@ public class VentanaRecientes {
 	private VideoWeb videoWeb;
 	private Controlador controlador;
 	private boolean isReciente; //sirve para saber si se tiene o no que actualizar la lista de recientes
-	private DefaultTableModel modelo;
+	private ModeloTabla modelo;
 	private JTable tabla;
 	private int filaSeleccionada;
 	
@@ -46,7 +47,7 @@ public class VentanaRecientes {
 	
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 900, 500);
+		frame.setBounds(100, 100, 1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -199,13 +200,28 @@ public class VentanaRecientes {
 		gbc_btnNuevaLista.gridy = 6;
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
+		JButton btnPrincipal= new JButton("Principal");
+		btnPrincipal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new VentanaPrincipal(videoWeb);
+				frame.dispose();
+			}
+		});
+
+		GridBagConstraints gbc_btnPrincipal = new GridBagConstraints();
+		gbc_btnPrincipal.anchor = GridBagConstraints.WEST;
+		gbc_btnPrincipal.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPrincipal.gridx = 3;
+		gbc_btnPrincipal.gridy = 6;
+		panel1.add(btnPrincipal,gbc_btnPrincipal);
+		
 			JPanel panelRec=new JPanel();
 			frame.getContentPane().add(panelRec,BorderLayout.EAST);
 			JLabel lblLista = new JLabel("Lista de videos recientes:");
 			lblLista.setHorizontalAlignment(SwingConstants.TRAILING);
 			lblLista.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			panelRec.add(lblLista);
-			tabla = new JTable(new DefaultTableModel(null, new Object[]{"Video"})) {
+			tabla = new JTable(new ModeloTabla()) {
 				// De esta forma no se pueden editar las celdas de la tabla
 				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
 		            return false;
@@ -215,7 +231,7 @@ public class VentanaRecientes {
 			tabla.setFont(new Font("Arial", Font.PLAIN, 14));
 			tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
 			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
-			tabla.setRowHeight(20);
+			tabla.setRowHeight(60);
 			panelRec.add(tabla);
 			JScrollPane scrollPane = new JScrollPane(tabla);
 			panelRec.add(scrollPane);
@@ -233,8 +249,14 @@ public class VentanaRecientes {
 			if(!listaRec.isEmpty()) {
 				for(Video v : listaRec) {
 					//JLabel label = new JLabel(v.getTitulo());
-					modelo = (DefaultTableModel) tabla.getModel();
-					modelo.insertRow(0, new Object[]{v.getTitulo()});
+					modelo = (ModeloTabla) tabla.getModel();
+					JLabel label = new JLabel(v.getTitulo());
+        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
+        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
+                	label.setIcon(thumb);
+				//	modelo.insertRow(0, new Object[]{label});
+					modelo.addRow(new Object[]{label.getIcon(),label.getText()});
+					//modelo.insertRow(0, new Object[]{v.getTitulo()});
 			}
 	}
 	}

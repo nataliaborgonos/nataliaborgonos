@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,7 +32,7 @@ public class VentanaNuevaLista {
 	private JFrame frame;
 	private VideoWeb videoWeb;
 	private Controlador controlador;	
-	private DefaultTableModel modelo;
+	private ModeloTabla modelo;
 	private JTable tabla;
 	private JTable tablaContenido;
 	private Video videoSeleccionado;
@@ -198,6 +199,22 @@ public class VentanaNuevaLista {
 		gbc_btnNuevaLista.gridy = 6;
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
+
+		JButton btnPrincipal= new JButton("Principal");
+		btnPrincipal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new VentanaPrincipal(videoWeb);
+				frame.dispose();
+			}
+		});
+
+		GridBagConstraints gbc_btnPrincipal = new GridBagConstraints();
+		gbc_btnPrincipal.anchor = GridBagConstraints.WEST;
+		gbc_btnPrincipal.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPrincipal.gridx = 3;
+		gbc_btnPrincipal.gridy = 6;
+		panel1.add(btnPrincipal,gbc_btnPrincipal);
+		
 		
 		   final JTextField textFieldBuscar = new JTextField();
 	        GridBagConstraints gbc_textFieldBuscar = new GridBagConstraints();
@@ -217,8 +234,13 @@ public class VentanaNuevaLista {
 						List<Video> videos = RepositorioVideos.getUnicaInstancia().getVideos();
 						for(Video v : videos) {
 							if(v.getTitulo().equals(auxTitulo)) {
-								modelo = (DefaultTableModel) tabla.getModel();
-								modelo.insertRow(0, new Object[]{auxTitulo});
+								modelo = (ModeloTabla) tabla.getModel();
+								JLabel label = new JLabel(v.getTitulo());
+			        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
+			        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
+			                	label.setIcon(thumb);
+							//	modelo.insertRow(0, new Object[]{label});
+								modelo.addRow(new Object[]{label.getIcon(),label.getText()});
 								videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
 							}
 				}
@@ -249,7 +271,7 @@ public class VentanaNuevaLista {
 			panel1.add(btnBuscarNuevo,gbc_btnBuscarNuevo);
 			
 
-			tabla = new JTable(new DefaultTableModel(null, new Object[]{"Titulo buscado"})) {
+			tabla = new JTable(new ModeloTabla()) {
 				// De esta forma no se pueden editar las celdas de la tabla
 				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
 		            return false;
@@ -259,7 +281,7 @@ public class VentanaNuevaLista {
 			tabla.setFont(new Font("Arial", Font.PLAIN, 14));
 			tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
 			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
-			tabla.setRowHeight(20);
+			tabla.setRowHeight(60);
 			panel1.add(tabla);
 			JScrollPane scrollPane1 = new JScrollPane(tabla);
 			panel1.add(scrollPane1);
@@ -267,7 +289,7 @@ public class VentanaNuevaLista {
 			panel1.setPreferredSize(new Dimension(375, 175));
 			// Añadimos el listener para que se marque el video seleccionado de la tabla
 			
-			tablaContenido = new JTable(new DefaultTableModel(null, new Object[]{"Contenido de la lista actual"})) {
+			tablaContenido = new JTable(new ModeloTabla()) {
 				// De esta forma no se pueden editar las celdas de la tabla
 				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
 		            return false;
@@ -277,13 +299,17 @@ public class VentanaNuevaLista {
 			tablaContenido.setFont(new Font("Arial", Font.PLAIN, 14));
 			tablaContenido.getColumnModel().getColumn(0).setPreferredWidth(20);
 			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
-			tablaContenido.setRowHeight(20);
+			tablaContenido.setRowHeight(60);
 			panel1.add(tablaContenido);
 			JScrollPane scrollPane2 = new JScrollPane(tablaContenido);
 			panel1.add(scrollPane2);
 			scrollPane2.setPreferredSize(new Dimension(350, 200));
 			panel1.setPreferredSize(new Dimension(375, 175));
 			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
+			
+			JLabel labelPos=new JLabel();
+			labelPos.setText("La lista de la izquierda muestra el contenido de la lista que se está tratando");
+			panel1.add(labelPos);
 			
 			JPanel panel2 = new JPanel();
 			frame.getContentPane().add(panel2, BorderLayout.SOUTH);
@@ -314,8 +340,14 @@ public class VentanaNuevaLista {
 						}
 					}
 					for(Video v : actual.getLista()) {
-						modelo = (DefaultTableModel) tablaContenido.getModel();
-						modelo.insertRow(0, new Object[]{v.getTitulo()});	
+						modelo = (ModeloTabla) tablaContenido.getModel();
+						JLabel label = new JLabel(v.getTitulo());
+	        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
+	        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
+	                	label.setIcon(thumb);
+					//	modelo.insertRow(0, new Object[]{label});
+						modelo.addRow(new Object[]{label.getIcon(),label.getText()});
+						//modelo.insertRow(0, new Object[]{v.getTitulo()});	
 					}
 				}
 			});

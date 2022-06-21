@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -35,7 +36,7 @@ public class VentanaMisListas {
 	private JFrame frame;
 	private VideoWeb videoWeb;
 	private Controlador controlador;
-	private DefaultTableModel modelo;
+	private ModeloTabla modelo;
 	private JTable tabla;
 	private Video videoSeleccionado;
 	private int filaSeleccionada;
@@ -201,7 +202,21 @@ public class VentanaMisListas {
 		gbc_btnNuevaLista.gridy = 6;
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
-			
+
+		JButton btnPrincipal= new JButton("Principal");
+		btnPrincipal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new VentanaPrincipal(videoWeb);
+				frame.dispose();
+			}
+		});
+
+		GridBagConstraints gbc_btnPrincipal = new GridBagConstraints();
+		gbc_btnPrincipal.anchor = GridBagConstraints.WEST;
+		gbc_btnPrincipal.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPrincipal.gridx = 3;
+		gbc_btnPrincipal.gridy = 6;
+		panel1.add(btnPrincipal,gbc_btnPrincipal);
 			JPanel panel2 = new JPanel();
 			frame.getContentPane().add(panel2, BorderLayout.EAST);
 			
@@ -222,17 +237,17 @@ public class VentanaMisListas {
 		        panel2.add(jComboBox);
 		       
 
-				tabla = new JTable(new DefaultTableModel(null, new Object[]{"Contenido de la lista seleccionada"})) {
+				tabla = new JTable(new ModeloTabla() {
 					// De esta forma no se pueden editar las celdas de la tabla
 					public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
 			            return false;
 			        }
-				};
+				});
 				tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 				tabla.setFont(new Font("Arial", Font.PLAIN, 14));
 				tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
 				//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
-				tabla.setRowHeight(20);
+				tabla.setRowHeight(60);
 				panel1.add(tabla);
 				JScrollPane scrollPane2 = new JScrollPane(tabla);
 				panel1.add(scrollPane2);
@@ -245,8 +260,13 @@ public class VentanaMisListas {
 		        	if(itemSeleccionado.equals(l.getNombreLista())) {
 		        		listaActual=l;
 		        		for(Video v : l.getLista()) {
-		        			modelo = (DefaultTableModel) tabla.getModel();
-							modelo.insertRow(0, new Object[]{v.getTitulo()});
+		        			modelo = (ModeloTabla) tabla.getModel();
+		        			JLabel label = new JLabel(v.getTitulo());
+		        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
+		        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
+		                	label.setIcon(thumb);
+						//	modelo.insertRow(0, new Object[]{label});
+							modelo.addRow(new Object[]{label.getIcon(),label.getText()});
 		        		}
 		        	}
 		        }

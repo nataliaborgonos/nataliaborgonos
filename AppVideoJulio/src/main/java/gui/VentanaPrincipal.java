@@ -222,6 +222,19 @@ public class VentanaPrincipal {
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
 
+		JButton btnPrincipal= new JButton("Principal");
+		btnPrincipal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+
+		GridBagConstraints gbc_btnPrincipal = new GridBagConstraints();
+		gbc_btnPrincipal.anchor = GridBagConstraints.WEST;
+		gbc_btnPrincipal.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPrincipal.gridx = 3;
+		gbc_btnPrincipal.gridy = 6;
+		panel1.add(btnPrincipal,gbc_btnPrincipal);
 		
 		/*
 		   JTextField textFieldBuscar = new JTextField();
