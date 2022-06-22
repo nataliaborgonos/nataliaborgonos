@@ -8,6 +8,8 @@ import java.util.Comparator;
 import java.util.EventObject;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import dominio.*;
 import dominio.Video;
 import persistencia.*;
@@ -27,7 +29,7 @@ public class Controlador implements VideoListener{
 	private IAdaptadorVideo adaptadorVideo;
 	private IAdaptadorListaVideos adaptadorListaVideos;
 	private IAdaptadorEtiqueta adaptadorEtiqueta;
-	private ListaVideos top_ten;
+	private ListaVideos top_ten=new ListaVideos("top ten");
 	
 	public Controlador() {
 		repoVideos = RepositorioVideos.getUnicaInstancia();
@@ -280,16 +282,6 @@ public class Controlador implements VideoListener{
 			AdaptadorVideo.getUnicaInstancia().modificarVideo(video);
 		}
 		
-		public void reproducirVideoTopTen(Video video, boolean esReciente) {
-			int old = video.getNumReproducciones();
-			video.setNumReproducciones(old+1);
-			if (esReciente) {
-			actualizarRecientes(video);
-			}
-			AdaptadorUsuario.getUnicaInstancia().modificarUsuario(usuarioActual);
-			AdaptadorVideo.getUnicaInstancia().modificarVideo(video);
-		}
-		
 
 		
 		public void setFiltro(Filtro filtroPremium) {
@@ -307,7 +299,8 @@ public class Controlador implements VideoListener{
 				}
 				
 				});
-			
+			if(listaEntera.isEmpty()) {System.out.println("no se puede actualizar");}
+			else {
 			if (listaEntera.size() > 10) {
 				if (top_ten.getLista().size() == 0) {
 					for (int i = 0; i < 10 ; i++) {
@@ -332,7 +325,7 @@ public class Controlador implements VideoListener{
 					for (int i = 0; i < listaEntera.size() ; i++) {
 						top_ten.addVideo(listaEntera.get(i));
 					}
-					
+				}
 				}
 				
 			}
@@ -344,5 +337,9 @@ public class Controlador implements VideoListener{
 			return top_ten;
 		}
 
+		public boolean topTenEmpty() {
+			if(top_ten.getLista().isEmpty()) {return true;}
+			return false;
+		}
 	
 }

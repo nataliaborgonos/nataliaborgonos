@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -18,36 +19,31 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
+import dominio.ListaVideos;
 import dominio.Video;
 import tds.video.VideoWeb;
 
-public class VentanaRecientes{
-
+public class VentanaMasVistos {
 	private JFrame frame;
 	private VideoWeb videoWeb;
 	private Controlador controlador;
-	//private boolean isReciente; //sirve para saber si se tiene o no que actualizar la lista de recientes
-	private ModeloTabla modelo;
+	private boolean usuarioPremium;
+	private ModeloTablaTop modelo;
 	private JTable tabla;
 	private int filaSeleccionada;
-	private JButton masVistos;
-	private boolean usuarioPremium;
 	
-	public VentanaRecientes(VideoWeb videoweb) {
+	public VentanaMasVistos(VideoWeb videoweb) {
 		controlador=Controlador.getUnicaInstancia();
 		this.videoWeb = videoweb;
 		initialize();
 		frame.setVisible(true);
-	}
+	} 
 	
 	private void initialize() {
 		frame = new JFrame();
@@ -126,33 +122,14 @@ public class VentanaRecientes{
 				if(controlador.isPremium()) {
 					usuarioPremium=true;
 					JOptionPane.showMessageDialog(frame,"Tu usuario ha pasado a ser premium");	
-					if(usuarioPremium) {
-						masVistos=new JButton("Mas Vistos");
-						masVistos.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								// TODO Auto-generated method stub
-								new VentanaMasVistos(videoWeb);
-							}
-						});
-						GridBagConstraints gbc_masVistos = new GridBagConstraints();
-						gbc_masVistos.anchor = GridBagConstraints.WEST;
-						gbc_masVistos.insets = new Insets(0, 0, 0, 5);
-						gbc_masVistos.gridx = 3;
-						gbc_masVistos.gridy = 6;
-						//frame.getContentPane().add(masVistos);
-						panel.add(masVistos,gbc_masVistos);
-						SwingUtilities.updateComponentTreeUI(frame);
-						//new VentanaRecientes(videoWeb);
-						//frame.dispose();
-						//panel.add(masVistos,gbc_masVistos);
-					}
-				}else {
+				} else {
 					usuarioPremium=false;
 					JOptionPane.showMessageDialog(frame,"Tu usuario ha dejado de ser premium");
-					panel.remove(masVistos);
-					SwingUtilities.updateComponentTreeUI(frame);
+					new VentanaRecientes(videoWeb);
+					frame.dispose();
+					//SwingUtilities.updateComponentTreeUI(frame);
 				}
-			}
+				}
 		});
 	
 		GridBagConstraints gbc_btnPremium = new GridBagConstraints();
@@ -248,63 +225,52 @@ public class VentanaRecientes{
 		gbc_btnPrincipal.gridy = 6;
 		panel1.add(btnPrincipal,gbc_btnPrincipal);
 		
-			JPanel panelRec=new JPanel();
-			frame.getContentPane().add(panelRec,BorderLayout.EAST);
-			JLabel lblLista = new JLabel("Lista de videos recientes:");
-			lblLista.setHorizontalAlignment(SwingConstants.TRAILING);
-			lblLista.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-			panelRec.add(lblLista);
-			tabla = new JTable(new ModeloTabla()) {
-				// De esta forma no se pueden editar las celdas de la tabla
-				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
-		            return false;
-		        }
-			};
-			tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-			tabla.setFont(new Font("Arial", Font.PLAIN, 14));
-			tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
-			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
-			tabla.setRowHeight(60);
-			panelRec.add(tabla);
-			JScrollPane scrollPane = new JScrollPane(tabla);
-			panelRec.add(scrollPane);
-			scrollPane.setPreferredSize(new Dimension(350, 200));
-			panelRec.setPreferredSize(new Dimension(375, 175));
-			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
-			tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-				public void valueChanged(ListSelectionEvent event) {
-		            setFilaSeleccionada(tabla.getSelectedRow());
-		        }
-			});
-			panelRec.setVisible(true);
-			
-			List<Video> listaRec = controlador.usuarioActual.getRecientes();
-			if(!listaRec.isEmpty()) {
-				for(Video v : listaRec) {
-					//JLabel label = new JLabel(v.getTitulo());
-					modelo = (ModeloTabla) tabla.getModel();
-					JLabel label = new JLabel(v.getTitulo());
-        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
-        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
-                	label.setIcon(thumb);
-				//	modelo.insertRow(0, new Object[]{label});
-					modelo.addRow(new Object[]{label.getIcon(),label.getText()});
-					//modelo.insertRow(0, new Object[]{v.getTitulo()});
-			}
+		JPanel panelVideos=new JPanel();
+		frame.getContentPane().add(panelVideos,BorderLayout.WEST);
+		JLabel lblLista = new JLabel("TOP TEN - Lista de videos más vistos por los usuarios:");
+		lblLista.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblLista.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		panelVideos.add(lblLista);
+		tabla = new JTable(new ModeloTablaTop()) {
+			// De esta forma no se pueden editar las celdas de la tabla
+			public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
+	            return false;
+	        }
+		};
+		tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+		tabla.setFont(new Font("Arial", Font.PLAIN, 14));
+		tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
+		//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
+		tabla.setRowHeight(60);
+		panelVideos.add(tabla);
+		JScrollPane scrollPane = new JScrollPane(tabla);
+		panelVideos.add(scrollPane);
+		scrollPane.setPreferredSize(new Dimension(350, 200));
+		panelVideos.setPreferredSize(new Dimension(375, 175));
+		// Añadimos el listener para que se marque la cancion seleccionada de la tabla
+		tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			public void valueChanged(ListSelectionEvent event) {
+	            setFilaSeleccionada(tabla.getSelectedRow());
+	        }
+		});
+		panelVideos.setVisible(true);
+		controlador.actualizarTopTen();
+		ListaVideos listaMasVistos= controlador.getTopTen();
+		if(controlador.topTenEmpty()) {System.out.println("top ten vacia");}
+		else {
+		for(Video v : listaMasVistos.getLista()) {
+			modelo = (ModeloTablaTop) tabla.getModel();
+			JLabel label = new JLabel(v.getTitulo());
+			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
+			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
+        	label.setIcon(thumb);
+			modelo.addRow(new Object[]{label.getIcon(),label.getText(),v.getNumReproducciones()});
+		}
+		}
+		
 	}
-			
-	}
-	        
+	
 	public void setFilaSeleccionada(int filaSeleccionada) {
 		this.filaSeleccionada = filaSeleccionada;
-	}
-	public void mostrarVentana() {
-		frame.setVisible(true);
-		
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -429,6 +429,7 @@ public class VentanaNuevaLista {
 			btnAddVideo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					actual.addVideo(videoSeleccionado);
+					controlador.addVideoLista(actual, videoSeleccionado);
 					JOptionPane.showMessageDialog(frame, "Has añadido el video: "+ videoSeleccionado.getTitulo()+ " a la lista: "+actual.getNombreLista());
 				}
 			});
