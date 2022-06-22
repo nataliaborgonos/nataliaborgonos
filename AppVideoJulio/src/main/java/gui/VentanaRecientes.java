@@ -14,12 +14,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -28,7 +30,7 @@ import controlador.Controlador;
 import dominio.Video;
 import tds.video.VideoWeb;
 
-public class VentanaRecientes {
+public class VentanaRecientes{
 
 	private JFrame frame;
 	private VideoWeb videoWeb;
@@ -37,6 +39,8 @@ public class VentanaRecientes {
 	private ModeloTabla modelo;
 	private JTable tabla;
 	private int filaSeleccionada;
+	private JButton masVistos;
+	private boolean usuarioPremium=false;
 	
 	public VentanaRecientes(VideoWeb videoweb) {
 		controlador=Controlador.getUnicaInstancia();
@@ -51,7 +55,7 @@ public class VentanaRecientes {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		
 		JLabel lblAppvideo = new JLabel("APPVIDEO");
@@ -118,18 +122,47 @@ public class VentanaRecientes {
 		JButton btnPremium = new JButton("Premium");
 		btnPremium.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//to do
+				controlador.hacerPremium();
+				if(controlador.isPremium()) {
+					usuarioPremium=true;
+					JOptionPane.showMessageDialog(frame,"Tu usuario ha pasado a ser premium");	
+					if(usuarioPremium) {
+						masVistos=new JButton("Mas Vistos");
+						masVistos.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+						GridBagConstraints gbc_masVistos = new GridBagConstraints();
+						gbc_masVistos.anchor = GridBagConstraints.WEST;
+						gbc_masVistos.insets = new Insets(0, 0, 0, 5);
+						gbc_masVistos.gridx = 3;
+						gbc_masVistos.gridy = 6;
+						//frame.getContentPane().add(masVistos);
+						panel.add(masVistos,gbc_masVistos);
+						SwingUtilities.updateComponentTreeUI(frame);
+						//new VentanaRecientes(videoWeb);
+						//frame.dispose();
+						//panel.add(masVistos,gbc_masVistos);
+					}
+				}else {
+					usuarioPremium=false;
+					JOptionPane.showMessageDialog(frame,"Tu usuario ha dejado de ser premium");
+					panel.remove(masVistos);
+					SwingUtilities.updateComponentTreeUI(frame);
+				}
 			}
 		});
 	
 		GridBagConstraints gbc_btnPremium = new GridBagConstraints();
-		gbc_btnLogin.anchor = GridBagConstraints.WEST;
-		gbc_btnLogin.insets = new Insets(0, 0, 0, 5);
-		gbc_btnLogin.gridx = 3;
-		gbc_btnLogin.gridy = 6;
+		gbc_btnPremium.anchor = GridBagConstraints.WEST;
+		gbc_btnPremium.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPremium.gridx = 3;
+		gbc_btnPremium.gridy = 6;
 		panel.add(btnPremium,gbc_btnPremium);
 		
-		
+	
 		
 		JPanel panel1 = new JPanel();
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
@@ -172,8 +205,8 @@ public class VentanaRecientes {
 		JButton btnRecientes= new JButton("Recientes");
 		btnRecientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new VentanaMisListas(videoWeb);
-				frame.dispose();
+				//new VentanaMisListas(videoWeb);
+				//frame.dispose();
 			}
 		});
 
@@ -200,7 +233,7 @@ public class VentanaRecientes {
 		gbc_btnNuevaLista.gridy = 6;
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
-		JButton btnPrincipal= new JButton("Principal");
+		JButton btnPrincipal= new JButton("Carga Videos");
 		btnPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new VentanaPrincipal(videoWeb);
@@ -259,6 +292,7 @@ public class VentanaRecientes {
 					//modelo.insertRow(0, new Object[]{v.getTitulo()});
 			}
 	}
+			
 	}
 	        
 	public void setFilaSeleccionada(int filaSeleccionada) {
@@ -266,6 +300,11 @@ public class VentanaRecientes {
 	}
 	public void mostrarVentana() {
 		frame.setVisible(true);
+		
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 }

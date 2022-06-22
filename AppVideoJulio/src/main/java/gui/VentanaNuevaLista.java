@@ -200,7 +200,7 @@ public class VentanaNuevaLista {
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
 
-		JButton btnPrincipal= new JButton("Principal");
+		JButton btnPrincipal= new JButton("Carga Videos");
 		btnPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new VentanaPrincipal(videoWeb);

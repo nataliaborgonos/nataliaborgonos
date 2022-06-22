@@ -222,7 +222,7 @@ public class VentanaPrincipal {
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
 
-		JButton btnPrincipal= new JButton("Principal");
+		JButton btnPrincipal= new JButton("Carga Videos");
 		btnPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -236,6 +236,7 @@ public class VentanaPrincipal {
 		gbc_btnPrincipal.gridy = 6;
 		panel1.add(btnPrincipal,gbc_btnPrincipal);
 		
+		//añadir label explicando lo del pulsador para subir videos
 		/*
 		   JTextField textFieldBuscar = new JTextField();
 	        GridBagConstraints gbc_textFieldBuscar = new GridBagConstraints();

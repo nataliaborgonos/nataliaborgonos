@@ -203,7 +203,7 @@ public class VentanaMisListas {
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 		
 
-		JButton btnPrincipal= new JButton("Principal");
+		JButton btnPrincipal= new JButton("Carga Videos");
 		btnPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new VentanaPrincipal(videoWeb);
@@ -298,20 +298,7 @@ public class VentanaMisListas {
 				gbc_btnReproducir.gridx = 3;
 				gbc_btnReproducir.gridy = 6;
 				panel2.add(btnReproducir,gbc_btnReproducir);
-				
-			JButton btnCancelar= new JButton("Cancelar");
-			btnCancelar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					//to do
-				}
-			});
-			
-			GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
-			gbc_btnCancelar.anchor = GridBagConstraints.WEST;
-			gbc_btnCancelar.insets = new Insets(0, 0, 0, 5);
-			gbc_btnCancelar.gridx = 3;
-			gbc_btnCancelar.gridy = 6;
-			panel2.add(btnCancelar,gbc_btnCancelar);
+		
 	}
 	        
 	public void mostrarVentana() {

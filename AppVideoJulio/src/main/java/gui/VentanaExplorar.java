@@ -207,7 +207,7 @@ public class VentanaExplorar {
 		gbc_btnNuevaLista.gridy = 6;
 		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
 
-		JButton btnPrincipal= new JButton("Principal");
+		JButton btnPrincipal= new JButton("Carga Videos");
 		btnPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new VentanaPrincipal(videoWeb);
@@ -254,11 +254,11 @@ public class VentanaExplorar {
 							//modelo.insertRow(0, new Object[]{v.getTitulo()});
 						}
 					}
-					}else{
+					}/*else{
 						//for(Etiqueta e : etiquetasActuales) {
 						for(Video v : videosE) {
 							//for(Etiqueta e : etiquetasActuales) {
-									if(contieneEtiquetas(v) && v.getTitulo().equals(auxTitulo)) {
+									if(contieneEtiquetas(v)) {
 										videosFiltrados.add(v);
 										modelo = (ModeloTabla) tabla.getModel();
 										JLabel label = new JLabel(v.getTitulo());
@@ -272,7 +272,7 @@ public class VentanaExplorar {
 									}
 								}
 						//	}
-					}/*
+					}
 					System.out.println("titulo buscado: "+auxTitulo);
 					if(videos.contains(auxTitulo)) {
 							modelo = (DefaultTableModel) tabla.getModel();
@@ -335,6 +335,7 @@ public class VentanaExplorar {
 							modeloE = (DefaultTableModel) tablaEtiquetas.getModel();
 							modeloE.insertRow(0, new Object[]{auxEtiq});
 							Etiqueta et=new Etiqueta(auxEtiq);
+							List<Video> videosE = RepositorioVideos.getUnicaInstancia().getVideos();
 							if(etiquetasActuales.contains(et)) {
 								JOptionPane.showMessageDialog(frame, "Ya has añadido esa etiqueta");
 							}else {
@@ -342,11 +343,29 @@ public class VentanaExplorar {
 									//JOptionPane.showMessageDialog(frame, "Escoge una etiqueta");
 								//}else {
 									etiquetasActuales.add(et);
+									//for(Etiqueta e : etiquetasActuales) {
+									for(Video v : videosE) {
+										//for(Etiqueta e : etiquetasActuales) {
+												if(contieneEtiquetas(v)) {
+													videosFiltrados.add(v);
+													modelo = (ModeloTabla) tabla.getModel();
+													JLabel label = new JLabel(v.getTitulo());
+								        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
+								        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
+								                	label.setIcon(thumb);
+												//	modelo.insertRow(0, new Object[]{label});
+													modelo.addRow(new Object[]{label.getIcon(),label.getText()});
+													//modelo.insertRow(0, new Object[]{auxTitulo});
+												//	videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
+												}
+											}
+									//	}
+								}
 								}
 					//		}
 						//}
 					//}
-				}
+				
 			});
 
 			GridBagConstraints gbc_btnBuscarEtiq = new GridBagConstraints();
@@ -455,7 +474,8 @@ public class VentanaExplorar {
 			// Añadimos el listener para que se marque la etiqueta seleccionada de la tabla
 			tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 				public void valueChanged(ListSelectionEvent event) {
-					filaSeleccionada=tabla.getSelectedRow();
+					filaSeleccionada=tabla.getSelectedRow()+1;
+					System.out.println("fila seleccionada " + filaSeleccionada);
 					Video v = videosFiltrados.get(filaSeleccionada);
 					videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(v.getTitulo());
 		        }

@@ -134,6 +134,13 @@ public class Controlador implements VideoListener{
 			}
 		}
 		
+		public boolean isPremium() {
+			if(usuarioActual.isPremium()) {
+				return true;
+			}
+			return false;
+		}
+		
 		//Añade una etiqueta a un video(buscando el video por url).
 		public void addEtiquetaVideo(String url, Etiqueta etiq) {
 			Video video = repoVideos.getVideo(url);
