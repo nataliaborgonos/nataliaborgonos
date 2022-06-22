@@ -10,6 +10,11 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import dominio.*;
 import dominio.Video;
 import persistencia.*;
@@ -341,5 +346,20 @@ public class Controlador implements VideoListener{
 			if(top_ten.getLista().isEmpty()) {return true;}
 			return false;
 		}
-	
+		//Genera el pdf con las listas de videos.
+		public void generaPdf() throws FileNotFoundException, DocumentException {
+			FileOutputStream pdf = new FileOutputStream("C:\\Users\\Public\\misListas.pdf");
+			Document documento = new Document();
+			PdfWriter.getInstance(documento, pdf);
+			documento.open();
+			documento.add(new Paragraph("Listas de videos del usuario " + usuarioActual.getLogin()));
+			for (ListaVideos l : usuarioActual.getListaVideos()) {
+				documento.add(new Paragraph(l.getNombreLista()));
+				for (Video v : l.getLista()) {
+					documento.add(new Paragraph(v.getTitulo() + " , " + v.getNumReproducciones() + " reproducciones."));
+				}
+			}
+			documento.close();
+		
+		}
 }

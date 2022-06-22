@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -26,6 +27,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import com.itextpdf.text.DocumentException;
+
 import controlador.Controlador;
 import dominio.Video;
 import tds.video.VideoWeb;
@@ -40,6 +43,7 @@ public class VentanaRecientes{
 	private JTable tabla;
 	private int filaSeleccionada;
 	private JButton masVistos;
+	private JButton generaPDF;
 	private boolean usuarioPremium;
 	
 	public VentanaRecientes(VideoWeb videoweb) {
@@ -141,10 +145,35 @@ public class VentanaRecientes{
 						gbc_masVistos.gridy = 6;
 						//frame.getContentPane().add(masVistos);
 						panel.add(masVistos,gbc_masVistos);
-						SwingUtilities.updateComponentTreeUI(frame);
+						//SwingUtilities.updateComponentTreeUI(frame);
 						//new VentanaRecientes(videoWeb);
 						//frame.dispose();
 						//panel.add(masVistos,gbc_masVistos);
+						
+						generaPDF=new JButton("Generar PDF de mis listas");
+						generaPDF.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								// TODO Auto-generated method stub
+								try {
+									controlador.generaPdf();
+									JOptionPane.showMessageDialog(frame, "Se ha guardado el PDF en tu equipo.");
+								} catch (FileNotFoundException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								} catch (DocumentException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}
+						});
+						GridBagConstraints gbc_pdf = new GridBagConstraints();
+						gbc_pdf.anchor = GridBagConstraints.WEST;
+						gbc_pdf.insets = new Insets(0, 0, 0, 5);
+						gbc_pdf.gridx = 3;
+						gbc_pdf.gridy = 6;
+						//frame.getContentPane().add(masVistos);
+						panel.add(generaPDF,gbc_pdf);
+						SwingUtilities.updateComponentTreeUI(frame);
 					}
 				}else {
 					usuarioPremium=false;
