@@ -16,7 +16,6 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import dominio.*;
-import dominio.Video;
 import persistencia.*;
 
 import pulsador.Luz;
@@ -35,6 +34,8 @@ public class Controlador implements VideoListener{
 	private IAdaptadorListaVideos adaptadorListaVideos;
 	private IAdaptadorEtiqueta adaptadorEtiqueta;
 	private ListaVideos top_ten=new ListaVideos("top ten");
+	private boolean filtroAñadido;
+	private String f;
 	
 	public Controlador() {
 		repoVideos = RepositorioVideos.getUnicaInstancia();
@@ -187,36 +188,25 @@ public class Controlador implements VideoListener{
 		
 		//Función para la búsqueda de videos en la pestaña explorar.
 		//Tendrá en cuenta el filtro activo, el titulo a buscar y las etiquetas.
-		public List<Video> buscarVideo(List<Video> original, List<String> etiquetas, String titulo) {
-			List<Video> listaResultado = new ArrayList<Video>();
-			if (etiquetas.size() > 0) {
-				for (String e : etiquetas) {
-					for (Video v : original) {
-						for (Etiqueta etiq : v.getEtiquetas()) {
-							if (e.equals(etiq.getNombreEtiq()) && v.getTitulo().toLowerCase().contains(titulo.toLowerCase()) && listaResultado.contains(v) == false) {
-								listaResultado.add(v);
-							}
-						}
-					}
-				
-				}
-			} else {
-				for (Video v : original) {
-					if (v.getTitulo().toLowerCase().contains(titulo.toLowerCase())) {
-						listaResultado.add(v);
+		public boolean buscarVideoFiltro(Video v) {
+			if(f.equals("MisListas")) {
+				System.out.println("entro al filtro de mis listas");
+				for(ListaVideos lv : usuarioActual.getListaVideos()) {
+					if(lv.getLista().contains(v)) {
+						return true;
 					}
 				}
 			}
-			
-			List<Video> conFiltro = usuarioActual.getFiltroPremium().esVideoOk(listaResultado, usuarioActual);
-			
-			for (Video v : listaResultado) {
-				System.out.println("Resultado Búsqueda : " + v.getTitulo());
+			else {
+			for(Etiqueta e : v.getEtiquetas()) {
+				if(e.getNombreEtiq().equals("Adultos")) {
+					return true;
+				}
 			}
-			
-			
-			return conFiltro;
 		}
+			return false;
+		}
+		
 		
 		public ListaVideos buscarListas(String titulo){
 			
@@ -291,9 +281,25 @@ public class Controlador implements VideoListener{
 		
 		public void setFiltro(Filtro filtroPremium) {
 			usuarioActual.setFiltroPremium(filtroPremium);
+			filtroAñadido=true;
+			f=filtroPremium.getNombreFiltro();
 			AdaptadorUsuario.getUnicaInstancia().modificarUsuario(usuarioActual);
+			if(filtroPremium.getNombreFiltro().equals("No Filtro")) {
+				filtroAñadido=false;
+			}
 		}
 		
+		public boolean isFiltro() {
+			return filtroAñadido;
+		}
+		
+		public boolean filtroMisListas() {
+			System.out.println("el filtro puesto es: "+f);
+			if(f.equals("MisListas")) {
+				return true;
+			}
+			return false;
+		}
 		
 		//Actualiza el top ten con los videos más reproducidos.
 		public void actualizarTopTen() {

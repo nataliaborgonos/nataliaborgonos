@@ -3,12 +3,12 @@ package dominio;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FiltroAdultos extends Filtro{
+public class FiltroMenores extends Filtro{
 
 	private String nombreFiltro;
 	
-	public FiltroAdultos() {
-		this.nombreFiltro = "Adultos";
+	public FiltroMenores() {
+		this.nombreFiltro = "Menores";
 	}
 	@Override
 	public List<Video> esVideoOk(List<Video> listaVideos, Usuario usuario) {
@@ -28,3 +28,4 @@ public class FiltroAdultos extends Filtro{
 		return nombreFiltro;
 	}
 }
+

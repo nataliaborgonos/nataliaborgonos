@@ -242,6 +242,32 @@ public class VentanaExplorar {
 					if(etiquetasActuales.isEmpty()) {
 					for(Video v : videosE) {
 						if(v.getTitulo().equals(auxTitulo)) {
+							if(controlador.isFiltro() ) {
+								System.out.println("el filtro esta puesto");
+								if(controlador.filtroMisListas()) {
+									if(!controlador.buscarVideoFiltro(v)) {
+										videosFiltrados.add(v);
+										modelo = (ModeloTabla) tabla.getModel();
+										JLabel label = new JLabel(v.getTitulo());
+					        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
+					        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
+					                	label.setIcon(thumb);
+										modelo.insertRow(0, new Object[]{label});
+										//modelo.addRow(new Object[]{label.getIcon(),label.getText()});
+									}
+								}
+								else if(!controlador.buscarVideoFiltro(v)) {
+									videosFiltrados.add(v);
+									modelo = (ModeloTabla) tabla.getModel();
+									JLabel label = new JLabel(v.getTitulo());
+				        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
+				        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
+				                	label.setIcon(thumb);
+								//	modelo.insertRow(0, new Object[]{label});
+									modelo.addRow(new Object[]{label.getIcon(),label.getText()});
+								}
+						}
+							else {
 							videosFiltrados.add(v);
 							modelo = (ModeloTabla) tabla.getModel();
 							JLabel label = new JLabel(v.getTitulo());
@@ -252,6 +278,7 @@ public class VentanaExplorar {
 							modelo.addRow(new Object[]{label.getIcon(),label.getText()});
 							
 							//modelo.insertRow(0, new Object[]{v.getTitulo()});
+						}
 						}
 					}
 					}/*else{

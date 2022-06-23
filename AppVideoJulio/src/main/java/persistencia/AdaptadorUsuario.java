@@ -140,7 +140,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		} else if (nombreFiltro.equals("Mis Listas")) {
 			usuario.setFiltroPremium(new FiltroMisListas());
 		} else if (nombreFiltro.equals("Adultos")) {
-			usuario.setFiltroPremium(new FiltroAdultos());
+			usuario.setFiltroPremium(new FiltroMenores());
 		}
 		return usuario;
 	}
