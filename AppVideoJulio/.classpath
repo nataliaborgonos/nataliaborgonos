@@ -35,5 +35,6 @@
 	<classpathentry kind="lib" path="C:/TDS/jaxb-api-2.3.0.jar"/>
 	<classpathentry kind="lib" path="C:/TDS/CargadorVideos-0.0.1-SNAPSHOT-shaded.jar"/>
 	<classpathentry kind="lib" path="C:/TDS/itextpdf-5.5.10.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
