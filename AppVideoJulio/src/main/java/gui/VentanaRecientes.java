@@ -210,7 +210,68 @@ public class VentanaRecientes{
 		gbc_btnPremium.gridy = 6;
 		panel.add(btnPremium,gbc_btnPremium);
 		
-	
+		if(controlador.isPremium()) {
+			usuarioPremium=true;
+			if(usuarioPremium) {
+				masVistos=new JButton("Mas Vistos");
+				masVistos.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						new VentanaMasVistos(videoWeb);
+					}
+				});
+				GridBagConstraints gbc_masVistos = new GridBagConstraints();
+				gbc_masVistos.anchor = GridBagConstraints.WEST;
+				gbc_masVistos.insets = new Insets(0, 0, 0, 5);
+				gbc_masVistos.gridx = 3;
+				gbc_masVistos.gridy = 6;
+				//frame.getContentPane().add(masVistos);
+				panel.add(masVistos,gbc_masVistos);
+				//SwingUtilities.updateComponentTreeUI(frame);
+				//new VentanaRecientes(videoWeb);
+				//frame.dispose();
+				//panel.add(masVistos,gbc_masVistos);
+				
+				generaPDF=new JButton("Generar PDF de mis listas");
+				generaPDF.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						try {
+							controlador.generaPdf();
+							JOptionPane.showMessageDialog(frame, "Se ha guardado el PDF en tu equipo.");
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (DocumentException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				});
+				GridBagConstraints gbc_pdf = new GridBagConstraints();
+				gbc_pdf.anchor = GridBagConstraints.WEST;
+				gbc_pdf.insets = new Insets(0, 0, 0, 5);
+				gbc_pdf.gridx = 3;
+				gbc_pdf.gridy = 6;
+				//frame.getContentPane().add(masVistos);
+				panel.add(generaPDF,gbc_pdf);
+				
+				botonFiltros=new JButton("Gestionar filtros");
+				botonFiltros.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						new VentanaFiltros(videoWeb);
+						frame.dispose();
+					}
+				});
+				GridBagConstraints gbc_botonFiltros = new GridBagConstraints();
+				gbc_botonFiltros.anchor = GridBagConstraints.WEST;
+				gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
+				gbc_botonFiltros.gridx = 3;
+				gbc_botonFiltros.gridy = 6;
+				//frame.getContentPane().add(masVistos);
+				panel.add(botonFiltros,gbc_botonFiltros);
+			}
+		}
 		
 		JPanel panel1 = new JPanel();
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);

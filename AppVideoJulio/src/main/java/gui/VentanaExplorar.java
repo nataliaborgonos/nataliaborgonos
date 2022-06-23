@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -22,9 +23,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+
+import com.itextpdf.text.DocumentException;
 
 import controlador.Controlador;
 import dominio.Etiqueta;
@@ -43,6 +47,10 @@ public class VentanaExplorar {
 	private JTable tablaEtiquetas;
 	private int filaSeleccionada;
 	private Video videoSeleccionado;
+	private boolean usuarioPremium;
+	private JButton masVistos;
+	private JButton generaPDF;
+	private JButton botonFiltros;
 	private LinkedList<Video> videosFiltrados=new LinkedList<Video>();
 	private LinkedList<Etiqueta> etiquetasActuales=new LinkedList<Etiqueta>();
 	
@@ -59,7 +67,7 @@ public class VentanaExplorar {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		
 		JLabel lblAppvideo = new JLabel("APPVIDEO");
@@ -125,18 +133,152 @@ public class VentanaExplorar {
 		JButton btnPremium = new JButton("Premium");
 		btnPremium.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//to do
+				controlador.hacerPremium();
+				if(controlador.isPremium()) {
+					usuarioPremium=true;
+					JOptionPane.showMessageDialog(frame,"Tu usuario ha pasado a ser premium");	
+					if(usuarioPremium) {
+						masVistos=new JButton("Mas Vistos");
+						masVistos.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								// TODO Auto-generated method stub
+								new VentanaMasVistos(videoWeb);
+							}
+						});
+						GridBagConstraints gbc_masVistos = new GridBagConstraints();
+						gbc_masVistos.anchor = GridBagConstraints.WEST;
+						gbc_masVistos.insets = new Insets(0, 0, 0, 5);
+						gbc_masVistos.gridx = 3;
+						gbc_masVistos.gridy = 6;
+						//frame.getContentPane().add(masVistos);
+						panel.add(masVistos,gbc_masVistos);
+						//SwingUtilities.updateComponentTreeUI(frame);
+						//new VentanaRecientes(videoWeb);
+						//frame.dispose();
+						//panel.add(masVistos,gbc_masVistos);
+						
+						generaPDF=new JButton("Generar PDF de mis listas");
+						generaPDF.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								// TODO Auto-generated method stub
+								try {
+									controlador.generaPdf();
+									JOptionPane.showMessageDialog(frame, "Se ha guardado el PDF en tu equipo.");
+								} catch (FileNotFoundException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								} catch (DocumentException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}
+						});
+						GridBagConstraints gbc_pdf = new GridBagConstraints();
+						gbc_pdf.anchor = GridBagConstraints.WEST;
+						gbc_pdf.insets = new Insets(0, 0, 0, 5);
+						gbc_pdf.gridx = 3;
+						gbc_pdf.gridy = 6;
+						//frame.getContentPane().add(masVistos);
+						panel.add(generaPDF,gbc_pdf);
+						
+						botonFiltros=new JButton("Gestionar filtros");
+						botonFiltros.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								new VentanaFiltros(videoWeb);
+								frame.dispose();
+							}
+						});
+						GridBagConstraints gbc_botonFiltros = new GridBagConstraints();
+						gbc_botonFiltros.anchor = GridBagConstraints.WEST;
+						gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
+						gbc_botonFiltros.gridx = 3;
+						gbc_botonFiltros.gridy = 6;
+						//frame.getContentPane().add(masVistos);
+						panel.add(botonFiltros,gbc_botonFiltros);
+						
+						SwingUtilities.updateComponentTreeUI(frame);
+					}
+				}else {
+					usuarioPremium=false;
+					JOptionPane.showMessageDialog(frame,"Tu usuario ha dejado de ser premium");
+					panel.remove(masVistos);
+					panel.remove(generaPDF);
+					panel.remove(botonFiltros);
+					SwingUtilities.updateComponentTreeUI(frame);
+				}
 			}
+			
 		});
 	
 		GridBagConstraints gbc_btnPremium = new GridBagConstraints();
-		gbc_btnLogin.anchor = GridBagConstraints.WEST;
-		gbc_btnLogin.insets = new Insets(0, 0, 0, 5);
-		gbc_btnLogin.gridx = 3;
-		gbc_btnLogin.gridy = 6;
+		gbc_btnPremium.anchor = GridBagConstraints.WEST;
+		gbc_btnPremium.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPremium.gridx = 3;
+		gbc_btnPremium.gridy = 6;
 		panel.add(btnPremium,gbc_btnPremium);
 		
-		
+		if(controlador.isPremium()) {
+			usuarioPremium=true;
+			if(usuarioPremium) {
+				masVistos=new JButton("Mas Vistos");
+				masVistos.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						new VentanaMasVistos(videoWeb);
+					}
+				});
+				GridBagConstraints gbc_masVistos = new GridBagConstraints();
+				gbc_masVistos.anchor = GridBagConstraints.WEST;
+				gbc_masVistos.insets = new Insets(0, 0, 0, 5);
+				gbc_masVistos.gridx = 3;
+				gbc_masVistos.gridy = 6;
+				//frame.getContentPane().add(masVistos);
+				panel.add(masVistos,gbc_masVistos);
+				//SwingUtilities.updateComponentTreeUI(frame);
+				//new VentanaRecientes(videoWeb);
+				//frame.dispose();
+				//panel.add(masVistos,gbc_masVistos);
+				
+				generaPDF=new JButton("Generar PDF de mis listas");
+				generaPDF.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						try {
+							controlador.generaPdf();
+							JOptionPane.showMessageDialog(frame, "Se ha guardado el PDF en tu equipo.");
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (DocumentException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				});
+				GridBagConstraints gbc_pdf = new GridBagConstraints();
+				gbc_pdf.anchor = GridBagConstraints.WEST;
+				gbc_pdf.insets = new Insets(0, 0, 0, 5);
+				gbc_pdf.gridx = 3;
+				gbc_pdf.gridy = 6;
+				//frame.getContentPane().add(masVistos);
+				panel.add(generaPDF,gbc_pdf);
+				
+				botonFiltros=new JButton("Gestionar filtros");
+				botonFiltros.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						new VentanaFiltros(videoWeb);
+						frame.dispose();
+					}
+				});
+				GridBagConstraints gbc_botonFiltros = new GridBagConstraints();
+				gbc_botonFiltros.anchor = GridBagConstraints.WEST;
+				gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
+				gbc_botonFiltros.gridx = 3;
+				gbc_botonFiltros.gridy = 6;
+				//frame.getContentPane().add(masVistos);
+				panel.add(botonFiltros,gbc_botonFiltros);
+			}
+		}
 		
 		JPanel panel1 = new JPanel();
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
