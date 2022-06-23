@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -22,6 +23,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.itextpdf.text.DocumentException;
@@ -44,6 +47,8 @@ public class VentanaNuevaLista {
 	private boolean usuarioPremium;
 	private JButton masVistos;
 	private JButton generaPDF;
+	private int filaSeleccionada;
+	private LinkedList<Video> videosFiltrados=new LinkedList<Video>();
 	private JButton botonFiltros;
 	
 	public VentanaNuevaLista(VideoWeb videoweb) {
@@ -362,6 +367,7 @@ public class VentanaNuevaLista {
 						List<Video> videos = RepositorioVideos.getUnicaInstancia().getVideos();
 						for(Video v : videos) {
 							if(v.getTitulo().equals(auxTitulo)) {
+								videosFiltrados.add(v);
 								modelo = (ModeloTabla) tabla.getModel();
 								JLabel label = new JLabel(v.getTitulo());
 			        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
@@ -369,7 +375,7 @@ public class VentanaNuevaLista {
 			                	label.setIcon(thumb);
 							//	modelo.insertRow(0, new Object[]{label});
 								modelo.addRow(new Object[]{label.getIcon(),label.getText()});
-								videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
+								//videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
 							}
 				}
 				}
@@ -410,6 +416,16 @@ public class VentanaNuevaLista {
 			tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
 			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
 			tabla.setRowHeight(60);
+			tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+				public void valueChanged(ListSelectionEvent event) {
+					filaSeleccionada=tabla.getSelectedRow();
+					System.out.println("fila seleccionada " + filaSeleccionada);
+					if(filaSeleccionada!=-1) {
+					Video v = videosFiltrados.get(filaSeleccionada);
+					videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(v.getTitulo());
+					}
+					}
+			});
 			panel1.add(tabla);
 			JScrollPane scrollPane1 = new JScrollPane(tabla);
 			panel1.add(scrollPane1);

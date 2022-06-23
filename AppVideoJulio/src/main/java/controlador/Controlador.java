@@ -32,7 +32,6 @@ public class Controlador implements VideoListener{
 	private IAdaptadorUsuario adaptadorUsuario;
 	private IAdaptadorVideo adaptadorVideo;
 	private IAdaptadorListaVideos adaptadorListaVideos;
-	private IAdaptadorEtiqueta adaptadorEtiqueta;
 	private ListaVideos top_ten=new ListaVideos("top ten");
 	private boolean filtroAñadido;
 	private String f;
@@ -50,7 +49,6 @@ public class Controlador implements VideoListener{
 		adaptadorUsuario = factoria.getUsuarioDAO();
 		adaptadorVideo = factoria.getVideoDAO();
 		adaptadorListaVideos=factoria.getListaVideoDAO();
-		adaptadorEtiqueta=factoria.getEtiquetaDAO();
 	}
 	
 	public static Controlador getUnicaInstancia() {
