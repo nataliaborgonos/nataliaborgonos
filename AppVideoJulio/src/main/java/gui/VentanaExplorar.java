@@ -252,8 +252,8 @@ public class VentanaExplorar {
 					        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
 					        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
 					                	label.setIcon(thumb);
-										modelo.insertRow(0, new Object[]{label});
-										//modelo.addRow(new Object[]{label.getIcon(),label.getText()});
+										//modelo.insertRow(new Object[]{label.getIcon(),label.getText()});
+										modelo.addRow(new Object[]{label.getIcon(),label.getText()});
 									}
 								}
 								else if(!controlador.buscarVideoFiltro(v)) {
@@ -501,11 +501,13 @@ public class VentanaExplorar {
 			// Añadimos el listener para que se marque la etiqueta seleccionada de la tabla
 			tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 				public void valueChanged(ListSelectionEvent event) {
-					filaSeleccionada=tabla.getSelectedRow()+1;
+					filaSeleccionada=tabla.getSelectedRow();
 					System.out.println("fila seleccionada " + filaSeleccionada);
+					if(filaSeleccionada!=-1) {
 					Video v = videosFiltrados.get(filaSeleccionada);
 					videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(v.getTitulo());
-		        }
+					}
+					}
 			});
 			panel2.setVisible(true);
 	
