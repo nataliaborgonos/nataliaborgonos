@@ -58,6 +58,7 @@ public class VentanaMisListas {
 		frame.setVisible(true);
 	}
 	
+	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 500);
@@ -138,7 +139,6 @@ public class VentanaMisListas {
 						masVistos=new JButton("Mas Vistos");
 						masVistos.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
-								// TODO Auto-generated method stub
 								new VentanaMasVistos(videoWeb);
 							}
 						});
@@ -147,12 +147,7 @@ public class VentanaMisListas {
 						gbc_masVistos.insets = new Insets(0, 0, 0, 5);
 						gbc_masVistos.gridx = 3;
 						gbc_masVistos.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(masVistos,gbc_masVistos);
-						//SwingUtilities.updateComponentTreeUI(frame);
-						//new VentanaRecientes(videoWeb);
-						//frame.dispose();
-						//panel.add(masVistos,gbc_masVistos);
 						
 						generaPDF=new JButton("Generar PDF de mis listas");
 						generaPDF.addActionListener(new ActionListener() {
@@ -175,7 +170,6 @@ public class VentanaMisListas {
 						gbc_pdf.insets = new Insets(0, 0, 0, 5);
 						gbc_pdf.gridx = 3;
 						gbc_pdf.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(generaPDF,gbc_pdf);
 						
 						botonFiltros=new JButton("Gestionar filtros");
@@ -190,7 +184,6 @@ public class VentanaMisListas {
 						gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
 						gbc_botonFiltros.gridx = 3;
 						gbc_botonFiltros.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(botonFiltros,gbc_botonFiltros);
 						
 						SwingUtilities.updateComponentTreeUI(frame);
@@ -231,12 +224,7 @@ public class VentanaMisListas {
 				gbc_masVistos.insets = new Insets(0, 0, 0, 5);
 				gbc_masVistos.gridx = 3;
 				gbc_masVistos.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(masVistos,gbc_masVistos);
-				//SwingUtilities.updateComponentTreeUI(frame);
-				//new VentanaRecientes(videoWeb);
-				//frame.dispose();
-				//panel.add(masVistos,gbc_masVistos);
 				
 				generaPDF=new JButton("Generar PDF de mis listas");
 				generaPDF.addActionListener(new ActionListener() {
@@ -259,7 +247,6 @@ public class VentanaMisListas {
 				gbc_pdf.insets = new Insets(0, 0, 0, 5);
 				gbc_pdf.gridx = 3;
 				gbc_pdf.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(generaPDF,gbc_pdf);
 				
 				botonFiltros=new JButton("Gestionar filtros");
@@ -274,7 +261,6 @@ public class VentanaMisListas {
 				gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
 				gbc_botonFiltros.gridx = 3;
 				gbc_botonFiltros.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(botonFiltros,gbc_botonFiltros);
 			}
 		}
@@ -370,7 +356,6 @@ public class VentanaMisListas {
 			lblLista.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			panel2.add(lblLista);
 			
-			 //  String[] optionsToChoose = {"Apple", "Orange", "Banana", "Pineapple", "None of the listed"};
 			   
 			   Vector<String> optionsToChoose = new Vector<String>();
 			  for(ListaVideos lv : controlador.getUsuarioActual().getListaVideos()) {
@@ -383,7 +368,6 @@ public class VentanaMisListas {
 		       
 
 				tabla = new JTable(new ModeloTabla() {
-					// De esta forma no se pueden editar las celdas de la tabla
 					public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
 			            return false;
 			        }
@@ -391,7 +375,6 @@ public class VentanaMisListas {
 				tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 				tabla.setFont(new Font("Arial", Font.PLAIN, 14));
 				tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
-				//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
 				tabla.setRowHeight(60);
 				panel1.add(tabla);
 				JScrollPane scrollPane2 = new JScrollPane(tabla);
@@ -410,19 +393,11 @@ public class VentanaMisListas {
 		        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
 		        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
 		                	label.setIcon(thumb);
-						//	modelo.insertRow(0, new Object[]{label});
 							modelo.addRow(new Object[]{label.getIcon(),label.getText()});
 		        		}
 		        	}
 		        }
-			 //JTextArea textArea = new JTextArea(20, 20);  
-		       // JScrollPane scrollableTextArea = new JScrollPane(textArea);  
-		        //scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
-		        //scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
-		  
-		  //      frame.getContentPane().add(scrollableTextArea); 
-		        
-		    //    panel2.add(scrollableTextArea);
+			
 		        tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 					public void valueChanged(ListSelectionEvent event) {
 			            filaSeleccionada= tabla.getSelectedRow();

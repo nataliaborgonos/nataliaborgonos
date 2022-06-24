@@ -145,7 +145,7 @@ public class VentanaReproductor {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				videoWeb.playVideo(video.getUrl());
-				video.setNumReproducciones(video.getNumReproducciones()+1);
+				controlador.reproducirVideo(video);
 				controlador.actualizarRecientes(video);
 			}
 		});

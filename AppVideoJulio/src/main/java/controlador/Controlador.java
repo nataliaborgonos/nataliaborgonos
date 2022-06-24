@@ -8,8 +8,6 @@ import java.util.Comparator;
 import java.util.EventObject;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -18,7 +16,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 import dominio.*;
 import persistencia.*;
 
-import pulsador.Luz;
 import umu.tds.componente.CargadorVideos;
 import umu.tds.componente.VideoListener;
 import umu.tds.componente.Videos;
@@ -86,29 +83,23 @@ public class Controlador implements VideoListener{
 		public Usuario getUsuarioActual() {
 			return usuarioActual;
 		}
+		
 		public void registrarVideo(String url, String titulo) {
 			Video video = new Video(url,titulo);
-			System.out.println("registrando: "+video.getTitulo());
 			adaptadorVideo.registrarVideo(video);
 			repoVideos.addVideo(video);
 		}
 		
 		public void enteradoCambioVideos(EventObject arg0) {
-			// TODO Auto-generated method stub
-			System.out.println("entro");
 			CargadorVideos cv=(CargadorVideos) arg0.getSource();
 			Videos videos=cv.getArchivoVideos();
 			for(umu.tds.componente.Video video : videos.getVideo()) {
 				Video nuevo=new Video(video.getURL(), video.getTitulo());
 				for (String etiqueta : video.getEtiqueta()) {
-					System.out.println("añado etiquetas");
 					Etiqueta etiq = new Etiqueta(etiqueta);
 					nuevo.addEtiqueta(etiq);
 				}
 				this.registrarVideo(nuevo);
-			}
-			for(String v : repoVideos.getTitulos()) {
-				System.out.println("Video en el repo: " + v);
 			}
 		}
 		
@@ -127,7 +118,7 @@ public class Controlador implements VideoListener{
 			adaptadorListaVideos.registrarListaVideos(lista);
 		}
 		
-		//Convierte en premium al usuario actual.
+		
 		public void hacerPremium() {
 			if (usuarioActual != null) {
 				if (usuarioActual.isPremium() == false) {
@@ -135,7 +126,6 @@ public class Controlador implements VideoListener{
 				} else if(usuarioActual.isPremium() == true) {
 					usuarioActual.setPremium(false);
 					}
-			//Ya para confirmar el cambio en la BBDD.
 			adaptadorUsuario.modificarUsuario(usuarioActual);
 			}
 		}
@@ -147,20 +137,20 @@ public class Controlador implements VideoListener{
 			return false;
 		}
 		
-		//Añade una etiqueta a un video(buscando el video por url).
+		
 		public void addEtiquetaVideo(String url, Etiqueta etiq) {
 			Video video = repoVideos.getVideo(url);
 			video.addEtiqueta(etiq);
 			adaptadorVideo.modificarVideo(video);
 		}
 		
-		//Añade una etiqueta a un video.
+	
 		public void addEtiquetaVideo(Video video, Etiqueta etiq) {
 			video.addEtiqueta(etiq);
 			adaptadorVideo.modificarVideo(video);
 		}
 		
-		//Comprueba si una etiqueta existe en un determinado video.
+		
 		public boolean existeEtiqueta(Video video, Etiqueta etiq) {
 			for (Etiqueta e : video.getEtiquetas()) {
 				if (e.getNombreEtiq().equals(etiq.getNombreEtiq())) {
@@ -188,7 +178,6 @@ public class Controlador implements VideoListener{
 		//Tendrá en cuenta el filtro activo, el titulo a buscar y las etiquetas.
 		public boolean buscarVideoFiltro(Video v) {
 			if(f.equals("MisListas")) {
-				System.out.println("entro al filtro de mis listas");
 				for(ListaVideos lv : usuarioActual.getListaVideos()) {
 					if(lv.getLista().contains(v)) {
 						return true;
@@ -207,21 +196,16 @@ public class Controlador implements VideoListener{
 		
 		
 		public ListaVideos buscarListas(String titulo){
-			
 			for(ListaVideos l : usuarioActual.getListaVideos()){
-				
 				if(l.getNombreLista().equals(titulo)){
-					
 					return l;
 				}
 			}
-			
 			return null;
 		}
 		
 		//Crea una lista de video
 		public boolean crearLista(String titulo){
-			
 			ListaVideos l1 = new ListaVideos(titulo);
 			if(usuarioActual.addListaVideos(l1)){
 				adaptadorListaVideos.registrarListaVideos(l1);
@@ -233,7 +217,6 @@ public class Controlador implements VideoListener{
 		
 		//Elimina una lista de video
 			public boolean eliminarLista(String titulo){
-				
 				ListaVideos lista = buscarListas(titulo);
 				if (lista != null) {
 				usuarioActual.removeListaVideos(lista);
@@ -264,12 +247,12 @@ public class Controlador implements VideoListener{
 		
 		
 		//Actualización de variables cuando reproducimos un video.
-		public void reproducirVideo(Video video, boolean esReciente) {
+		public void reproducirVideo(Video video) {
 			int old = video.getNumReproducciones();
 			video.setNumReproducciones(old+1);
-			if (esReciente) {
-			actualizarRecientes(video);
-			}
+			//if (esReciente) {
+			//actualizarRecientes(video);
+			//}
 			actualizarTopTen();
 			AdaptadorUsuario.getUnicaInstancia().modificarUsuario(usuarioActual);
 			AdaptadorVideo.getUnicaInstancia().modificarVideo(video);
@@ -292,7 +275,6 @@ public class Controlador implements VideoListener{
 		}
 		
 		public boolean filtroMisListas() {
-			System.out.println("el filtro puesto es: "+f);
 			if(f.equals("MisListas")) {
 				return true;
 			}

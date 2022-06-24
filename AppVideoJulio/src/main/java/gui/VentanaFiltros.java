@@ -32,39 +32,35 @@ public class VentanaFiltros {
 	private VideoWeb videoWeb;
 	private Controlador controlador;
 	private boolean usuarioPremium;
-	private ModeloTablaTop modelo;
-	private JTable tabla;
-	private int filaSeleccionada;
 	private JButton masVistos;
 	private JButton generaPDF;
 	private JButton botonFiltros;
-	
+
 	public VentanaFiltros(VideoWeb videoweb) {
-		controlador=Controlador.getUnicaInstancia();
+		controlador = Controlador.getUnicaInstancia();
 		this.videoWeb = videoweb;
 		initialize();
 		frame.setVisible(true);
-	} 
-	
+	}
+
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
 		final JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
-		
+
 		JLabel lblAppvideo = new JLabel("APPVIDEO");
 		lblAppvideo.setForeground(Color.RED);
 		lblAppvideo.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblAppvideo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		panel.add(lblAppvideo);
-		
+
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
 				new VentanaLoginRegistro(videoWeb);
 			}
 		});
@@ -74,8 +70,8 @@ public class VentanaFiltros {
 		gbc_btnLogin.insets = new Insets(0, 0, 0, 5);
 		gbc_btnLogin.gridx = 3;
 		gbc_btnLogin.gridy = 6;
-		panel.add(btnLogin,gbc_btnLogin);
-		
+		panel.add(btnLogin, gbc_btnLogin);
+
 		JButton btnRegistro = new JButton("Registro");
 		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -88,7 +84,7 @@ public class VentanaFiltros {
 		gbc_btnRegistro.gridx = 4;
 		gbc_btnRegistro.gridy = 6;
 		panel.add(btnRegistro, gbc_btnRegistro);
-		
+
 		JButton btnSalir = new JButton("Salir de AppVideo");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -100,7 +96,7 @@ public class VentanaFiltros {
 		gbc_btnSalir.gridx = 5;
 		gbc_btnSalir.gridy = 6;
 		panel.add(btnSalir, gbc_btnSalir);
-		
+
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -108,23 +104,23 @@ public class VentanaFiltros {
 				new VentanaLoginRegistro(videoWeb);
 			}
 		});
-	
+
 		GridBagConstraints gbc_btnLogout = new GridBagConstraints();
 		gbc_btnLogin.anchor = GridBagConstraints.WEST;
 		gbc_btnLogin.insets = new Insets(0, 0, 0, 5);
 		gbc_btnLogin.gridx = 3;
 		gbc_btnLogin.gridy = 6;
-		panel.add(btnLogout,gbc_btnLogout);
-		
+		panel.add(btnLogout, gbc_btnLogout);
+
 		JButton btnPremium = new JButton("Premium");
 		btnPremium.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controlador.hacerPremium();
-				if(controlador.isPremium()) {
-					usuarioPremium=true;
-					JOptionPane.showMessageDialog(frame,"Tu usuario ha pasado a ser premium");	
-					if(usuarioPremium) {
-						masVistos=new JButton("Mas Vistos");
+				if (controlador.isPremium()) {
+					usuarioPremium = true;
+					JOptionPane.showMessageDialog(frame, "Tu usuario ha pasado a ser premium");
+					if (usuarioPremium) {
+						masVistos = new JButton("Mas Vistos");
 						masVistos.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								// TODO Auto-generated method stub
@@ -136,14 +132,9 @@ public class VentanaFiltros {
 						gbc_masVistos.insets = new Insets(0, 0, 0, 5);
 						gbc_masVistos.gridx = 3;
 						gbc_masVistos.gridy = 6;
-						//frame.getContentPane().add(masVistos);
-						panel.add(masVistos,gbc_masVistos);
-						//SwingUtilities.updateComponentTreeUI(frame);
-						//new VentanaRecientes(videoWeb);
-						//frame.dispose();
-						//panel.add(masVistos,gbc_masVistos);
-						
-						generaPDF=new JButton("Generar PDF de mis listas");
+						panel.add(masVistos, gbc_masVistos);
+
+						generaPDF = new JButton("Generar PDF de mis listas");
 						generaPDF.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								// TODO Auto-generated method stub
@@ -164,10 +155,9 @@ public class VentanaFiltros {
 						gbc_pdf.insets = new Insets(0, 0, 0, 5);
 						gbc_pdf.gridx = 3;
 						gbc_pdf.gridy = 6;
-						//frame.getContentPane().add(masVistos);
-						panel.add(generaPDF,gbc_pdf);
-						
-						botonFiltros=new JButton("Gestionar filtros");
+						panel.add(generaPDF, gbc_pdf);
+
+						botonFiltros = new JButton("Gestionar filtros");
 						botonFiltros.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								new VentanaFiltros(videoWeb);
@@ -179,14 +169,13 @@ public class VentanaFiltros {
 						gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
 						gbc_botonFiltros.gridx = 3;
 						gbc_botonFiltros.gridy = 6;
-						//frame.getContentPane().add(masVistos);
-						panel.add(botonFiltros,gbc_botonFiltros);
-						
+						panel.add(botonFiltros, gbc_botonFiltros);
+
 						SwingUtilities.updateComponentTreeUI(frame);
 					}
-				}else {
-					usuarioPremium=false;
-					JOptionPane.showMessageDialog(frame,"Tu usuario ha dejado de ser premium");
+				} else {
+					usuarioPremium = false;
+					JOptionPane.showMessageDialog(frame, "Tu usuario ha dejado de ser premium");
 					panel.remove(masVistos);
 					panel.remove(generaPDF);
 					panel.remove(botonFiltros);
@@ -194,18 +183,18 @@ public class VentanaFiltros {
 				}
 			}
 		});
-	
+
 		GridBagConstraints gbc_btnPremium = new GridBagConstraints();
 		gbc_btnPremium.anchor = GridBagConstraints.WEST;
 		gbc_btnPremium.insets = new Insets(0, 0, 0, 5);
 		gbc_btnPremium.gridx = 3;
 		gbc_btnPremium.gridy = 6;
-		panel.add(btnPremium,gbc_btnPremium);
-		
-		if(controlador.isPremium()) {
-			usuarioPremium=true;
-			if(usuarioPremium) {
-				masVistos=new JButton("Mas Vistos");
+		panel.add(btnPremium, gbc_btnPremium);
+
+		if (controlador.isPremium()) {
+			usuarioPremium = true;
+			if (usuarioPremium) {
+				masVistos = new JButton("Mas Vistos");
 				masVistos.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
@@ -217,14 +206,9 @@ public class VentanaFiltros {
 				gbc_masVistos.insets = new Insets(0, 0, 0, 5);
 				gbc_masVistos.gridx = 3;
 				gbc_masVistos.gridy = 6;
-				//frame.getContentPane().add(masVistos);
-				panel.add(masVistos,gbc_masVistos);
-				//SwingUtilities.updateComponentTreeUI(frame);
-				//new VentanaRecientes(videoWeb);
-				//frame.dispose();
-				//panel.add(masVistos,gbc_masVistos);
-				
-				generaPDF=new JButton("Generar PDF de mis listas");
+				panel.add(masVistos, gbc_masVistos);
+
+				generaPDF = new JButton("Generar PDF de mis listas");
 				generaPDF.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
@@ -245,10 +229,9 @@ public class VentanaFiltros {
 				gbc_pdf.insets = new Insets(0, 0, 0, 5);
 				gbc_pdf.gridx = 3;
 				gbc_pdf.gridy = 6;
-				//frame.getContentPane().add(masVistos);
-				panel.add(generaPDF,gbc_pdf);
-				
-				botonFiltros=new JButton("Gestionar filtros");
+				panel.add(generaPDF, gbc_pdf);
+
+				botonFiltros = new JButton("Gestionar filtros");
 				botonFiltros.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						new VentanaFiltros(videoWeb);
@@ -260,22 +243,20 @@ public class VentanaFiltros {
 				gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
 				gbc_botonFiltros.gridx = 3;
 				gbc_botonFiltros.gridy = 6;
-				//frame.getContentPane().add(masVistos);
-				panel.add(botonFiltros,gbc_botonFiltros);
+				panel.add(botonFiltros, gbc_botonFiltros);
 			}
 		}
-		
+
 		JPanel panel1 = new JPanel();
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
-				JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getNombre());
-				lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
-				lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-				panel1.add(lblUser);
-		
-		JButton btnExplorar= new JButton("Explorar");
+		JLabel lblUser = new JLabel("Hola " + controlador.getUsuarioActual().getNombre());
+		lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		panel1.add(lblUser);
+
+		JButton btnExplorar = new JButton("Explorar");
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
 				new VentanaExplorar(videoWeb);
 			}
 		});
@@ -285,12 +266,11 @@ public class VentanaFiltros {
 		gbc_btnExplorar.insets = new Insets(0, 0, 0, 5);
 		gbc_btnExplorar.gridx = 3;
 		gbc_btnExplorar.gridy = 6;
-		panel1.add(btnExplorar,gbc_btnExplorar);
-		
-		JButton btnMisListas= new JButton("Mis Listas");
+		panel1.add(btnExplorar, gbc_btnExplorar);
+
+		JButton btnMisListas = new JButton("Mis Listas");
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
 				new VentanaMisListas(videoWeb);
 				frame.dispose();
 			}
@@ -301,13 +281,13 @@ public class VentanaFiltros {
 		gbc_btnMisListas.insets = new Insets(0, 0, 0, 5);
 		gbc_btnMisListas.gridx = 3;
 		gbc_btnMisListas.gridy = 6;
-		panel1.add(btnMisListas,gbc_btnMisListas);
-		
-		JButton btnRecientes= new JButton("Recientes");
+		panel1.add(btnMisListas, gbc_btnMisListas);
+
+		JButton btnRecientes = new JButton("Recientes");
 		btnRecientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//new VentanaMisListas(videoWeb);
-				//frame.dispose();
+				new VentanaRecientes(videoWeb);
+				frame.dispose();
 			}
 		});
 
@@ -316,10 +296,9 @@ public class VentanaFiltros {
 		gbc_btnRecientes.insets = new Insets(0, 0, 0, 5);
 		gbc_btnRecientes.gridx = 3;
 		gbc_btnRecientes.gridy = 6;
-		panel1.add(btnRecientes,gbc_btnRecientes);
-		
-		
-		JButton btnNuevaLista= new JButton("Nueva Lista");
+		panel1.add(btnRecientes, gbc_btnRecientes);
+
+		JButton btnNuevaLista = new JButton("Nueva Lista");
 		btnNuevaLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new VentanaNuevaLista(videoWeb);
@@ -332,9 +311,9 @@ public class VentanaFiltros {
 		gbc_btnNuevaLista.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNuevaLista.gridx = 3;
 		gbc_btnNuevaLista.gridy = 6;
-		panel1.add(btnNuevaLista,gbc_btnNuevaLista);
-		
-		JButton btnPrincipal= new JButton("Carga Videos");
+		panel1.add(btnNuevaLista, gbc_btnNuevaLista);
+
+		JButton btnPrincipal = new JButton("Carga Videos");
 		btnPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new VentanaPrincipal(videoWeb);
@@ -347,21 +326,21 @@ public class VentanaFiltros {
 		gbc_btnPrincipal.insets = new Insets(0, 0, 0, 5);
 		gbc_btnPrincipal.gridx = 3;
 		gbc_btnPrincipal.gridy = 6;
-		panel1.add(btnPrincipal,gbc_btnPrincipal);
-		
-		JPanel panelFiltros=new JPanel();
-		frame.getContentPane().add(panelFiltros,BorderLayout.EAST);
-		JLabel lblFiltro= new JLabel("Selecciona un filtro: ");
+		panel1.add(btnPrincipal, gbc_btnPrincipal);
+
+		JPanel panelFiltros = new JPanel();
+		frame.getContentPane().add(panelFiltros, BorderLayout.EAST);
+		JLabel lblFiltro = new JLabel("Selecciona un filtro: ");
 		lblFiltro.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblFiltro.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		panelFiltros.add(lblFiltro);
-		
-		JButton botonNoFiltro=new JButton("Sin Filtro");
+
+		JButton botonNoFiltro = new JButton("Sin Filtro");
 		botonNoFiltro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				NoFiltro filtro=new NoFiltro();
-	        	controlador.setFiltro(filtro);
-	        	JOptionPane.showMessageDialog(frame, "Has escogido la opción sin filtros");
+				NoFiltro filtro = new NoFiltro();
+				controlador.setFiltro(filtro);
+				JOptionPane.showMessageDialog(frame, "Has escogido la opción sin filtros");
 			}
 		});
 
@@ -370,14 +349,14 @@ public class VentanaFiltros {
 		gbc_btnNoFiltro.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNoFiltro.gridx = 3;
 		gbc_btnNoFiltro.gridy = 6;
-		panelFiltros.add(botonNoFiltro,gbc_btnNoFiltro);
-		
-		JButton botonMenores=new JButton("Filtro Menores");
+		panelFiltros.add(botonNoFiltro, gbc_btnNoFiltro);
+
+		JButton botonMenores = new JButton("Filtro Menores");
 		botonMenores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				FiltroMenores filtro=new FiltroMenores();
-	        	controlador.setFiltro(filtro);
-	        	JOptionPane.showMessageDialog(frame, "Has escogido el filtro para menores");
+				FiltroMenores filtro = new FiltroMenores();
+				controlador.setFiltro(filtro);
+				JOptionPane.showMessageDialog(frame, "Has escogido el filtro para menores");
 			}
 		});
 
@@ -386,14 +365,14 @@ public class VentanaFiltros {
 		gbc_btnMenores.insets = new Insets(0, 0, 0, 5);
 		gbc_btnMenores.gridx = 3;
 		gbc_btnMenores.gridy = 6;
-		panelFiltros.add(botonMenores,gbc_btnMenores);
-	       
-		JButton botonMisListas=new JButton("Filtro Mis Listas");
+		panelFiltros.add(botonMenores, gbc_btnMenores);
+
+		JButton botonMisListas = new JButton("Filtro Mis Listas");
 		botonMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				FiltroMisListas filtro=new FiltroMisListas();
-	        	controlador.setFiltro(filtro);
-	        	JOptionPane.showMessageDialog(frame, "Has escogido el filtro de tus listas");
+				FiltroMisListas filtro = new FiltroMisListas();
+				controlador.setFiltro(filtro);
+				JOptionPane.showMessageDialog(frame, "Has escogido el filtro de tus listas");
 			}
 		});
 
@@ -402,8 +381,7 @@ public class VentanaFiltros {
 		gbc_btnFiltroListas.insets = new Insets(0, 0, 0, 5);
 		gbc_btnFiltroListas.gridx = 3;
 		gbc_btnFiltroListas.gridy = 6;
-		panelFiltros.add(botonMisListas,gbc_btnFiltroListas);
-		
-	       
+		panelFiltros.add(botonMisListas, gbc_btnFiltroListas);
+
 	}
 }

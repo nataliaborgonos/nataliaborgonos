@@ -294,6 +294,7 @@ public class VentanaPrincipal {
 			}
 		});
 		
+		
 		JLabel lblUser = new JLabel("Hola "+controlador.getUsuarioActual().getNombre());
 		lblUser.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblUser.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
@@ -376,6 +377,10 @@ public class VentanaPrincipal {
 		panel1.add(btnPrincipal,gbc_btnPrincipal);
 		
 		
+		JLabel lblLuz = new JLabel("Usa el pulsador para cargar vídeos XML");
+		lblLuz.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblLuz.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		panel1.add(lblLuz);
 	}
 	        
 	public void mostrarVentana() {

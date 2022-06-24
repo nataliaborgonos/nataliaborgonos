@@ -58,6 +58,7 @@ public class VentanaNuevaLista {
 		frame.setVisible(true);
 	}
 	
+	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 500);
@@ -147,12 +148,7 @@ public class VentanaNuevaLista {
 						gbc_masVistos.insets = new Insets(0, 0, 0, 5);
 						gbc_masVistos.gridx = 3;
 						gbc_masVistos.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(masVistos,gbc_masVistos);
-						//SwingUtilities.updateComponentTreeUI(frame);
-						//new VentanaRecientes(videoWeb);
-						//frame.dispose();
-						//panel.add(masVistos,gbc_masVistos);
 						
 						generaPDF=new JButton("Generar PDF de mis listas");
 						generaPDF.addActionListener(new ActionListener() {
@@ -175,7 +171,6 @@ public class VentanaNuevaLista {
 						gbc_pdf.insets = new Insets(0, 0, 0, 5);
 						gbc_pdf.gridx = 3;
 						gbc_pdf.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(generaPDF,gbc_pdf);
 						
 						botonFiltros=new JButton("Gestionar filtros");
@@ -190,7 +185,6 @@ public class VentanaNuevaLista {
 						gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
 						gbc_botonFiltros.gridx = 3;
 						gbc_botonFiltros.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(botonFiltros,gbc_botonFiltros);
 						
 						SwingUtilities.updateComponentTreeUI(frame);
@@ -230,12 +224,7 @@ public class VentanaNuevaLista {
 				gbc_masVistos.insets = new Insets(0, 0, 0, 5);
 				gbc_masVistos.gridx = 3;
 				gbc_masVistos.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(masVistos,gbc_masVistos);
-				//SwingUtilities.updateComponentTreeUI(frame);
-				//new VentanaRecientes(videoWeb);
-				//frame.dispose();
-				//panel.add(masVistos,gbc_masVistos);
 				
 				generaPDF=new JButton("Generar PDF de mis listas");
 				generaPDF.addActionListener(new ActionListener() {
@@ -258,7 +247,6 @@ public class VentanaNuevaLista {
 				gbc_pdf.insets = new Insets(0, 0, 0, 5);
 				gbc_pdf.gridx = 3;
 				gbc_pdf.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(generaPDF,gbc_pdf);
 			}
 		}
@@ -273,7 +261,6 @@ public class VentanaNuevaLista {
 		JButton btnExplorar= new JButton("Explorar");
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
 				new VentanaExplorar(videoWeb);
 				frame.dispose();
 			}
@@ -304,7 +291,6 @@ public class VentanaNuevaLista {
 		JButton btnRecientes= new JButton("Recientes");
 		btnRecientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
 				new VentanaRecientes(videoWeb);
 				frame.dispose();
 			}
@@ -363,7 +349,6 @@ public class VentanaNuevaLista {
 			btnBuscar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					String auxTitulo=textFieldBuscar.getText().trim();
-					//	Set<String> videos = RepositorioVideos.getUnicaInstancia().getTitulos();
 						List<Video> videos = RepositorioVideos.getUnicaInstancia().getVideos();
 						for(Video v : videos) {
 							if(v.getTitulo().equals(auxTitulo)) {
@@ -373,9 +358,7 @@ public class VentanaNuevaLista {
 			        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
 			        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
 			                	label.setIcon(thumb);
-							//	modelo.insertRow(0, new Object[]{label});
 								modelo.addRow(new Object[]{label.getIcon(),label.getText()});
-								//videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(auxTitulo);
 							}
 				}
 				}
@@ -406,7 +389,6 @@ public class VentanaNuevaLista {
 			
 
 			tabla = new JTable(new ModeloTabla()) {
-				// De esta forma no se pueden editar las celdas de la tabla
 				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
 		            return false;
 		        }
@@ -414,12 +396,10 @@ public class VentanaNuevaLista {
 			tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 			tabla.setFont(new Font("Arial", Font.PLAIN, 14));
 			tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
-			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
 			tabla.setRowHeight(60);
 			tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 				public void valueChanged(ListSelectionEvent event) {
 					filaSeleccionada=tabla.getSelectedRow();
-					System.out.println("fila seleccionada " + filaSeleccionada);
 					if(filaSeleccionada!=-1) {
 					Video v = videosFiltrados.get(filaSeleccionada);
 					videoSeleccionado=RepositorioVideos.getUnicaInstancia().getVideo(v.getTitulo());
@@ -431,10 +411,8 @@ public class VentanaNuevaLista {
 			panel1.add(scrollPane1);
 			scrollPane1.setPreferredSize(new Dimension(350, 200));
 			panel1.setPreferredSize(new Dimension(375, 175));
-			// Añadimos el listener para que se marque el video seleccionado de la tabla
 			
 			tablaContenido = new JTable(new ModeloTabla()) {
-				// De esta forma no se pueden editar las celdas de la tabla
 				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
 		            return false;
 		        }
@@ -442,17 +420,15 @@ public class VentanaNuevaLista {
 			tablaContenido.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 			tablaContenido.setFont(new Font("Arial", Font.PLAIN, 14));
 			tablaContenido.getColumnModel().getColumn(0).setPreferredWidth(20);
-			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
 			tablaContenido.setRowHeight(60);
 			panel1.add(tablaContenido);
 			JScrollPane scrollPane2 = new JScrollPane(tablaContenido);
 			panel1.add(scrollPane2);
 			scrollPane2.setPreferredSize(new Dimension(350, 200));
 			panel1.setPreferredSize(new Dimension(375, 175));
-			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
 			
 			JLabel labelPos=new JLabel();
-			labelPos.setText("La lista de la izquierda muestra el contenido de la lista que se está tratando");
+			labelPos.setText("La lista de la derecha muestra el contenido de la lista que se está tratando");
 			panel1.add(labelPos);
 			
 			JPanel panel2 = new JPanel();
@@ -476,12 +452,10 @@ public class VentanaNuevaLista {
 			JButton btnBuscaLista= new JButton("Buscar");
 			btnBuscaLista.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					List<ListaVideos> lv= controlador.getUsuarioActual().getListaVideos();
-					for(ListaVideos l : lv) {
-						if(l.getNombreLista().equals(textFieldNombre.getText().trim())) {
-							actual=l;
-							JOptionPane.showMessageDialog(frame, "Has elegido la lista "+l.getNombreLista());
-						}
+					ListaVideos lv= controlador.buscarListas(textFieldNombre.getText().trim());
+					if(lv!=null) {
+						actual=lv;
+						JOptionPane.showMessageDialog(frame, "Has elegido la lista "+lv.getNombreLista());
 					}
 					for(Video v : actual.getLista()) {
 						modelo = (ModeloTabla) tablaContenido.getModel();
@@ -489,9 +463,7 @@ public class VentanaNuevaLista {
 	        			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
 	        			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
 	                	label.setIcon(thumb);
-					//	modelo.insertRow(0, new Object[]{label});
 						modelo.addRow(new Object[]{label.getIcon(),label.getText()});
-						//modelo.insertRow(0, new Object[]{v.getTitulo()});	
 					}
 				}
 			});
@@ -506,16 +478,12 @@ public class VentanaNuevaLista {
 			JButton btnEliminar= new JButton("Eliminar");
 			btnEliminar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					List<ListaVideos> lv= controlador.getUsuarioActual().getListaVideos();
-					if(!lv.isEmpty()) {
-					for(ListaVideos l : lv) {
-						if(l.getNombreLista().equals(textFieldNombre.getText().trim())) {
-							actual=l;
-							JOptionPane.showMessageDialog(frame, "Has eliminado la lista "+l.getNombreLista());
-							lv.remove(l);
-						}
+					ListaVideos lv= controlador.buscarListas(textFieldNombre.getText().trim());
+					if(lv!=null) {
+						actual=lv;
+						controlador.eliminarLista(lv.getNombreLista());
+						JOptionPane.showMessageDialog(frame, "Has eliminado la lista "+lv.getNombreLista());
 					}
-				}
 				}
 			});
 			
@@ -529,17 +497,13 @@ public class VentanaNuevaLista {
 			JButton btnAnadir= new JButton("Añadir lista");
 			btnAnadir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					List<ListaVideos> lv= controlador.getUsuarioActual().getListaVideos();
-					if(!lv.isEmpty()) {
-					for(ListaVideos l : lv) {
-						if(l.getNombreLista().equals(textFieldNombre.getText().trim())) {
-							JOptionPane.showMessageDialog(frame, "Esa lista ya existe");
-						}
-					}
+					ListaVideos lv= controlador.buscarListas(textFieldNombre.getText().trim());
+					if(lv!=null) {
+						JOptionPane.showMessageDialog(frame, "Esa lista ya existe ");
 					}else {
 						ListaVideos nueva=new ListaVideos(textFieldNombre.getText().trim());
-						controlador.getUsuarioActual().addListaVideos(nueva);
 						controlador.registrarListaVideos(nueva);
+						controlador.crearLista(textFieldNombre.getText().trim());
 						JOptionPane.showMessageDialog(frame, "Has añadido la lista: "+ textFieldNombre.getText().trim());
 						actual=nueva;
 					}
@@ -557,7 +521,7 @@ public class VentanaNuevaLista {
 			btnQuitar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if(actual.getLista().contains(videoSeleccionado)) {
-						actual.removeVideo(videoSeleccionado);
+						controlador.removeVideoLista(actual, videoSeleccionado);
 						JOptionPane.showMessageDialog(frame, "Has eliminado el video: "+ videoSeleccionado.getTitulo()+ " de la lista: "+actual.getNombreLista());
 					}
 				}
@@ -573,7 +537,6 @@ public class VentanaNuevaLista {
 			JButton btnAddVideo= new JButton("Añadir video");
 			btnAddVideo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					actual.addVideo(videoSeleccionado);
 					controlador.addVideoLista(actual, videoSeleccionado);
 					JOptionPane.showMessageDialog(frame, "Has añadido el video: "+ videoSeleccionado.getTitulo()+ " a la lista: "+actual.getNombreLista());
 				}

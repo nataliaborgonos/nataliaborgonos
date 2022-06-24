@@ -14,20 +14,19 @@ public class testJUnitUsuario {
 	ListaVideos lista = new ListaVideos("ListaTest");
 	
 	@Test
-	public void test() {
+	public void testGetRecientesNull() {
 		assertNotNull(usu.getRecientes());
-	}
-
-	
-	@Test
-	public void testGetListaVideos() {
-		usu.addListaVideos(lista);
-		assertTrue(usu.getListaVideos().size() == 1);
 	}
 
 	@Test
 	public void testGetRecientes() {
 		assertTrue(usu.getRecientes().size() == 0);
+	}
+	
+	@Test
+	public void testGetListaVideos() {
+		usu.addListaVideos(lista);
+		assertTrue(usu.getListaVideos().size() == 1);
 	}
 
 	@Test

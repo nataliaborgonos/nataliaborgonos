@@ -54,6 +54,7 @@ public class VentanaRecientes{
 		frame.setVisible(true);
 	}
 	
+	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1000, 600);
