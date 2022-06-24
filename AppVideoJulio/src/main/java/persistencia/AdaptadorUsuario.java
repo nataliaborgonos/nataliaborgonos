@@ -1,6 +1,7 @@
 package persistencia;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -19,6 +20,16 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 
 	private static ServicioPersistencia servPersistencia;
 	private static AdaptadorUsuario unicaInstancia = null;
+
+	private static final String USUARIO = "Usuario";
+	private static final String NOMBRE = "nombre";
+	private static final String APELLIDOS = "apellidos";
+	private static final String EMAIL = "email";
+	private static final String LOGIN = "login";
+	private static final String PASSWORD = "password";
+	private static final String FECHA_NACIMIENTO = "fechaNacimiento";
+	
+	private SimpleDateFormat dateFormat;
 	
 	public static AdaptadorUsuario getUnicaInstancia() { // patron singleton
 		if (unicaInstancia == null)
@@ -26,10 +37,44 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		else
 			return unicaInstancia;
 	}
-	private AdaptadorUsuario() { 
+	public AdaptadorUsuario() { 
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia(); 
+		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	}
 	
+	private Usuario entidadToUsuario(Entidad eUsuario) {
+
+		String nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, NOMBRE);
+		String apellidos = servPersistencia.recuperarPropiedadEntidad(eUsuario, APELLIDOS);
+		String email = servPersistencia.recuperarPropiedadEntidad(eUsuario, EMAIL);
+		String fechaNacimiento = servPersistencia.recuperarPropiedadEntidad(eUsuario, FECHA_NACIMIENTO);
+		String login = servPersistencia.recuperarPropiedadEntidad(eUsuario, LOGIN);
+		String password = servPersistencia.recuperarPropiedadEntidad(eUsuario, PASSWORD);
+		
+
+		Usuario usuario = new Usuario(nombre, apellidos, email, fechaNacimiento, login, password);
+		usuario.setIdBD(eUsuario.getId());
+
+		return usuario;
+	}
+
+	private Entidad usuarioToEntidad(Usuario usuario) {
+		Entidad eUsuario = new Entidad();
+		eUsuario.setNombre(USUARIO);
+
+		eUsuario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad(NOMBRE, usuario.getNombre()),
+				new Propiedad(APELLIDOS, usuario.getApellidos()), new Propiedad(EMAIL, usuario.getEmail()),
+				new Propiedad(LOGIN, usuario.getLogin()), new Propiedad(PASSWORD, usuario.getPassword()),
+				new Propiedad(FECHA_NACIMIENTO, usuario.getFechaNac()))));
+		return eUsuario;
+	}
+	
+	public void registrarUsuario(Usuario usuario) {
+		Entidad eUsuario = this.usuarioToEntidad(usuario);
+		eUsuario = servPersistencia.registrarEntidad(eUsuario);
+		usuario.setIdBD(eUsuario.getId());
+	}
+	/*
 	public void registrarUsuario(Usuario usuario) {
 		Entidad eUsuario;
 		boolean existe = true;
@@ -74,13 +119,14 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 				eUsuario = servPersistencia.registrarEntidad(eUsuario);
 				// asignar identificador unico, aprovecha el que genera el servicio de persistencia
 				usuario.setIdBD(eUsuario.getId()); 
-		}
+		}*/
 	public void borrarUsuario(Usuario usuario) {
 		// TODO Auto-generated method stub
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getIdBD());
 		servPersistencia.borrarEntidad(eUsuario);
 	}
 	public void modificarUsuario(Usuario usuario) {
+		
 		// TODO Auto-generated method stub
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getIdBD());
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "nombre");
@@ -104,8 +150,15 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "premium", String.valueOf(usuario.isPremium()));
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "filtro");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "filtro", usuario.getFiltroPremium().getNombreFiltro());
+	
+	
+			
 	}
-	public Usuario recuperarUsuario(int codigo) {
+	public Usuario recuperarUsuario(int id) {
+		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
+
+		return entidadToUsuario(eUsuario);
+		/*
 		// TODO Auto-generated method stub
 		Entidad eUsuario;
 		String nombre;
@@ -142,17 +195,27 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		} else if (nombreFiltro.equals("Adultos")) {
 			usuario.setFiltroPremium(new FiltroMenores());
 		}
-		return usuario;
+		return usuario;*/
 	}
 	
 	public List<Usuario> recuperarTodosUsuarios() {
+		List<Entidad> entidades = servPersistencia.recuperarEntidades(USUARIO);
+
+		List<Usuario> usuarios = new LinkedList<Usuario>();
+		for (Entidad eUsuario : entidades) {
+			usuarios.add(recuperarUsuario(eUsuario.getId()));
+			System.out.println("usuario recuperado "+recuperarUsuario(eUsuario.getId()).getLogin());
+		}
+
+		return usuarios;
+		/*
 		List<Entidad> eUsuarios = servPersistencia.recuperarEntidades("usuario");
 		List<Usuario> usuarios = new LinkedList<Usuario>();
 
 		for (Entidad eUsuario : eUsuarios) {
 			usuarios.add(recuperarUsuario(eUsuario.getId()));
 		}
-		return usuarios;
+		return usuarios;*/
 	}
 	
 	public String getListaVideosString(List<ListaVideos> listaListasVideos) {

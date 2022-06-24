@@ -41,7 +41,6 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 				}
 				if (existe) return;
 				
-				
 				eVideo = new Entidad();
 				eVideo.setNombre("video");
 				ArrayList<Propiedad> propiedades=new ArrayList<Propiedad>();

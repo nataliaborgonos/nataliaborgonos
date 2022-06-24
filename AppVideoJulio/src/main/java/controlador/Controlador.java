@@ -38,7 +38,7 @@ public class Controlador implements VideoListener{
 		repoUsuarios = RepositorioUsuarios.getUnicaInstancia();
 		FactoriaDAO factoria = null;
 		try {
-			factoria = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
+			factoria = FactoriaDAO.getInstancia();
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
@@ -54,19 +54,40 @@ public class Controlador implements VideoListener{
 		return unicaInstancia;
 	}
 	
+	public boolean esUsuarioRegistrado(String login) {
+		return RepositorioUsuarios.getUnicaInstancia().getUsuario(login) != null;
+	}
+	
 	public boolean registrarUsuario(String nombre, String apellidos, String email, String fechaNacim, String login, String password) {
+
+		if (esUsuarioRegistrado(login))
+			return false;
+		Usuario usuario = new Usuario(nombre,apellidos,email,fechaNacim,login, password);
+		adaptadorUsuario.registrarUsuario(usuario);
+
+		repoUsuarios.addUsuario(usuario);
+		return true;
+		/*
 		if (repoUsuarios.findUsuario(login) != null) {
-			//Si el usuario con el login ya esta registrado, no hace nada
 			return false;
 		} else {
 		Usuario usuario = new Usuario(nombre,apellidos,email,fechaNacim,login, password);
 		adaptadorUsuario.registrarUsuario(usuario);		
 		repoUsuarios.addUsuario(usuario);
 		return true;
-		}
+		}*/
 	}
 	
 		public boolean login(String login, String password) {
+			Usuario usuario = RepositorioUsuarios.getUnicaInstancia().getUsuario(login);
+			System.out.println("el usuario que intenta entrar es: " + usuario.getLogin());
+			System.out.println("la contraseña es: " + usuario.getPassword());
+			if (usuario != null && usuario.getPassword().equals(password)) {
+				this.usuarioActual = usuario;
+				return true;
+			}
+			return false;
+			/*
 			Usuario usu = repoUsuarios.getUsuario(login);
 			if (usu == null) {
 				return false;
@@ -77,7 +98,7 @@ public class Controlador implements VideoListener{
 				} else {
 					return false;
 				}
-			}
+			}*/
 		}
 		
 		public Usuario getUsuarioActual() {
