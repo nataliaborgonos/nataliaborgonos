@@ -32,5 +32,4 @@ public class RepositorioUsuarios {
 			return unicaInstancia;
 		}
 		
-		
-	}
+}
