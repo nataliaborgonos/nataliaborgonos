@@ -2,7 +2,7 @@ package persistencia;
 
 //factoria abstracta que devuelve todos los DAO de la aplicacion
 public abstract class FactoriaDAO {
-	private static FactoriaDAO unicaInstancia=null;
+	private static FactoriaDAO unicaInstancia;
 	
 	public static final String DAO_TDS = "persistencia.TDSFactoriaDAO";
 		

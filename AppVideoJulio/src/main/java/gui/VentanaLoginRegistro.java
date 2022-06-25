@@ -154,6 +154,7 @@ public class VentanaLoginRegistro {
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String auxLogin = textUsuario.getText().trim();
+				System.out.println(auxLogin);
 				String auxPassword = String.valueOf(textPassword.getPassword());
 				if (controlador.login(auxLogin, auxPassword)) {
 					new VentanaRecientes(videoWeb);
