@@ -40,7 +40,7 @@ public class VentanaReproductor {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setVisible(true);
-		frame.setBounds(100, 100, 700, 550);
+		frame.setBounds(100, 100, 1000, 1000);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
@@ -146,7 +146,7 @@ public class VentanaReproductor {
 				// TODO Auto-generated method stub
 				videoWeb.playVideo(video.getUrl());
 				controlador.reproducirVideo(video);
-				controlador.actualizarRecientes(video);
+			//	controlador.actualizarRecientes(video);
 			}
 		});
 		

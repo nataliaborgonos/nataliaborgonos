@@ -20,16 +20,6 @@ public class Video {
 		this.listaEtiquetas = new ArrayList<Etiqueta>();
 	}
 	
-
-	public Video(String url, String titulo, List<Etiqueta> etiqs) {
-		this.idBD=0;
-		this.url = url;
-		this.titulo = titulo;
-		this.numReproducciones = 0;
-		this.listaEtiquetas =etiqs;
-	}
-	
-	
 	public int getIdBD() {
 		return idBD;
 	}

@@ -29,7 +29,7 @@ import gui.VentanaPrincipal;
 import gui.VentanaRecientes;
 import tds.video.VideoWeb;
 
-//controlador
+
 public class App extends JFrame{
 	private JPanel contentPane;
 	private static VideoWeb videoWeb;

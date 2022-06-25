@@ -16,7 +16,7 @@ public class Usuario {
 	private boolean esPremium;
 	private List<ListaVideos> listaVideos;
 	private List<Filtro> filtros;
-	private List<Video> recientes; //ordenada
+	private List<Video> recientes; 
 	private Filtro filtroPremium;
 
 	public Usuario(String nombre, String apellidos, String email, String fechaNac, String login, String password) {
@@ -74,16 +74,6 @@ public class Usuario {
 	public List<Video> getRecientes(){
 		return recientes;
 	}
-	
-	/*
-	public List<Video> getRecientesString(){
-		String r = "";
-		for (Video v : recientes) {
-			recientes+= v.getNombreEtiq() + " ";
-		}
-		return etiquetas.trim();
-		return recientes;
-	}*/
 	
 	
 	public void setPremium(boolean premium) {

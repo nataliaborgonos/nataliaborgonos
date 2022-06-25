@@ -61,7 +61,7 @@ public class VentanaNuevaLista {
 	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 900, 500);
+		frame.setBounds(100, 100, 1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -538,6 +538,7 @@ public class VentanaNuevaLista {
 			btnAddVideo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					controlador.addVideoLista(actual, videoSeleccionado);
+					actual.addVideo(videoSeleccionado);
 					JOptionPane.showMessageDialog(frame, "Has añadido el video: "+ videoSeleccionado.getTitulo()+ " a la lista: "+actual.getNombreLista());
 				}
 			});

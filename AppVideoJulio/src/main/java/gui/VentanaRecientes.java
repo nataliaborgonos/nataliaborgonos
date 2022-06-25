@@ -38,7 +38,6 @@ public class VentanaRecientes{
 	private JFrame frame;
 	private VideoWeb videoWeb;
 	private Controlador controlador;
-	//private boolean isReciente; //sirve para saber si se tiene o no que actualizar la lista de recientes
 	private ModeloTabla modelo;
 	private JTable tabla;
 	private int filaSeleccionada;
@@ -73,7 +72,6 @@ public class VentanaRecientes{
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
 				new VentanaLoginRegistro(videoWeb);
 			}
 		});
@@ -145,12 +143,7 @@ public class VentanaRecientes{
 						gbc_masVistos.insets = new Insets(0, 0, 0, 5);
 						gbc_masVistos.gridx = 3;
 						gbc_masVistos.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(masVistos,gbc_masVistos);
-						//SwingUtilities.updateComponentTreeUI(frame);
-						//new VentanaRecientes(videoWeb);
-						//frame.dispose();
-						//panel.add(masVistos,gbc_masVistos);
 						
 						generaPDF=new JButton("Generar PDF de mis listas");
 						generaPDF.addActionListener(new ActionListener() {
@@ -173,7 +166,6 @@ public class VentanaRecientes{
 						gbc_pdf.insets = new Insets(0, 0, 0, 5);
 						gbc_pdf.gridx = 3;
 						gbc_pdf.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(generaPDF,gbc_pdf);
 						
 						botonFiltros=new JButton("Gestionar filtros");
@@ -188,7 +180,6 @@ public class VentanaRecientes{
 						gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
 						gbc_botonFiltros.gridx = 3;
 						gbc_botonFiltros.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(botonFiltros,gbc_botonFiltros);
 						
 						SwingUtilities.updateComponentTreeUI(frame);
@@ -226,12 +217,7 @@ public class VentanaRecientes{
 				gbc_masVistos.insets = new Insets(0, 0, 0, 5);
 				gbc_masVistos.gridx = 3;
 				gbc_masVistos.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(masVistos,gbc_masVistos);
-				//SwingUtilities.updateComponentTreeUI(frame);
-				//new VentanaRecientes(videoWeb);
-				//frame.dispose();
-				//panel.add(masVistos,gbc_masVistos);
 				
 				generaPDF=new JButton("Generar PDF de mis listas");
 				generaPDF.addActionListener(new ActionListener() {
@@ -254,7 +240,6 @@ public class VentanaRecientes{
 				gbc_pdf.insets = new Insets(0, 0, 0, 5);
 				gbc_pdf.gridx = 3;
 				gbc_pdf.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(generaPDF,gbc_pdf);
 				
 				botonFiltros=new JButton("Gestionar filtros");
@@ -269,7 +254,6 @@ public class VentanaRecientes{
 				gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
 				gbc_botonFiltros.gridx = 3;
 				gbc_botonFiltros.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(botonFiltros,gbc_botonFiltros);
 			}
 		}
@@ -284,7 +268,6 @@ public class VentanaRecientes{
 		JButton btnExplorar= new JButton("Explorar");
 		btnExplorar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
 				new VentanaExplorar(videoWeb);
 			}
 		});
@@ -299,7 +282,6 @@ public class VentanaRecientes{
 		JButton btnMisListas= new JButton("Mis Listas");
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
 				new VentanaMisListas(videoWeb);
 				frame.dispose();
 			}
@@ -315,8 +297,7 @@ public class VentanaRecientes{
 		JButton btnRecientes= new JButton("Recientes");
 		btnRecientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//new VentanaMisListas(videoWeb);
-				//frame.dispose();
+			
 			}
 		});
 
@@ -365,7 +346,6 @@ public class VentanaRecientes{
 			lblLista.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			panelRec.add(lblLista);
 			tabla = new JTable(new ModeloTabla()) {
-				// De esta forma no se pueden editar las celdas de la tabla
 				public boolean editCellAt(int fila, int columna, java.util.EventObject e) {
 		            return false;
 		        }
@@ -373,14 +353,12 @@ public class VentanaRecientes{
 			tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 			tabla.setFont(new Font("Arial", Font.PLAIN, 14));
 			tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
-			//tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
 			tabla.setRowHeight(60);
 			panelRec.add(tabla);
 			JScrollPane scrollPane = new JScrollPane(tabla);
 			panelRec.add(scrollPane);
 			scrollPane.setPreferredSize(new Dimension(350, 200));
 			panelRec.setPreferredSize(new Dimension(375, 175));
-			// Añadimos el listener para que se marque la cancion seleccionada de la tabla
 			tabla.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 				public void valueChanged(ListSelectionEvent event) {
 		            setFilaSeleccionada(tabla.getSelectedRow());
@@ -391,15 +369,12 @@ public class VentanaRecientes{
 			List<Video> listaRec = controlador.usuarioActual.getRecientes();
 			if(!listaRec.isEmpty()) {
 				for(Video v : listaRec) {
-					//JLabel label = new JLabel(v.getTitulo());
 					modelo = (ModeloTabla) tabla.getModel();
 					JLabel label = new JLabel(v.getTitulo());
         			label.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
         			ImageIcon thumb = videoWeb.getThumb(v.getUrl());
                 	label.setIcon(thumb);
-				//	modelo.insertRow(0, new Object[]{label});
 					modelo.addRow(new Object[]{label.getIcon(),label.getText()});
-					//modelo.insertRow(0, new Object[]{v.getTitulo()});
 			}
 	}
 			

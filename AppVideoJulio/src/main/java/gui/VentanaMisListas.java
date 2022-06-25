@@ -61,7 +61,7 @@ public class VentanaMisListas {
 	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 900, 500);
+		frame.setBounds(100, 100, 1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -291,7 +291,7 @@ public class VentanaMisListas {
 		JButton btnMisListas= new JButton("Mis Listas");
 		btnMisListas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do
+				
 			}
 		});
 

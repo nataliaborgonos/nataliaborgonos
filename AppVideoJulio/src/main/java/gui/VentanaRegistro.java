@@ -45,7 +45,7 @@ public class VentanaRegistro {
 	public VentanaRegistro(JFrame frameanterior) {
 	controlador = Controlador.getUnicaInstancia();
 	frame = new JFrame();
-	frame.setBounds(100, 100, 800, 300);
+	frame.setBounds(100, 100, 1000, 600);
 	frame.setVisible(true);
 	
 	JPanel panel = new JPanel();

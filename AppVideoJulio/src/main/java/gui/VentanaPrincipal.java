@@ -56,7 +56,7 @@ public class VentanaPrincipal {
 	
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 600, 325);
+		frame.setBounds(100, 100, 1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -143,12 +143,8 @@ public class VentanaPrincipal {
 						gbc_masVistos.insets = new Insets(0, 0, 0, 5);
 						gbc_masVistos.gridx = 3;
 						gbc_masVistos.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(masVistos,gbc_masVistos);
-						//SwingUtilities.updateComponentTreeUI(frame);
-						//new VentanaRecientes(videoWeb);
-						//frame.dispose();
-						//panel.add(masVistos,gbc_masVistos);
+						
 						
 						generaPDF=new JButton("Generar PDF de mis listas");
 						generaPDF.addActionListener(new ActionListener() {
@@ -171,7 +167,6 @@ public class VentanaPrincipal {
 						gbc_pdf.insets = new Insets(0, 0, 0, 5);
 						gbc_pdf.gridx = 3;
 						gbc_pdf.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(generaPDF,gbc_pdf);
 						
 						botonFiltros=new JButton("Gestionar filtros");
@@ -186,7 +181,6 @@ public class VentanaPrincipal {
 						gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
 						gbc_botonFiltros.gridx = 3;
 						gbc_botonFiltros.gridy = 6;
-						//frame.getContentPane().add(masVistos);
 						panel.add(botonFiltros,gbc_botonFiltros);
 						
 						SwingUtilities.updateComponentTreeUI(frame);
@@ -226,12 +220,7 @@ public class VentanaPrincipal {
 				gbc_masVistos.insets = new Insets(0, 0, 0, 5);
 				gbc_masVistos.gridx = 3;
 				gbc_masVistos.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(masVistos,gbc_masVistos);
-				//SwingUtilities.updateComponentTreeUI(frame);
-				//new VentanaRecientes(videoWeb);
-				//frame.dispose();
-				//panel.add(masVistos,gbc_masVistos);
 				
 				generaPDF=new JButton("Generar PDF de mis listas");
 				generaPDF.addActionListener(new ActionListener() {
@@ -254,7 +243,6 @@ public class VentanaPrincipal {
 				gbc_pdf.insets = new Insets(0, 0, 0, 5);
 				gbc_pdf.gridx = 3;
 				gbc_pdf.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(generaPDF,gbc_pdf);
 				
 				botonFiltros=new JButton("Gestionar filtros");
@@ -269,7 +257,6 @@ public class VentanaPrincipal {
 				gbc_botonFiltros.insets = new Insets(0, 0, 0, 5);
 				gbc_botonFiltros.gridx = 3;
 				gbc_botonFiltros.gridy = 6;
-				//frame.getContentPane().add(masVistos);
 				panel.add(botonFiltros,gbc_botonFiltros);
 			}
 		}
