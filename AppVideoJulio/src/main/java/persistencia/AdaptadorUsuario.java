@@ -34,7 +34,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		Entidad eUsuario;
 		boolean existe = true;
 		
-		// Si la entidad está registrada no la registra de nuevo
 				try {
 					eUsuario = servPersistencia.recuperarEntidad(usuario.getIdBD());
 				} catch (NullPointerException e) {
@@ -42,7 +41,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 				}
 				if (existe) return;
 				
-				//listas videos
 				AdaptadorListaVideos adaptadorlistas = AdaptadorListaVideos.getUnicaInstancia();
 				for (ListaVideos lista : usuario.getListaVideos()) {
 					adaptadorlistas.registrarListaVideos(lista);
@@ -70,9 +68,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 				propiedades.add(p8);
 				eUsuario.setPropiedades(propiedades);
 				
-				// registrar entidad usuario
 				eUsuario = servPersistencia.registrarEntidad(eUsuario);
-				// asignar identificador unico, aprovecha el que genera el servicio de persistencia
 				usuario.setIdBD(eUsuario.getId()); 
 		}
 	public void borrarUsuario(Usuario usuario) {
@@ -117,10 +113,8 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		boolean premium;
 		String nombreFiltro;
 		String recientes;
-		// recuperar entidad
 		eUsuario = servPersistencia.recuperarEntidad(codigo);
 
-		// recuperar propiedades que no son objetos
 		nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
 		apellidos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "apellidos");
 		email = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
@@ -133,7 +127,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuario{
 		Usuario usuario = new Usuario(nombre, apellidos, email, login, password, fechaNacim);
 		usuario.setIdBD(codigo);
 		usuario.setListaVideos(this.getListasVideosFormatoLista(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listalistavideos")));
-		//AdaptadorListaVideos adaptadorListas = AdaptadorListaVideos.getUnicaInstancia();
+	
 		usuario.setPremium(premium);
 		if (nombreFiltro.equals("NoFiltro")) {
 			usuario.setFiltroPremium(new NoFiltro());

@@ -34,7 +34,6 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 		Entidad eLista;
 		boolean existe = true;
 		
-		// Si la entidad está registrada no la registra de nuevo
 				try {
 					eLista = servPersistencia.recuperarEntidad(lista.getIdBD());
 				} catch (NullPointerException e) {
@@ -43,7 +42,6 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 				if (existe) return;
 				
 				
-				//Registramos primero los objetos
 				AdaptadorVideo adaptadorVideo = AdaptadorVideo.getUnicaInstancia();
 				for (Video video : lista.getLista())
 					adaptadorVideo.registrarVideo(video);
@@ -59,10 +57,7 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 				eLista.setPropiedades(propiedades);
 				
 				
-				// registrar entidad usuario
 				eLista = servPersistencia.registrarEntidad(eLista);
-				// asignar identificador unico
-				// Se aprovecha el que genera el servicio de persistencia
 				lista.setIdBD(eLista.getId());	
 	}
 
@@ -88,14 +83,11 @@ public class AdaptadorListaVideos implements IAdaptadorListaVideos {
 
 	public ListaVideos recuperarListaVideos(int codigo) {
 		// TODO Auto-generated method stub
-		// si no, lo recupera de la base de datos
 					Entidad eLista;
 					String nombre;
 					
-					// recuperar entidad
 					eLista = servPersistencia.recuperarEntidad(codigo);
 
-					// recuperar propiedades que no son objetos
 					nombre = servPersistencia.recuperarPropiedadEntidad(eLista, "nombre");
 
 					ListaVideos lista = new ListaVideos(nombre);

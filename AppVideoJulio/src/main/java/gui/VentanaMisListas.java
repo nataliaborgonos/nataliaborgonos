@@ -387,6 +387,7 @@ public class VentanaMisListas {
 		        for(ListaVideos l : lv) {
 		        	if(itemSeleccionado.equals(l.getNombreLista())) {
 		        		listaActual=l;
+		        		System.out.println("lista de mis listas: "+l.getLista().size());
 		        		for(Video v : l.getLista()) {
 		        			modelo = (ModeloTabla) tabla.getModel();
 		        			JLabel label = new JLabel(v.getTitulo());

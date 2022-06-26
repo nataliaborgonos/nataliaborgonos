@@ -32,8 +32,7 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 		// TODO Auto-generated method stub
 		Entidad eVideo;
 		boolean existe = true;
-		
-		// Si la entidad está registrada no la registra de nuevo
+
 				try {
 					eVideo = servPersistencia.recuperarEntidad(video.getIdBD());
 				} catch (NullPointerException e) {
@@ -55,9 +54,7 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 				propiedades.add(p4);
 				eVideo.setPropiedades(propiedades);
 				
-				// registrar entidad usuario
 				eVideo = servPersistencia.registrarEntidad(eVideo);
-				// asignar identificador unico, el que genera el servicio de persistencia
 				video.setIdBD(eVideo.getId()); 
 	}
 
@@ -90,10 +87,8 @@ public class AdaptadorVideo implements IAdaptadorVideo{
 		String numreproducciones;
 		String listaetiquetas;
 
-		// recuperar entidad
 		eVideo = servPersistencia.recuperarEntidad(codigo);
 
-		// recuperar propiedades que no son objetos
 		url = servPersistencia.recuperarPropiedadEntidad(eVideo, "url");
 		titulo = servPersistencia.recuperarPropiedadEntidad(eVideo, "titulo");
 		numreproducciones = servPersistencia.recuperarPropiedadEntidad(eVideo, "numreproducciones");

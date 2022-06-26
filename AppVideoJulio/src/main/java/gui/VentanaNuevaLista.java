@@ -504,6 +504,7 @@ public class VentanaNuevaLista {
 						ListaVideos nueva=new ListaVideos(textFieldNombre.getText().trim());
 						controlador.registrarListaVideos(nueva);
 						controlador.crearLista(textFieldNombre.getText().trim());
+						System.out.println(controlador.getUsuarioActual().getListaVideos().size());
 						JOptionPane.showMessageDialog(frame, "Has añadido la lista: "+ textFieldNombre.getText().trim());
 						actual=nueva;
 					}
@@ -538,7 +539,9 @@ public class VentanaNuevaLista {
 			btnAddVideo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					controlador.addVideoLista(actual, videoSeleccionado);
-					actual.addVideo(videoSeleccionado);
+					//actual.addVideo(videoSeleccionado);
+					actual.getLista().add(videoSeleccionado);
+					System.out.println("tamaño videos "+actual.getLista().size());
 					JOptionPane.showMessageDialog(frame, "Has añadido el video: "+ videoSeleccionado.getTitulo()+ " a la lista: "+actual.getNombreLista());
 				}
 			});

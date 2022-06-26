@@ -146,7 +146,6 @@ public class VentanaReproductor {
 				// TODO Auto-generated method stub
 				videoWeb.playVideo(video.getUrl());
 				controlador.reproducirVideo(video);
-			//	controlador.actualizarRecientes(video);
 			}
 		});
 		

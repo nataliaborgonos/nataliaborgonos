@@ -5,11 +5,7 @@ public abstract class FactoriaDAO {
 	private static FactoriaDAO unicaInstancia;
 	
 	public static final String DAO_TDS = "persistencia.TDSFactoriaDAO";
-		
-	/** 
-	 * Crea un tipo de factoria DAO.
-	 * Solo existe el tipo TDSFactoriaDAO
-	 */
+
 	public static FactoriaDAO getInstancia(String tipo) throws DAOException{
 		if (unicaInstancia == null)
 			try { unicaInstancia=(FactoriaDAO) Class.forName(tipo).newInstance();
